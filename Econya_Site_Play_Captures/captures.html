@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Captures — Econya</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+  
+  <header>
+    <div class="brand"><div class="logo"></div><strong>Econya</strong></div>
+    <nav>
+      <a href="./index.html">Accueil</a>
+      <a href="./banques.html">Banques</a>
+      <a href="./voyages.html">Voyages</a>
+      <a href="./sport.html">Sport & Loisirs</a>
+      <a href="./bons-plans.html">Bons plans</a>
+      <a href="./captures.html">Captures</a>
+      <a href="./legal.html">Legal</a>
+      <a class="playbtn" data-play href="#">
+        <svg viewBox="0 0 24 24"><path d="M3 4.5v15c0 .8.9 1.3 1.6.9l11-7c.7-.4.7-1.4 0-1.8l-11-7C3.9 4.2 3 4.7 3 5.5z" fill="#2f935a"/></svg>
+        <span>Google Play</span>
+      </a>
+      <button id="themeBtn" class="btn" style="margin-left:8px">🌙 Sombre</button>
+    </nav>
+  </header>
+  <div class="wrap">
+<h1>📸 Captures d’écran</h1>
+<p class="muted">Ajoute tes captures dans ce dossier et remplace les liens ci-dessous.</p>
+<div class="gallery">
+  <div class="shot"><img src="https://placehold.co/540x960/png?text=Dashboard+FR" alt="Dashboard FR"/><small>Dashboard — FR</small></div>
+  <div class="shot"><img src="https://placehold.co/540x960/png?text=Bons+Plans" alt="Bons Plans"/><small>Bons Plans</small></div>
+  <div class="shot"><img src="https://placehold.co/540x960/png?text=Voyages+%26+Hotels" alt="Voyages & Hôtels"/><small>Voyages & Hôtels</small></div>
+  <div class="shot"><img src="https://placehold.co/540x960/png?text=Sport+%26+Loisirs" alt="Sport & Loisirs"/><small>Sport & Loisirs</small></div>
+</div>
+
+<div class="card">
+  <h3>Changer le lien Google Play</h3>
+  <p>Quand tu as l’URL officielle de l’app, exécute ce script dans la console du navigateur (sur n’importe quelle page du site) :</p>
+  <pre class="card" style="white-space:pre-wrap">localStorage.setItem('econya_play_link','https://play.google.com/store/apps/details?id=com.econya.app'); location.reload();</pre>
+  <p>Ou bien remplace l’attribut <code>href</code> des balises <code>&lt;a data-play&gt;</code> dans le HTML.</p>
+</div>
+</div>
+  <footer>© <span id="year">2025</span> Econya — Votre argent mérite de grandir avec vous.</footer>
+  <script src="./assets/main.js"></script>
+</body>
+</html>

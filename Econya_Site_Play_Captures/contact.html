@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Contact — Econya</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+  
+  <header>
+    <div class="brand"><div class="logo"></div><strong>Econya</strong></div>
+    <nav>
+      <a href="./index.html">Accueil</a>
+      <a href="./banques.html">Banques</a>
+      <a href="./voyages.html">Voyages</a>
+      <a href="./sport.html">Sport & Loisirs</a>
+      <a href="./bons-plans.html">Bons plans</a>
+      <a href="./captures.html">Captures</a>
+      <a href="./legal.html">Legal</a>
+      <a class="playbtn" data-play href="#">
+        <svg viewBox="0 0 24 24"><path d="M3 4.5v15c0 .8.9 1.3 1.6.9l11-7c.7-.4.7-1.4 0-1.8l-11-7C3.9 4.2 3 4.7 3 5.5z" fill="#2f935a"/></svg>
+        <span>Google Play</span>
+      </a>
+      <button id="themeBtn" class="btn" style="margin-left:8px">🌙 Sombre</button>
+    </nav>
+  </header>
+  <div class="wrap">
+<h1>Contact</h1>
+<div class="card">
+  <p>Support : <a href="mailto:support@econya.app">support@econya.app</a> — Vie privée : <a href="mailto:privacy@econya.app">privacy@econya.app</a></p>
+  <form id="contactForm" action="https://formspree.io/f/your-id" method="POST" style="display:grid;gap:10px;max-width:640px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <input name="firstName" placeholder="Prénom" required/>
+      <input name="lastName" placeholder="Nom" required/>
+    </div>
+    <input name="email" type="email" placeholder="Email" required/>
+    <select name="topic"><option>Support</option><option>Compte & facturation</option><option>Partenariats</option><option>Autre</option></select>
+    <textarea name="message" rows="5" placeholder="Votre message" required></textarea>
+    <button class="btn" type="submit">Envoyer</button>
+    <div class="badge" id="okMsg" style="display:none">Merci ! Réponse sous 24–48h.</div>
+  </form>
+</div>
+<script>
+document.getElementById('contactForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  try{
+    const res = await fetch(e.target.action, { method:'POST', body:new FormData(e.target), headers:{'Accept':'application/json'} });
+    if(res.ok){ document.getElementById('okMsg').style.display='inline-block'; e.target.reset(); }
+    else alert('Envoi impossible pour le moment.');
+  }catch(_){ alert('Erreur réseau.'); }
+});
+</script>
+</div>
+  <footer>© <span id="year">2025</span> Econya — Votre argent mérite de grandir avec vous.</footer>
+  <script src="./assets/main.js"></script>
+</body>
+</html>

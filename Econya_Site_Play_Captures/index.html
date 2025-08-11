@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Accueil — Econya</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+  
+  <header>
+    <div class="brand"><div class="logo"></div><strong>Econya</strong></div>
+    <nav>
+      <a href="./index.html">Accueil</a>
+      <a href="./banques.html">Banques</a>
+      <a href="./voyages.html">Voyages</a>
+      <a href="./sport.html">Sport & Loisirs</a>
+      <a href="./bons-plans.html">Bons plans</a>
+      <a href="./captures.html">Captures</a>
+      <a href="./legal.html">Legal</a>
+      <a class="playbtn" data-play href="#">
+        <svg viewBox="0 0 24 24"><path d="M3 4.5v15c0 .8.9 1.3 1.6.9l11-7c.7-.4.7-1.4 0-1.8l-11-7C3.9 4.2 3 4.7 3 5.5z" fill="#2f935a"/></svg>
+        <span>Google Play</span>
+      </a>
+      <button id="themeBtn" class="btn" style="margin-left:8px">🌙 Sombre</button>
+    </nav>
+  </header>
+  <div class="wrap">
+<div class="hero card">
+  <div>
+    <h1>Bienvenue sur Econya 🌱</h1>
+    <p>Des offres pour économiser chaque semaine, adaptées à votre pays et votre profil.</p>
+    <p><a class="playbtn" data-play href="#">▶️ Télécharger sur Google Play</a></p>
+    <p class="badge">Auto-devise & thème</p>
+  </div>
+  <div class="stage" id="stage" aria-label="Arbre de vos économies">
+    <svg viewBox="0 0 200 200" class="grow" role="img" aria-label="Arbre qui pousse">
+      <ellipse cx="100" cy="180" rx="60" ry="10" fill="#1a2a23"/>
+      <path d="M96 170 C94 150,92 140,94 120 C78 110,82 95,94 94 C92 82,98 70,106 70 C108 62,116 58,122 62 C128 66,126 78,118 84 C130 92,130 106,116 110 C114 140,114 150,112 170 Z" fill="#6b4b2a"/>
+      <g fill="#2f935a">
+        <circle cx="120" cy="70" r="24"/><circle cx="100" cy="90" r="28"/><circle cx="135" cy="95" r="22"/><circle cx="85"  cy="110" r="20"/><circle cx="115" cy="115" r="24"/>
+      </g>
+      <g fill="#61d498" opacity=".25"><circle cx="112" cy="84" r="10"/><circle cx="130" cy="100" r="8"/></g>
+    </svg>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card"><h3>💳 Banques & Crédits</h3><p>Comparez TAEG, frais, primes d’ouverture.</p></div>
+  <div class="card"><h3>✈️ Voyages & Hôtels</h3><p>Deals partenaires et cashback.</p></div>
+  <div class="card"><h3>🏟️ Sport & Loisirs</h3><p>Salles, billets & activités près de chez vous.</p></div>
+  <div class="card"><h3>🛍️ Bons plans</h3><p>Top 5 hebdo (Free) et illimité (Premium).</p></div>
+</div>
+</div>
+  <footer>© <span id="year">2025</span> Econya — Votre argent mérite de grandir avec vous.</footer>
+  <script src="./assets/main.js"></script>
+</body>
+</html>
