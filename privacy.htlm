@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de Confidentialité - Econya</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #f4f4f4; color: #333; }
+        h1 { color: #2ecc71; }
+        nav { margin-bottom: 20px; }
+        nav a { margin-right: 10px; text-decoration: none; color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Accueil</a> |
+        <a href="legal.html">Mentions légales</a> |
+        <a href="terms.html">Conditions</a>
+    </nav>
+
+    <h1>Politique de Confidentialité</h1>
+
+    <h2>Français</h2>
+    <p>Nous respectons votre vie privée. Vos données personnelles sont collectées uniquement pour améliorer nos services et ne sont jamais partagées sans votre consentement.</p>
+
+    <h2>English</h2>
+    <p>We respect your privacy. Your personal data is collected only to improve our services and is never shared without your consent.</p>
+
+    <h2>العربية</h2>
+    <p>نحن نحترم خصوصيتك. يتم جمع بياناتك الشخصية فقط لتحسين خدماتنا ولا يتم مشاركتها أبدًا بدون موافقتك.</p>
+
+    <footer>
+        <p>&copy; 2025 Econya - Tous droits réservés</p>
+    </footer>
+</body>
+</html>
