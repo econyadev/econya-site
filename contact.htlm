@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Econya — Contact</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+  <style>
+    form{display:grid;gap:10px;margin-top:10px}
+    input,textarea,select{background:var(--card);color:var(--text);border:1px solid #18332a;border-radius:10px;padding:10px}
+    label{font-size:14px;color:var(--muted)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:680px){.row{grid-template-columns:1fr}}
+    .success{display:none;margin-top:10px}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo"></div><strong>Econya</strong></div>
+  <nav>
+    <a href="./index.html">Accueil</a>
+    <a href="./banques.html">Banques</a>
+    <a href="./voyages.html">Voyages</a>
+    <a href="./sport.html">Sport & Loisirs</a>
+    <a href="./bons-plans.html">Bons plans</a>
+    <a href="./legal.html">Legal</a>
+    <button id="themeBtn" class="btn">🌙 Sombre</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h1>Contact</h1>
+    <p>Une question, une idée, un partenariat ? Écris-nous 👇</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Emails directs</h3>
+        <p>Support : <a href="mailto:support@econya.app">support@econya.app</a></p>
+        <p>Vie privée : <a href="mailto:privacy@econya.app">privacy@econya.app</a></p>
+        <p>Partenariats : <a href="mailto:partners@econya.app">partners@econya.app</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Formulaire</h3>
+        <!-- Remplace l'URL Formspree par la tienne (gratuit) -->
+        <form id="contactForm" action="https://formspree.io/f/your-id" method="POST">
+          <div class="row">
+            <div>
+              <label>Prénom</label>
+              <input type="text" name="firstName" required/>
+            </div>
+            <div>
+              <label>Nom</label>
+              <input type="text" name="lastName" required/>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Email</label>
+              <input type="email" name="email" required/>
+            </div>
+            <div>
+              <label>Sujet</label>
+              <select name="topic">
+                <option>Support</option>
+                <option>Compte & facturation</option>
+                <option>Partenariats</option>
+                <option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label>Message</label>
+            <textarea name="message" rows="5" required></textarea>
+          </div>
+          <button class="btn" type="submit">Envoyer</button>
+          <div class="success badge" id="okMsg">Merci ! Nous te répondons sous 24–48h.</div>
+          <small class="muted">En envoyant ce formulaire, tu acceptes notre <a href="./privacy-fr.html">politique de confidentialité</a>.</small>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>FAQ (rapide)</h3>
+    <p><strong>Comment supprimer mon compte ?</strong><br/>
+       Écris à <a href="mailto:privacy@econya.app">privacy@econya.app</a> depuis l’email du compte. Suppression sous 30 jours max.</p>
+    <p><strong>Abonnement Premium</strong><br/>
+       Géré via Google Play. Tu peux annuler à tout moment depuis tes abonnements Play.</p>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> Econya — <a href="./privacy-fr.html">Confidentialité</a> • <a href="./terms-fr.html">Conditions</a></footer>
+
+<script src="./assets/main.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  // Message de succès sans rechargement si tu gardes Formspree
+  const form = document.getElementById('contactForm');
+  const ok = document.getElementById('okMsg');
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    try{
+      const res = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} });
+      if(res.ok){ ok.style.display='inline-block'; form.reset(); }
+      else { alert('Envoi impossible pour le moment. Essaie l’email direct.'); }
+    }catch(err){ alert('Erreur réseau.'); }
+  });
+</script>
+</body>
+</html>
