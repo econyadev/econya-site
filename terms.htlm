@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions Générales - Econya</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #f4f4f4; color: #333; }
+        h1 { color: #2ecc71; }
+        nav { margin-bottom: 20px; }
+        nav a { margin-right: 10px; text-decoration: none; color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Accueil</a> |
+        <a href="legal.html">Mentions légales</a> |
+        <a href="privacy.html">Confidentialité</a>
+    </nav>
+
+    <h1>Conditions Générales</h1>
+
+    <h2>Français</h2>
+    <p>En utilisant notre service, vous acceptez nos conditions générales d’utilisation. Veuillez lire attentivement ces conditions avant toute utilisation.</p>
+
+    <h2>English</h2>
+    <p>By using our service, you agree to our terms and conditions. Please read these terms carefully before using the service.</p>
+
+    <h2>العربية</h2>
+    <p>باستخدامك لخدمتنا، فإنك توافق على الشروط والأحكام الخاصة بنا. يرجى قراءة هذه الشروط بعناية قبل استخدام الخدمة.</p>
+
+    <footer>
+        <p>&copy; 2025 Econya - Tous droits réservés</p>
+    </footer>
+</body>
+</html>
