@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Econya — Mentions légales (11 langues)</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+  <style>
+    .tabs2{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
+    .pill{padding:8px 12px;border-radius:999px;border:1px solid #18332a;background:var(--card);cursor:pointer;user-select:none}
+    .pill.active{background:#143328;border-color:#1e4a3d;color:#9be3be}
+    .panel{display:none} .panel.active{display:block}
+    .langsel{margin-left:auto;display:flex;align-items:center;gap:8px}
+    select{appearance:none;background:var(--card);color:var(--text);border:1px solid #18332a;border-radius:10px;padding:8px 10px}
+    .store-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid #18332a;background:var(--card);text-decoration:none;margin-top:10px}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><div class="logo"></div><strong>Econya</strong></div>
+    <nav>
+      <a href="./index.html">Accueil</a>
+      <a href="./banques.html">Banques</a>
+      <a href="./voyages.html">Voyages</a>
+      <a href="./sport.html">Sport & Loisirs</a>
+      <a href="./bons-plans.html">Bons plans</a>
+      <a href="./legal.html" class="pill">Legal</a>
+      <button id="themeBtn" class="btn">🌙 Sombre</button>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <h1>Mentions légales & Store</h1>
+      <p class="muted">Sélectionnez un document et une langue. Le bouton Google Play sera activé au lancement.</p>
+
+      <div class="tabs2">
+        <div class="pill" data-doc="privacy">🔒 Politique</div>
+        <div class="pill" data-doc="terms">📄 Conditions</div>
+        <div class="langsel" style="margin-left:auto">
+          <label for="lang">Langue</label>
+          <select id="lang"><option value="fr">Français</option>
+<option value="en">English</option>
+<option value="es">Español</option>
+<option value="de">Deutsch</option>
+<option value="it">Italiano</option>
+<option value="pt">Português</option>
+<option value="nl">Nederlands</option>
+<option value="ja">日本語</option>
+<option value="ar">العربية</option>
+<option value="zh">中文</option>
+<option value="ru">Русский</option></select>
+        </div>
+      </div>
+
+      <div id="panel" class="panel active">
+        <!-- content injected by JS -->
+      </div>
+
+      <a class="store-badge" href="#" onclick="alert('Lien Play Store ajouté après publication.');return false;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 4.5v15c0 .8.9 1.3 1.6.9l11-7c.7-.4.7-1.4 0-1.8l-11-7C3.9 4.2 3 4.7 3 5.5z" fill="#2f935a"/></svg>
+        <span>Télécharger sur Google Play</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>© 2025 Econya — <a href="./privacy-fr.html">Confidentialité FR</a> • <a href="./terms-fr.html">Conditions FR</a></footer>
+
+  <script>
+    const DATA = {"privacy": {"fr": {"title": "Politique de confidentialité", "intro": "Nous respectons votre vie privée et appliquons le RGPD/CCPA et les exigences Google Play.", "bul": ["Compte : e‑mail, préférences, alertes.", "Bancaire (lecture seule) via Bridge/Tink : transactions, soldes.", "Usage : clics d’offres, vues, diagnostics.", "Partenaires : identifiants de campagne, tickers, actualités."]}, "en": {"title": "Privacy Policy", "intro": "We respect your privacy and comply with GDPR/CCPA and Google Play requirements.", "bul": ["Account: email, preferences, alerts.", "Bank data (read‑only) via Bridge/Tink: transactions, balances.", "Usage: offer clicks, screen views, diagnostics.", "Partners: campaign IDs, tickers, news."]}, "es": {"title": "Política de Privacidad", "intro": "Respetamos su privacidad y cumplimos con RGPD/CCPA y los requisitos de Google Play.", "bul": ["Cuenta: correo, preferencias, alertas.", "Bancos (solo lectura) vía Bridge/Tink: transacciones, saldos.", "Uso: clics en ofertas, vistas, diagnósticos.", "Socios: IDs de campaña, tickers, noticias."]}, "de": {"title": "Datenschutzerklärung", "intro": "Wir respektieren Ihre Privatsphäre und erfüllen DSGVO/CCPA sowie Google‑Play‑Vorgaben.", "bul": ["Konto: E‑Mail, Präferenzen, Alarme.", "Bank (Nur‑Lesen) via Bridge/Tink: Transaktionen, Salden.", "Nutzung: Angebotsklicks, Views, Diagnosen.", "Partner: Kampagnen‑IDs, Ticker, News."]}, "it": {"title": "Informativa sulla privacy", "intro": "Rispettiamo la tua privacy e rispettiamo GDPR/CCPA e i requisiti di Google Play.", "bul": ["Account: e‑mail, preferenze, avvisi.", "Bancari (sola lettura) con Bridge/Tink: transazioni, saldi.", "Utilizzo: clic su offerte, visualizzazioni, diagnostica.", "Partner: ID campagna, ticker, notizie."]}, "pt": {"title": "Política de Privacidade", "intro": "Respeitamos a sua privacidade e cumprimos RGPD/CCPA e os requisitos do Google Play.", "bul": ["Conta: e‑mail, preferências, alertas.", "Bancários (somente leitura) via Bridge/Tink: transações, saldos.", "Uso: cliques em ofertas, visualizações, diagnósticos.", "Parceiros: IDs de campanha, tickers, notícias."]}, "nl": {"title": "Privacyverklaring", "intro": "Wij respecteren uw privacy en voldoen aan AVG/CCPA en de vereisten van Google Play.", "bul": ["Account: e‑mail, voorkeuren, alerts.", "Bank (alleen‑lezen) via Bridge/Tink: transacties, saldi.", "Gebruik: offer‑klikken, weergaven, diagnose.", "Partners: campagne‑ID’s, tickers, nieuws."]}, "ja": {"title": "プライバシーポリシー", "intro": "GDPR/CCPA と Google Play の要件を順守し、プライバシーを尊重します。", "bul": ["アカウント：メール、設定、アラート。", "銀行データ（閲覧のみ）：Bridge/Tink 経由の取引・残高。", "利用状況：オファーのクリック、表示、診断。", "パートナー：キャンペーンID、ティッカー、ニュース。"]}, "ar": {"title": "سياسة الخصوصية", "intro": "نحترم خصوصيتك ونلتزم بـ GDPR/CCPA ومتطلبات Google Play.", "bul": ["الحساب: البريد الإلكتروني، التفضيلات، التنبيهات.", "البيانات البنكية (قراءة فقط) عبر Bridge/Tink: المعاملات والأرصدة.", "الاستخدام: نقرات العروض، المشاهدات، التشخيص.", "الشركاء: معرّفات الحملات، الرموز، الأخبار."]}, "zh": {"title": "隐私政策", "intro": "我们重视您的隐私，遵守 GDPR/CCPA 与 Google Play 要求。", "bul": ["账户：邮箱、偏好、提醒。", "银行数据（只读）：通过 Bridge/Tink 的交易与余额。", "使用情况：优惠点击、浏览、诊断。", "合作方：活动 ID、代码、资讯。"]}, "ru": {"title": "Политика конфиденциальности", "intro": "Мы соблюдаем GDPR/CCPA и требования Google Play, уважая вашу конфиденциальность.", "bul": ["Аккаунт: e‑mail, предпочтения, оповещения.", "Банковские (только чтение) через Bridge/Tink: транзакции, балансы.", "Использование: клики по офферам, просмотры, диагностика.", "Партнёры: ID кампаний, тикеры, новости."]}}, "terms": {"fr": {"title": "Conditions d’utilisation", "p": "En utilisant Econya, vous acceptez ces conditions. Les informations de marché ne constituent pas un conseil financier. Respectez les lois locales."}, "en": {"title": "Terms of Service", "p": "By using Econya you agree to these terms. Market/news information is not financial advice. You must comply with local laws."}, "es": {"title": "Términos de uso", "p": "Al usar Econya aceptas estos términos. La información de mercado no es asesoramiento financiero. Cumple las leyes locales."}, "de": {"title": "Nutzungsbedingungen", "p": "Mit der Nutzung von Econya stimmen Sie diesen Bedingungen zu. Markt/News sind keine Finanzberatung. Beachten Sie lokale Gesetze."}, "it": {"title": "Termini di utilizzo", "p": "Utilizzando Econya accetti questi termini. Le informazioni di mercato non sono consulenza finanziaria. Rispetta le leggi locali."}, "pt": {"title": "Termos de uso", "p": "Ao usar o Econya, você concorda com estes termos. As informações de mercado não são aconselhamento financeiro. Cumpra as leis locais."}, "nl": {"title": "Gebruiksvoorwaarden", "p": "Door Econya te gebruiken, ga je akkoord met deze voorwaarden. Markt/nieuws is geen financieel advies. Houd je aan lokale wetten."}, "ja": {"title": "利用規約", "p": "Econya を利用すると本規約に同意したものとみなされます。市場/ニュース情報は投資助言ではありません。各国法令を遵守してください。"}, "ar": {"title": "شروط الاستخدام", "p": "باستخدامك لتطبيق Econya، فأنت توافق على هذه الشروط. معلومات السوق ليست نصيحة مالية. التزم بالقوانين المحلية."}, "zh": {"title": "使用条款", "p": "使用 Econya 即表示你同意本条款。市场/资讯不构成财务建议。请遵守当地法律。"}, "ru": {"title": "Условия использования", "p": "Пользуясь Econya, вы принимаете эти условия. Информация о рынках/новостях не является финансовой рекомендацией. Соблюдайте местные законы."}}};
+    const pills = document.querySelectorAll('.pill[data-doc]');
+    const panel = document.getElementById('panel');
+    const langSel = document.getElementById('lang');
+    let currentDoc = 'privacy';
+    let currentLang = 'fr';
+
+    function render(){
+      const d = DATA[currentDoc][currentLang];
+      if(!d) return;
+      let html = `<h2>${d.title}</h2><p>${d.intro || d.p}</p>`;
+      if(d.bul) {
+        html += '<ul>' + d.bul.map(x=>`<li>${x}</li>`).join('') + '</ul>';
+      }
+      panel.innerHTML = html;
+    }
+    function setActive(){
+      pills.forEach(p=>p.classList.toggle('active', p.dataset.doc===currentDoc));
+    }
+    pills.forEach(p=>p.addEventListener('click', ()=>{ currentDoc = p.dataset.doc; setActive(); render(); }));
+    langSel.addEventListener('change', ()=>{ currentLang = langSel.value; render(); });
+
+    // auto language
+    (function(){
+      const lc = (navigator.language||'fr').slice(0,2).toLowerCase();
+      if(['fr','en','es','de','it','pt','nl','ja','ar','zh','ru'].includes(lc)) currentLang = lc;
+      langSel.value = currentLang;
+      setActive(); render();
+    })();
+  </script>
+  <script src="./assets/main.js"></script>
+</body>
+</html>
