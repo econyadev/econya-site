@@ -1,45 +1,54 @@
-<!DOCTYPE html><html lang="fr">\1
 
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://api.econya.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"/>
-  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
-  <meta name="referrer" content="strict-origin-when-cross-origin"/>
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=()"/>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Contact — Econya</title>
-  <meta name="description" content="Contactez-nous."/>
-  <meta property="og:title" content="Contact — Econya"/>
-  <meta property="og:description" content="Contactez-nous."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="/"/>
-  <meta property="og:image" content="assets/logo.svg"/>
-  <meta name="theme-color" content="#0e1512"/>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
-  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
-  <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="preload" href="assets/logo.svg" as="image"/>
-  <link rel="stylesheet" href="assets/style.css"/></head><body><header>
-  <a class="brand" href="index.html"><img loading="lazy" src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
-  <nav class="nav"><span class="badge" id="greet-name">Bonjour</span> 
-    <a href="avantages.html">Avantages</a>
-    <a href="tarifs.html">Tarifs</a>
-    <a href="partenaires.html">Partenaires</a>
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Econya — Vos économies grandissent avec vous</title>
+<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="icon" href="assets/logo.svg"/>
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="assets/logo.svg"/>
+<meta name="theme-color" content="#0e1512"/>
+<link rel="stylesheet" href="assets/style.css"/>
+<script defer src="assets/main.js"></script>
+</head><body>
+
+<nav class="top">
+  <a class="brand" href="index.html">
+    <img src="assets/logo.svg" alt="Econya" />
+    <span>Econya</span>
+  </a>
+  <div class="links">
     <a href="dashboard.html">Dashboard</a>
-    <a href="bank-link.html" data-bank-state>Connecter ma banque</a>
-  </nav>
-</header><div class="wrap"><h1>Contact — Econya</h1><div class="card"><p>contact@econya.app</p></div></div><footer>
-  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
-  <div class="nav">
-    <a href="legal.html">Mentions légales</a> ·
-    <a href="privacy.html">Vie privée</a> ·
-    <a href="terms.html">CGU</a> ·
+    <a href="comparator.html">Comparateur</a>
+    <a href="simulators.html">Comptable</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="interests.html">Intérêts</a>
+    <a href="assistant.html">Assistant IA</a>
     <a href="contact.html">Contact</a>
   </div>
-</footer><script src="assets/main.js"></script><script src="assets/personalize.js"></script>
-<script src="assets/cookies.js"></script>
-<script src="assets/consent.js"></script>
-<script src="assets/analytics.js"></script>
-<script src="assets/compliance.js"></script>
-<script src="assets/partners-router.js"></script>
-<script src="assets/push-subscribe.js"></script>
+</nav>
+
+<main class="container">
+  <h1>Contact</h1>
+  <p>Une question ? Écrivez-nous.</p>
+  <form class="grid">
+    <label>Votre email <input type="email" placeholder="vous@exemple.com"/></label>
+    <label>Message <textarea rows="5"></textarea></label>
+    <button class="btn primary" type="button">Envoyer</button>
+  </form>
+</main>
+
+<footer>
+  <div class="f-links">
+    <a href="legal.html">Mentions légales</a>
+    <a href="privacy.html">Vie privée</a>
+    <a href="terms.html">CGU</a>
+  </div>
+  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
+</footer>
+
 </body></html>

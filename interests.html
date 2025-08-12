@@ -1,48 +1,51 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Centres d'intérêt — Econya</title><link rel="stylesheet" href="assets/style.css"/></head>
-<body>
-<header>
-  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
-  <nav class="nav">
-    <a href="assistant.html">Assistant IA</a>
+
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Econya — Vos économies grandissent avec vous</title>
+<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="icon" href="assets/logo.svg"/>
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="assets/logo.svg"/>
+<meta name="theme-color" content="#0e1512"/>
+<link rel="stylesheet" href="assets/style.css"/>
+<script defer src="assets/main.js"></script>
+</head><body>
+
+<nav class="top">
+  <a class="brand" href="index.html">
+    <img src="assets/logo.svg" alt="Econya" />
+    <span>Econya</span>
+  </a>
+  <div class="links">
+    <a href="dashboard.html">Dashboard</a>
     <a href="comparator.html">Comparateur</a>
-    <a href="simulators.html">Simulateurs</a>
-    <a href="deals.html">Bon plans</a>
-    <a href="alerts.html">Alertes</a>
-    <a href="interests.html"><strong>Intérêts</strong></a>
-  </nav>
-</header>
-<div class="wrap">
-  <h1>Vos centres d'intérêt</h1>
-  <div class="card">
-    <div class="small">Choisissez les catégories qui vous intéressent pour recevoir des bons plans et push ciblés.</div>
-    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px">
-      <label><input type="checkbox" value="travel"> Voyages & Hôtels</label>
-      <label><input type="checkbox" value="sport"> Sport & Loisirs</label>
-      <label><input type="checkbox" value="finance"> Finance & Banque</label>
-      <label><input type="checkbox" value="telecom"> Télécom & Internet</label>
-      <label><input type="checkbox" value="energy"> Énergie (élec/gaz)</label>
-    </div>
-    <div style="margin-top:8px">
-      <button class="btn" id="save">Enregistrer</button>
-    </div>
-    <div id="status" class="small" style="margin-top:6px"></div>
+    <a href="simulators.html">Comptable</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="interests.html">Intérêts</a>
+    <a href="assistant.html">Assistant IA</a>
+    <a href="contact.html">Contact</a>
   </div>
-</div>
-<footer><div>© 2025 Econya</div></footer>
-<script>
-function read(){ try{ return JSON.parse(localStorage.getItem('econya_interests')||'[]'); }catch{return []} }
-function write(v){ localStorage.setItem('econya_interests', JSON.stringify(v)); }
-window.addEventListener('DOMContentLoaded', ()=>{
-  const cur = new Set(read());
-  document.querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.checked = cur.has(cb.value); });
-  document.getElementById('save').onclick = ()=>{
-    const vals = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(cb=>cb.value);
-    write(vals);
-    document.getElementById('status').textContent = 'Préférences enregistrées. Les notifications ciblées les utiliseront.';
-  };
-});
-</script>
+</nav>
+
+<main class="container">
+  <h1>Centres d’intérêt</h1>
+  <p>Personnalisez les thématiques pour de meilleurs bons plans.</p>
+  <form class="tags" id="interestsForm"></form>
+  <button class="btn primary" onclick="saveInterests()">Enregistrer</button>
+</main>
+
+<footer>
+  <div class="f-links">
+    <a href="legal.html">Mentions légales</a>
+    <a href="privacy.html">Vie privée</a>
+    <a href="terms.html">CGU</a>
+  </div>
+  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
+</footer>
+
 </body></html>

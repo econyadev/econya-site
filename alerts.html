@@ -1,62 +1,49 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Alertes prix — Econya</title>
-  <link rel="stylesheet" href="assets/style.css"/>
-</head>
-<body>
-<header>
-  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
-  <nav class="nav">
-    <a href="assistant.html">Assistant IA</a>
-    <a href="comparator.html">Comparateur</a>
-    <a href="simulators.html">Simulateurs</a>
-    <a href="fuel.html">Essence</a>
-    <a href="deals.html">Bon plans</a>
-    <a href="alerts.html"><strong>Alertes</strong></a>
+
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Econya — Vos économies grandissent avec vous</title>
+<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="icon" href="assets/logo.svg"/>
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="assets/logo.svg"/>
+<meta name="theme-color" content="#0e1512"/>
+<link rel="stylesheet" href="assets/style.css"/>
+<script defer src="assets/main.js"></script>
+</head><body>
+
+<nav class="top">
+  <a class="brand" href="index.html">
+    <img src="assets/logo.svg" alt="Econya" />
+    <span>Econya</span>
+  </a>
+  <div class="links">
     <a href="dashboard.html">Dashboard</a>
-  </nav>
-</header>
-<div class="wrap">
-  <h1>Alertes prix</h1>
-  <div class="card">
-    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
-      <label>BTC ≤ <input id="a-btc" type="number" value="55000"></label>
-      <label>Or (oz) ≤ <input id="a-gold" type="number" value="2200"></label>
-      <label>SP95 (€/L) ≤ <input id="a-sp95" type="number" step="0.01" value="1.70"></label>
-    </div>
-    <div style="margin-top:8px">
-      <button class="btn" id="save">Enregistrer</button>
-    </div>
-    <div id="status" class="small" style="margin-top:6px"></div>
+    <a href="comparator.html">Comparateur</a>
+    <a href="simulators.html">Comptable</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="interests.html">Intérêts</a>
+    <a href="assistant.html">Assistant IA</a>
+    <a href="contact.html">Contact</a>
   </div>
-  <div class="card small">Les alertes sont stockées localement. Si un backend est configuré, elles seront également envoyées (e-mail à venir).</div>
-</div>
-<footer><div>© 2025 Econya</div></footer>
-<script>
-function read(){{ try{{ return JSON.parse(localStorage.getItem('econya_alerts')||'{{}}'); }}catch{{return {{}}}} }
-function write(v){{ localStorage.setItem('econya_alerts', JSON.stringify(v)); }}
-document.getElementById('save').onclick = async ()=>{{
-  const cfg = {{ btc: parseFloat(document.getElementById('a-btc').value||'0')||0,
-                gold: parseFloat(document.getElementById('a-gold').value||'0')||0,
-                sp95: parseFloat(document.getElementById('a-sp95').value||'0')||0 }};
-  write(cfg);
-  document.getElementById('status').textContent = 'Sauvegardé localement.';
-  const api = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(api){{
-    try{{ await fetch(api+'/alerts', {{method:'PUT', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify(cfg)}});
-      document.getElementById('status').textContent += ' Envoyé au serveur.';
-    }}catch{{}}
-  }}
-}};
-window.addEventListener('DOMContentLoaded', ()=>{{
-  const c = read(); if(c.btc) document.getElementById('a-btc').value=c.btc;
-  if(c.gold) document.getElementById('a-gold').value=c.gold;
-  if(c.sp95) document.getElementById('a-sp95').value=c.sp95;
-}});
-</script>
-<script src="assets/partners-router.js"></script>
-<script src="assets/push-subscribe.js"></script>
-</body>
-</html>
+</nav>
+
+<main class="container">
+  <h1>Alertes & notifications</h1>
+  <p>Recevez des alertes quand un meilleur tarif apparaît.</p>
+</main>
+
+<footer>
+  <div class="f-links">
+    <a href="legal.html">Mentions légales</a>
+    <a href="privacy.html">Vie privée</a>
+    <a href="terms.html">CGU</a>
+  </div>
+  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
+</footer>
+
+</body></html>

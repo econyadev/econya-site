@@ -1,383 +1,50 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Admin — Affiliations</title><link rel="stylesheet" href="assets/style.css"/></head>
-<body>
-<div class="wrap">
-  <h1>Affiliation — Statistiques</h1>
-  <div class="card">
-    <label>JWT Admin <input id="jwt" placeholder="collez le token admin"/></label>
-    <button class="btn" id="savejwt">Valider</button>
-    <small class="small">Le token reste en local (navigateur).</small>
+
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Econya — Vos économies grandissent avec vous</title>
+<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="icon" href="assets/logo.svg"/>
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="assets/logo.svg"/>
+<meta name="theme-color" content="#0e1512"/>
+<link rel="stylesheet" href="assets/style.css"/>
+<script defer src="assets/main.js"></script>
+</head><body>
+
+<nav class="top">
+  <a class="brand" href="index.html">
+    <img src="assets/logo.svg" alt="Econya" />
+    <span>Econya</span>
+  </a>
+  <div class="links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="comparator.html">Comparateur</a>
+    <a href="simulators.html">Comptable</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="interests.html">Intérêts</a>
+    <a href="assistant.html">Assistant IA</a>
+    <a href="contact.html">Contact</a>
   </div>
-  <div class="card">
-    <div id="rev-widget" class="small">Revenu: — | Clicks: — | Conv.: —</div>
-    <button class="btn" id="refresh">Rafraîchir stats</button>
-    <a class="btn" id="csv" target="_blank" rel="noopener">Exporter CSV</a>
-    <div id="out" class="small" style="margin-top:8px">—</div>
+</nav>
+
+<main class="container">
+  <h1>Affiliations (Admin)</h1>
+  <p>Gérez vos liens partenaires (Awin/Tradedoubler/Rakuten) et paramètres UTM.</p>
+  <div id="affList"></div>
+</main>
+
+<footer>
+  <div class="f-links">
+    <a href="legal.html">Mentions légales</a>
+    <a href="privacy.html">Vie privée</a>
+    <a href="terms.html">CGU</a>
   </div>
-  
-  <div class="card">
-    <h3>Performance par partenaire</h3>
-    <div id="filterbar" class="small" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0">
-      <label>Pays <input id="f-country" placeholder="FR/BE/MA/…"></label>
-      <label>Catégorie <input id="f-cat" placeholder="stocks/etf/crypto/commodities"></label>
-      <label>A/B <input id="f-ab" placeholder="A/B"></label>
-      <label>Depuis <input id="f-since" type="datetime-local"></label>
-      <label>Jusqu'à <input id="f-until" type="datetime-local"></label>
-    </div>
-    <div class="small">Tri : 
-      <select id="sortby">
-        <option value="revenue">Revenu</option>
-        <option value="epc">EPC (€/clic)</option>
-        <option value="cr">CR (conv./clic)</option>
-        <option value="clicks">Clicks</option>
-        <option value="risk">Risque</option>
-      </select>
-      <button class="btn" id="refreshAgg">Rafraîchir</button>
-    </div>
-    <table class="table"><thead><tr><th>Partenaire (domaine)</th><th>Clicks</th><th>Conv.</th><th>CR</th><th>Revenu (€)</th><th>EPC (€)</th><th>Risque</th></tr></thead><tbody id="agg"></tbody></table>
-  </div>
+  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
+</footer>
 
-  <div class="card">
-    <h3>Clicks récents</h3>
-    <table class="table small"><thead><tr><th>cid</th><th>cat</th><th>country</th><th>source</th><th>t</th></tr></thead><tbody id="clicks"></tbody></table>
-  </div>
-  <div class="card">
-    <h3>Conversions</h3>
-    <table class="table small"><thead><tr><th>cid</th><th>amount</th><th>currency</th><th>status</th><th>network</th><th>t</th></tr></thead><tbody id="convs"></tbody></table>
-  </div>
-</div>
-<script>
-const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-document.getElementById('savejwt').onclick = ()=> localStorage.setItem('econya_admin_jwt', document.getElementById('jwt').value||'');
-async function load(){
-  if(!API){ document.getElementById('out').textContent='Configurez econya_verify_api.'; return; }
-  try{
-    const st = await (await fetch(API+'/clicks/stats')).json();
-    document.getElementById('out').textContent = `Clicks: ${st.clicks} — Conversions: ${st.conversions} — Revenu estimé: ${st.revenue} €`;
-    const list = await (await fetch(API+'/clicks/list?limit=50')).json();
-    const conv = await (await fetch(API+'/clicks/list?type=conversion&limit=50')).json();
-    document.getElementById('clicks').innerHTML = (list.items||[]).map(x=>`<tr><td>${x.cid||''}</td><td>${x.cat||''}</td><td>${x.country||''}</td><td>${x.source||''}</td><td>${new Date(x.t).toLocaleString()}</td></tr>`).join('');
-    document.getElementById('convs').innerHTML = (conv.items||[]).map(x=>`<tr><td>${x.cid||''}</td><td>${x.amount||''}</td><td>${x.currency||''}</td><td>${x.status||''}</td><td>${x.network||''}</td><td>${new Date(x.t).toLocaleString()}</td></tr>`).join('');
-    document.getElementById('csv').href = API+'/clicks/export.csv';
-  }catch(e){
-    document.getElementById('out').textContent = 'Erreur API';
-  }
-}
-document.getElementById('refresh').onclick = load;
-window.addEventListener('DOMContentLoaded', load);
-</script>
-
-<script>
-const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-document.getElementById('savejwt')?.addEventListener('click', ()=> localStorage.setItem('econya_admin_jwt', document.getElementById('jwt').value||''));
-
-async function loadBasic(){
-  if(!API){ document.getElementById('out').textContent='Configurez econya_verify_api.'; return; }
-  try{
-    const st = await (await fetch(API+'/clicks/stats')).json();
-    document.getElementById('out').textContent = `Clicks: ${st.clicks} — Conversions: ${st.conversions} — Revenu estimé: ${st.revenue} €`;
-    const list = await (await fetch(API+'/clicks/list?limit=50')).json();
-    const conv = await (await fetch(API+'/clicks/list?type=conversion&limit=50')).json();
-    document.getElementById('clicks').innerHTML = (list.items||[]).map(x=>`<tr><td>${x.cid||''}</td><td>${x.cat||''}</td><td>${x.country||''}</td><td>${x.source||''}</td><td>${new Date(x.t).toLocaleString()}</td></tr>`).join('');
-    document.getElementById('convs').innerHTML = (conv.items||[]).map(x=>`<tr><td>${x.cid||''}</td><td>${x.amount||''}</td><td>${x.currency||''}</td><td>${x.status||''}</td><td>${x.network||''}</td><td>${new Date(x.t).toLocaleString()}</td></tr>`).join('');
-    document.getElementById('csv').href = API+'/clicks/export.csv';
-  }catch(e){
-    document.getElementById('out').textContent = 'Erreur API';
-  }
-}
-
-async function loadAgg(){
-  if(!API) return;
-  try{
-    const sortby = document.getElementById('sortby').value;
-    const agg = await (await fetch(API+`/clicks/agg?sort=${sortby}`)).json();
-    const rows = (agg.items||[]).map(r=>{
-      const cr = (r.clicks? (r.conversions/r.clicks):0);
-      const epc = (r.clicks? (r.revenue/r.clicks):0);
-      return `<tr><td>${r.partner}</td><td>${r.clicks}</td><td>${r.conversions}</td><td>${(cr*100).toFixed(1)}%</td><td>${r.revenue.toFixed(2)}</td><td>${epc.toFixed(3)}</td><td>${r.risk_score.toFixed(0)}/100</td></tr>`
-    }).join('');
-    document.getElementById('agg').innerHTML = rows || '<tr><td colspan="7">Pas de données.</td></tr>';
-  }catch(e){
-    document.getElementById('agg').innerHTML = '<tr><td colspan="7">Erreur API</td></tr>';
-  }
-}
-
-document.getElementById('refresh')?.addEventListener('click', loadBasic);
-document.getElementById('refreshAgg')?.addEventListener('click', loadAgg);
-window.addEventListener('DOMContentLoaded', ()=>{ loadBasic(); loadAgg(); });
-</script>
-
-<script src="assets/push-subscribe.js"></script>
 </body></html>
-
-<script>
-const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-function fmt(n){ try{ return new Intl.NumberFormat(navigator.language,{maximumFractionDigits:2}).format(n);}catch{return n} }
-
-async function loadAgg(){
-  if(!API) return;
-  const sortby = document.getElementById('sortby').value;
-  const q = new URLSearchParams();
-  const c = (document.getElementById('f-country').value||'').trim(); if(c) q.set('country', c.toUpperCase());
-  const cat = (document.getElementById('f-cat').value||'').trim(); if(cat) q.set('cat', cat);
-  const ab = (document.getElementById('f-ab').value||'').trim(); if(ab) q.set('ab', ab.toUpperCase());
-  const since = document.getElementById('f-since').value; if(since) q.set('since', Date.parse(since));
-  const until = document.getElementById('f-until').value; if(until) q.set('until', Date.parse(until));
-  q.set('sort', sortby);
-  try{
-    const agg = await (await fetch(API+'/clicks/agg?'+q.toString())).json();
-    const rows = (agg.items||[]).map(r=>{
-      return `<tr><td>${r.partner}</td><td>${r.clicks}</td><td>${r.conversions}</td><td>${(r.cr*100).toFixed(1)}%</td><td>${r.revenue.toFixed(2)}</td><td>${r.epc.toFixed(3)}</td><td>${r.risk_score.toFixed(0)}/100</td></tr>`
-    }).join('');
-    document.getElementById('agg').innerHTML = rows || '<tr><td colspan="7">Pas de données.</td></tr>';
-  }catch(e){
-    document.getElementById('agg').innerHTML = '<tr><td colspan="7">Erreur API</td></tr>';
-  }
-}
-async function loadBasic(){
-  if(!API) return;
-  try{
-    const q = new URLSearchParams();
-    const since = document.getElementById('f-since').value; if(since) q.set('since', Date.parse(since));
-    const until = document.getElementById('f-until').value; if(until) q.set('until', Date.parse(until));
-    const st = await (await fetch(API+'/clicks/stats?'+q.toString())).json();
-    document.getElementById('out').textContent = `Clicks: ${st.clicks} — Conversions: ${st.conversions} — Revenu estimé: ${st.revenue} €`;
-    document.getElementById('rev-widget').textContent = `Revenu: ${fmt(st.revenue)} € | Clicks: ${fmt(st.clicks)} | Conv.: ${fmt(st.conversions)}`;
-  }catch(e){}
-}
-function pollStats(){ loadBasic(); setTimeout(pollStats, 10000); }
-
-// CRUD partenaires
-async function pFetch(method, body){
-  const jwt = localStorage.getItem('econya_admin_jwt')||'';
-  const res = await fetch(API+'/partners', {method, headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt}, body: body? JSON.stringify(body): undefined});
-  if(!res.ok) throw new Error('API error');
-  return await res.json();
-}
-async function loadPartners(){
-  try{
-    const j = await (await fetch(API+'/partners')).json();
-    const tb = document.querySelector('#p-table tbody');
-    tb.innerHTML = (j.items||[]).map((p,i)=> rowHtml(p,i)).join('');
-  }catch(e){ alert('Erreur chargement partenaires'); }
-}
-function rowHtml(p,i){
-  return `<tr data-i="${i}">
-    <td contenteditable="true">${p.name||''}</td>
-    <td contenteditable="true">${p.domain||''}</td>
-    <td contenteditable="true">${p.url||''}</td>
-    <td contenteditable="true">${(p.country||'').toUpperCase()}</td>
-    <td contenteditable="true">${p.cat||''}</td>
-    <td><input type="checkbox" ${p.active!==false?'checked':''}></td>
-    <td><button class="btn btn-del">Suppr.</button></td>
-  </tr>`;
-}
-function tableToItems(){
-  const rows = Array.from(document.querySelectorAll('#p-table tbody tr'));
-  return rows.map(r=>{
-    const tds = r.querySelectorAll('td');
-    return { name: tds[0].innerText.trim(), domain: tds[1].innerText.trim().toLowerCase(), url: tds[2].innerText.trim(),
-             country: tds[3].innerText.trim().toUpperCase(), cat: tds[4].innerText.trim(), active: r.querySelector('input[type=checkbox]').checked };
-  });
-}
-document.addEventListener('click', async (e)=>{
-  if(e.target.id==='refresh'){ loadBasic(); return; }
-  if(e.target.id==='refreshAgg'){ loadAgg(); return; }
-  if(e.target.id==='p-load'){ await loadPartners(); return; }
-  if(e.target.id==='p-add'){
-    const tb = document.querySelector('#p-table tbody');
-    tb.insertAdjacentHTML('beforeend', rowHtml({name:'',domain:'',url:'',country:'FR',cat:'stocks',active:true}, tb.children.length));
-    return;
-  }
-  if(e.target.id==='p-save'){
-    try{ const items = tableToItems(); await pFetch('PUT',{items}); alert('Sauvegardé.'); }
-    catch(_){ alert('Erreur sauvegarde.'); }
-    return;
-  }
-  if(e.target.classList.contains('btn-del')){
-    e.target.closest('tr').remove();
-  }
-});
-window.addEventListener('DOMContentLoaded', ()=>{ pollStats(); });
-</script>
-
-<script>
-const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-function fmt(n){ try{ return new Intl.NumberFormat(navigator.language,{maximumFractionDigits:2}).format(n);}catch{return n} }
-
-function drawSeries(canvasId, series, labels){
-  const cv = document.getElementById(canvasId); if(!cv) return;
-  const ctx = cv.getContext('2d');
-  ctx.clearRect(0,0,cv.width,cv.height);
-  const pad = {l:40,r:10,t:10,b:24};
-  const W = cv.width - pad.l - pad.r, H = cv.height - pad.t - pad.b;
-  function yScale(vals){ const min = 0; const max = Math.max(1, Math.max(...vals)); return v => pad.t + H - (v-min)/(max-min)*H; }
-  function xScale(n, i){ return pad.l + (i/(n-1||1))*W; }
-  // axes
-  ctx.strokeStyle = '#888'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t+H); ctx.lineTo(pad.l+W, pad.t+H); ctx.stroke();
-  // grid y
-  const yTicks = 4;
-  for(let i=1;i<=yTicks;i++){ const y = pad.t + H - (i/yTicks)*H; ctx.strokeStyle='#333'; ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+W, y); ctx.stroke(); }
-  // plot each series (auto color via default)
-  series.forEach((s, si)=>{
-    const ys = yScale(s.values);
-    ctx.beginPath();
-    s.values.forEach((v,i)=>{ const x=xScale(s.values.length, i), y=ys(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
-    ctx.strokeStyle = ['#7fd','#fd7','#9f7','#7af','#fa7','#f7a'][si%6]; // allow some contrast
-    ctx.lineWidth = 2; ctx.stroke();
-  });
-  // labels (x)
-  ctx.fillStyle = '#aaa'; ctx.font = '12px sans-serif';
-  const step = Math.max(1, Math.floor(labels.length/6));
-  labels.forEach((lb, i)=>{ if(i%step) return; const x = xScale(labels.length, i); ctx.fillText(lb, x-12, pad.t+H+16); });
-}
-
-async function loadTimeseries(days){
-  if(!API) return {labels:[], clicks:[], revenue:[]};
-  const now = Date.now();
-  const since = now - days*24*3600*1000;
-  const j = await (await fetch(API+`/metrics/timeseries?since=${since}&until=${now}`)).json();
-  // Expect daily buckets {ts, clicks, conversions, revenue}
-  const labels = (j.items||[]).map(x=> new Date(x.ts).toLocaleDateString());
-  const clicks = (j.items||[]).map(x=> x.clicks||0);
-  const revenue = (j.items||[]).map(x=> x.revenue||0);
-  return {labels, clicks, revenue};
-}
-
-async function renderCharts(){
-  try{
-    const d7 = await loadTimeseries(7);
-    drawSeries('charts-7d', [{name:'Clicks', values:d7.clicks},{name:'Revenu', values:d7.revenue}], d7.labels);
-    const d30 = await loadTimeseries(30);
-    drawSeries('charts-30d', [{name:'Clicks', values:d30.clicks},{name:'Revenu', values:d30.revenue}], d30.labels);
-  }catch(e){}
-}
-
-// Alerts rules local + server
-function readRules(){ try{ return JSON.parse(localStorage.getItem('econya_alert_rules')||'{}'); }catch{return {}} }
-function writeRules(v){ localStorage.setItem('econya_alert_rules', JSON.stringify(v)); }
-async function saveRules(){
-  const rules = { epc_min: parseFloat(document.getElementById('al-epc').value||'0')||0,
-                  rev_min: parseFloat(document.getElementById('al-rev').value||'0')||0 };
-  writeRules(rules);
-  document.getElementById('al-status').textContent = 'Règles sauvegardées localement.';
-  if(API){
-    try{ await fetch(API+'/alerts/rules', {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(rules)}); 
-      document.getElementById('al-status').textContent += ' Transmises au serveur.'; }catch(e){}
-  }
-}
-document.addEventListener('click', (e)=>{ if(e.target && e.target.id==='al-save') saveRules(); });
-
-async function checkAlerts(){
-  // Evaluate simple rule EPC_min and rev_min on last day
-  if(!API) return;
-  try{
-    const now = Date.now(), since = now - 24*3600*1000;
-    const j = await (await fetch(API+`/metrics/timeseries?since=${since}&until=${now}`)).json();
-    const items = j.items||[];
-    if(!items.length) return;
-    const last = items[items.length-1];
-    const clicks = Math.max(1, last.clicks||0);
-    const epc = (last.revenue||0)/clicks;
-    const rev = last.revenue||0;
-    const rules = readRules();
-    let warn = [];
-    if(rules.epc_min && epc < rules.epc_min) warn.push(`EPC du jour (${epc.toFixed(3)} €) < seuil (${rules.epc_min} €)`);
-    if(rules.rev_min && rev < rules.rev_min) warn.push(`Revenu du jour (${rev.toFixed(2)} €) < seuil (${rules.rev_min} €)`);
-    const bar = document.getElementById('rev-widget');
-    if(bar && warn.length){ bar.innerHTML = '⚠️ ' + warn.join(' — ') + ' — <a href="admin-affiliates.html">Voir détails</a>'; }
-  }catch(e){}
-}
-
-window.addEventListener('DOMContentLoaded', ()=>{ renderCharts(); setInterval(renderCharts, 30000); checkAlerts(); setInterval(checkAlerts, 60000); });
-</script>
-
-<script>
-async function compareSeries(){
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(!API) return;
-  const now = Date.now(); const week = 7*24*3600*1000;
-  const curr = await (await fetch(API+`/metrics/timeseries?since=${now-week}&until=${now}`)).json();
-  const prev = await (await fetch(API+`/metrics/timeseries?since=${now-2*week}&until=${now-week}`)).json();
-  function sum(a, k){ return (a.items||[]).reduce((s,x)=> s + (x[k]||0), 0); }
-  const cv = document.getElementById('charts-7d-compare'); const ctx = cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
-  const currRev = sum(curr,'revenue'), prevRev = sum(prev,'revenue'); const delta = currRev - prevRev;
-  ctx.fillStyle = '#aaa'; ctx.font = '14px sans-serif';
-  ctx.fillText(`Revenu 7j : ${currRev.toFixed(2)} € (${delta>=0?'+':''}${delta.toFixed(2)} € vs semaine précédente)`, 10, 20);
-}
-document.getElementById('al-test')?.addEventListener('click', async ()=>{
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  const email = (document.getElementById('email-to').value||'').trim();
-  if(!API || !email){ document.getElementById('al-msg').textContent = 'Renseigne l’API et un email.'; return; }
-  try{
-    const r = await fetch(API+'/alerts/email', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({to: email, subject:'Test alert Econya', text:'Ceci est un test.'})});
-    document.getElementById('al-msg').textContent = r.ok? 'Email de test envoyé.' : 'Erreur envoi.';
-  }catch(e){ document.getElementById('al-msg').textContent = 'Erreur réseau.'; }
-});
-document.getElementById('al-notif')?.addEventListener('click', async ()=>{
-  try{
-    const ok = await Notification.requestPermission();
-    document.getElementById('al-msg').textContent = (ok==='granted')? 'Notifications activées (placeholder).' : 'Permission refusée.';
-  }catch(e){ document.getElementById('al-msg').textContent = 'Notifications non supportées.'; }
-});
-window.addEventListener('DOMContentLoaded', compareSeries);
-</script>
-
-<script>
-async function sendPushTest(){
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(!API){ document.getElementById('al-msg2').textContent='Configurez econya_verify_api'; return; }
-  try{
-    const r = await fetch(API+'/push/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({title:'Econya', body:'Push test', url:'https://econya.app'})});
-    document.getElementById('al-msg2').textContent = r.ok? 'Push envoyé.' : 'Erreur envoi push';
-  }catch(e){ document.getElementById('al-msg2').textContent = 'Erreur réseau'; }
-}
-document.getElementById('al-push-test')?.addEventListener('click', sendPushTest);
-
-function movingAverage(arr, k){
-  const out=[]; for(let i=0;i<arr.length;i++){ const a=Math.max(0,i-k+1); const slice=arr.slice(a,i+1); out.push(slice.reduce((s,v)=>s+v,0)/slice.length); } return out;
-}
-// Enhance existing drawSeries rendering MA7 overlay (if canvas exists)
-(function(){
-  const _draw = window.drawSeries;
-  window.drawSeries = function(id, series, labels){
-    _draw && _draw(id, series, labels);
-    try{
-      const cv = document.getElementById(id); if(!cv) return;
-      const ctx = cv.getContext('2d');
-      // overlay a MA7 for the last series if numeric
-      const last = series[series.length-1]; if(!last) return;
-      const ma = movingAverage(last.values, 7);
-      // Simple overlay: draw thin line
-      const pad = {l:40,r:10,t:10,b:24};
-      const W = cv.width - pad.l - pad.r, H = cv.height - pad.t - pad.b;
-      function yScale(vals){ const min = 0; const max = Math.max(1, Math.max(...vals)); return v => pad.t + H - (v-min)/(max-min)*H; }
-      function xScale(n, i){ return pad.l + (i/(n-1||1))*W; }
-      const ys = yScale(ma);
-      ctx.beginPath();
-      ma.forEach((v,i)=>{ const x=xScale(ma.length, i), y=ys(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
-    }catch(e){}
-  }
-})();
-</script>
-
-<script>
-document.getElementById('al-push-send')?.addEventListener('click', async ()=>{
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(!API){ document.getElementById('push-status').textContent = 'Configurez econya_verify_api'; return; }
-  const title = document.getElementById('push-title').value || 'Econya';
-  const body = document.getElementById('push-body').value || 'Nouveaux bons plans';
-  const url = document.getElementById('push-url').value || '/';
-  const c = (document.getElementById('push-country').value||'').split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
-  const ab = (document.getElementById('push-ab').value||'').split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
-  try{
-    const r = await fetch(API+'/push/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({title, body, url, target:{country:c, ab}})});
-    const j = await r.json().catch(_=>({}));
-    document.getElementById('push-status').textContent = r.ok? ('Push envoyé: ' + (j.sent||0)) : 'Erreur push';
-  }catch(e){ document.getElementById('push-status').textContent = 'Erreur réseau'; }
-});
-</script>

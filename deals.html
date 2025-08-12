@@ -1,131 +1,49 @@
-<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bon plans</title><link rel='stylesheet' href='assets/style.css'></head><body><div class='wrap'><h1>Bon plans — placeholder</h1></div><script src="assets/compliance.js">
-// country label
-(function(){ const c=(localStorage.getItem('econya_country')||'FR').toUpperCase(); const map={'FR':'France','BE':'Belgique','MA':'Maroc','CA':'Canada','GB':'Royaume-Uni','US':'États-Unis'}; const el=document.getElementById('ctry-label'); if(el) el.textContent = map[c]||c; })();
 
-// Fiscal filters
-function applyFiscalFilters(){
-  const pea = document.getElementById('f-pea').checked;
-  const isa = document.getElementById('f-isa').checked;
-  // TOB is informational, not a filter; show info tooltip if BE selected country
-  document.querySelectorAll('[data-pane="stocks"] li').forEach(li=>{
-    let ok = true;
-    if(pea) ok = ok && (li.getAttribute('data-pea')==='true');
-    if(isa) ok = ok && (li.getAttribute('data-isa')==='true');
-    li.style.display = ok? '' : 'none';
-  });
-}
-['f-pea','f-isa'].forEach(id => document.getElementById(id).addEventListener('change', applyFiscalFilters));
-(function initFiscal(){
-  const c=(localStorage.getItem('econya_country')||'FR').toUpperCase();
-  if(c==='FR') document.getElementById('f-pea').checked = true;
-  if(c==='GB') document.getElementById('f-isa').checked = true;
-  applyFiscalFilters();
-  // TOB info if BE
-  const tob = document.getElementById('f-tob');
-  if(c!=='BE'){ tob.parentElement.style.opacity=.5; }
-})(); 
-</script>
-<script src="assets/markets-widget.js"></script>
-<script src="assets/partners.js"></script>
-<script src="assets/affiliates.js"></script>
-<script src="assets/partners-router.js"></script>
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Econya — Vos économies grandissent avec vous</title>
+<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="icon" href="assets/logo.svg"/>
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="assets/logo.svg"/>
+<meta name="theme-color" content="#0e1512"/>
+<link rel="stylesheet" href="assets/style.css"/>
+<script defer src="assets/main.js"></script>
+</head><body>
 
-<script>
-// v8.0 — Classement dynamique des partenaires par EPC (pays)
-(async function(){
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(!API) return;
-  const country = (localStorage.getItem('econya_country')||'FR').toUpperCase();
-  try{
-    const agg = await (await fetch(API+`/clicks/agg?country=${country}&sort=epc`)).json();
-    const items = (agg.items||[]).filter(x=>x.epc>0);
-    if(!items.length) return;
-    // Re-ranger la table partenaires si elle existe
-    const tbl = document.querySelector('#partners-stocks table tbody');
-    if(tbl){
-      const rows = Array.from(tbl.querySelectorAll('tr'));
-      rows.sort((a,b)=>{
-        const da = items.find(x=> (a.cells[1]?.innerText||'').toLowerCase().includes(x.partner));
-        const db = items.find(x=> (b.cells[1]?.innerText||'').toLowerCase().includes(x.partner));
-        const ea = da? da.epc : -1, eb = db? db.epc : -1;
-        return eb - ea;
-      });
-      tbl.innerHTML = ''; rows.forEach(r=> tbl.appendChild(r));
-      const note = document.createElement('div'); note.className='small'; note.textContent = `Classement auto (EPC) pour ${country} — en haut = plus rentable.`;
-      document.getElementById('partners-stocks').appendChild(note);
-    }
-  }catch(e){}
-})();</script>
+<nav class="top">
+  <a class="brand" href="index.html">
+    <img src="assets/logo.svg" alt="Econya" />
+    <span>Econya</span>
+  </a>
+  <div class="links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="comparator.html">Comparateur</a>
+    <a href="simulators.html">Comptable</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="interests.html">Intérêts</a>
+    <a href="assistant.html">Assistant IA</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-<script src="assets/push-subscribe.js"></script>
+<main class="container">
+  <h1>Bons plans partenaires</h1>
+  <div id="deals" class="list"></div>
+</main>
 
-<script>
-// v8.1 Ranking multi-critères: score = EPC * ln(1+clicks) * qualityWeight
-(async function(){
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(!API) return;
-  const country = (localStorage.getItem('econya_country')||'FR').toUpperCase();
-  try{
-    const [agg, partners] = await Promise.all([
-      fetch(API+`/clicks/agg?country=${country}&sort=epc`).then(r=>r.json()),
-      fetch(API+'/partners').then(r=>r.json()).catch(_=>({items:[]}))
-    ]);
-    const items = (agg.items||[]);
-    const weights = {};
-    (partners.items||[]).forEach(p=>{ if(p.domain && p.quality){ weights[p.domain.toLowerCase()] = Number(p.quality)||1; } });
-    // Build scores
-    items.forEach(x=>{ x.score = (x.epc||0) * Math.log(1+(x.clicks||0)) * (weights[x.partner]||1); });
-    items.sort((a,b)=> (b.score||0)-(a.score||0));
-    const tbl = document.querySelector('#partners-stocks table tbody');
-    if(!tbl) return;
-    const rows = Array.from(tbl.querySelectorAll('tr'));
-    const domainOf = tr => (tr.cells[1]?.innerText||'').toLowerCase();
-    rows.sort((a,b)=>{
-      const da = items.find(x=> domainOf(a).includes(x.partner));
-      const db = items.find(x=> domainOf(b).includes(x.partner));
-      const sa = da? da.score: -1, sb = db? db.score: -1;
-      return sb - sa;
-    });
-    tbl.innerHTML=''; rows.forEach(r=> tbl.appendChild(r));
-    const note = document.createElement('div'); note.className='small';
-    note.textContent = `Classement auto (score multi-critères EPC×log(clicks)×qualité) — pays ${country}`;
-    document.getElementById('partners-stocks').appendChild(note);
-  }catch(e){}
-})();</script>
-
-
-<script>
-// v8.2 — A/B dynamic CTA + badge EPC (pays)
-(async function(){
-  const API = (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,'');
-  if(!API) return;
-  const ctry = (localStorage.getItem('econya_country')||'FR').toUpperCase();
-  const ab = (localStorage.getItem('econya_ab')||'A');
-  try{
-    const agg = await (await fetch(API+`/clicks/agg?country=${ctry}&sort=epc`)).json();
-    const items = (agg.items||[]);
-    const tbl = document.querySelector('#partners-stocks table tbody'); if(!tbl) return;
-    const rows = Array.from(tbl.querySelectorAll('tr'));
-    // Compute EPC map by domain
-    const epcBy = {}; items.forEach(x=> epcBy[x.partner] = x.epc || 0);
-    rows.forEach(tr=>{
-      const domainCell = tr.cells[1]; if(!domainCell) return;
-      const d = (domainCell.innerText||'').toLowerCase();
-      const kv = Object.keys(epcBy).find(k => d.includes(k));
-      const epc = kv ? epcBy[kv] : 0;
-      // Add/refresh badge
-      let badge = tr.querySelector('.badge-epc');
-      if(!badge){ badge = document.createElement('span'); badge.className='badge badge-epc'; domainCell.appendChild(document.createElement('br')); domainCell.appendChild(badge); }
-      badge.textContent = epc>0 ? (`EPC ${epc.toFixed(2)}€`) : '—';
-      // A/B CTA
-      const btn = tr.querySelector('a.partner-link'); if(!btn) return;
-      if(ab==='A'){
-        btn.textContent = epc>0.3 ? '⭐ Offre recommandée' : 'Voir l’offre';
-      }else{
-        btn.textContent = epc>0.3 ? '⭐ Meilleur rapport €' : 'Découvrir';
-      }
-    });
-  }catch(e){}
-})();</script>
+<footer>
+  <div class="f-links">
+    <a href="legal.html">Mentions légales</a>
+    <a href="privacy.html">Vie privée</a>
+    <a href="terms.html">CGU</a>
+  </div>
+  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
+</footer>
 
 </body></html>

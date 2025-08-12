@@ -1,65 +1,50 @@
-(()=>{
-  const linked = !!localStorage.getItem('econya_bank_linked');
-  document.querySelectorAll('[data-bank-state]').forEach(el=> el.textContent = linked ? 'Banque connectée ✓' : 'Connecter ma banque');
 
-  async function loadPartners(){
-    try{
-      const r = await fetch('assets/partners/partners.json');
-      const data = await r.json();
-      return data;
-    }catch(e){ console.warn('partners load failed', e); return {partners:[]}; }
-  }
-  async function renderPartners(container){
-    const data = await loadPartners();
-    const country = (localStorage.getItem('econya_country') || '').toUpperCase();
-    const category = (new URLSearchParams(location.search).get('cat') || '').toLowerCase();
-    const partners = data.partners
-      .filter(p => !country || !p.countries || p.countries.includes(country))
-      .filter(p => !category || p.category===category);
-    container.innerHTML = partners.map(p => `
-      <div class="card part-card">
-        <img src="${p.logo}" alt="${p.name}"/>
-        <div><strong>${p.name}</strong><br/><small>${p.tagline||''}</small></div>
-        <div>${p.perk||''}</div>
-        <div><a class="btn" href="${p.url}" target="_blank" rel="noopener">Voir l’offre</a></div>
-      </div>
-    `).join('') || '<p>Aucune offre pour ce filtre pour le moment.</p>';
-  }
-  const grid = document.getElementById('partners-grid');
-  if(grid){ renderPartners(grid); }
+function demoCompare(){
+  const cat=document.getElementById('cat').value;
+  const budget=+document.getElementById('budget').value||100;
+  const country=(document.getElementById('country').value||'FR').toUpperCase();
+  const results=document.getElementById('results');
+  const items=[
+    {name:`Offre 1 ${cat}`, price:Math.max(5, budget*0.12), tag:`${country}`},
+    {name:`Offre 2 ${cat}`, price:Math.max(3, budget*0.10), tag:`${country}`},
+    {name:`Offre 3 ${cat}`, price:Math.max(8, budget*0.14), tag:`${country}`},
+  ].sort((a,b)=>a.price-b.price);
+  results.innerHTML=items.map(x=>`<div class="cards"><article><h4>${x.name}</h4><p>Dès ${x.price.toFixed(2)} € / mois</p><a class="btn primary" href="#">Voir</a></article></div>`).join('');
+}
 
-  const form = document.getElementById('filters');
-  if(form){
-    form.addEventListener('change', ()=>{
-      const country = form.country.value.toUpperCase();
-      const category = form.category.value;
-      if(country) localStorage.setItem('econya_country', country);
-      const url = new URL(location.href);
-      if(category) url.searchParams.set('cat', category); else url.searchParams.delete('cat');
-      history.replaceState({}, '', url);
-      renderPartners(document.getElementById('partners-grid'));
-    });
-  }
-})();
-// v6.7 Economy Score
+function saveInterests(){
+  alert('Intérêts enregistrés (démo).');
+}
+
+function askAI(){
+  const box=document.getElementById('chatInput');
+  const log=document.getElementById('chatLog');
+  const q=box.value.trim(); if(!q) return;
+  log.innerHTML += `<div><strong>Vous:</strong> ${q}</div>`;
+  log.innerHTML += `<div><strong>Econya:</strong> Voici une piste d'économie sur "${q}": comparez 3 offres et ciblez la moins chère à qualité égale.</div>`;
+  box.value='';
+}
+
+// simple tree animation
 (function(){
-  function getNum(k, d){ return parseFloat(localStorage.getItem(k)||d) || 0 }
-  function computeScore(){
-    const income = getNum('econya_income', 1800);
-    const rent   = getNum('econya_rent', 650);
-    const commute= getNum('econya_commute', 80);
-    let subs = 0; try{ subs = (JSON.parse(localStorage.getItem('econya_subs')||'[]')||[]).reduce((a,s)=>a+(s.price||0),0);}catch{}
-    const pot = subs*0.25 + 120*0.12/12 + 800*0.08/12 + 60/12;
-    const discr = Math.max(0, income - rent - commute - subs);
-    const ratio = discr>0 ? Math.min(1, pot/Math.max(1,discr)) : 0;
-    const score = Math.round(ratio*100);
-    localStorage.setItem('econya_score', String(score));
-    return score;
+  const c=document.getElementById('econyaTree');
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    // trunk
+    ctx.fillStyle='#b46b2a';
+    ctx.fillRect(c.width/2-10, c.height-100, 20, 80);
+    // crown pulsating
+    const r=60 + Math.sin(t)*6;
+    const y=c.height-120;
+    ctx.beginPath();
+    ctx.fillStyle='#2ecc71';
+    ctx.arc(c.width/2, y, r, 0, Math.PI*2);
+    ctx.fill();
+    t+=0.06;
+    requestAnimationFrame(draw);
   }
-  function renderScore(){
-    const s = computeScore();
-    const badge = document.getElementById('econya-score');
-    if(badge){ badge.textContent = s + '/100'; }
-  }
-  window.addEventListener('DOMContentLoaded', renderScore);
+  draw();
 })();
