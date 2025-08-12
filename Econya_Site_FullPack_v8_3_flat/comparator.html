@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Comparateur — Econya</title>
+  <meta name="description" content="Comparez électricité, gaz, internet, mobile pour trouver la meilleure offre qualité/prix."/>
+  <link rel="stylesheet" href="assets/style.css"/>
+  <style>
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th,td{padding:10px;text-align:left}
+    thead th{opacity:.8}
+    tbody tr{background:var(--card);border:1px solid rgba(255,255,255,.06)}
+    tbody tr td:first-child{border-radius:12px 0 0 12px}
+    tbody tr td:last-child{border-radius:0 12px 12px 0}
+    .pill{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);padding:4px 8px;border-radius:999px;font-size:.9rem}
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
+  <nav class="nav"><span class="badge" id="greet-name">Bonjour</span> 
+    <a href="assistant.html">Assistant IA</a>
+    <a href="partenaires.html">Partenaires</a>
+    <a href="comparator.html"><strong>Comparateur</strong></a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+<div class="wrap">
+  <h1>Comparateur — utilités & forfaits</h1>
+  <div class="card" id="filters">
+    <label>Pays
+      <select id="f-country">
+        <option>FR</option><option>BE</option><option>MA</option><option>CA</option><option>GB</option><option>US</option>
+      </select>
+    </label>
+    <label>Catégorie
+      <select id="f-cat">
+        <option value="electricity">Électricité</option>
+        <option value="gas">Gaz</option>
+        <option value="internet">Internet</option>
+        <option value="mobile">Mobile</option>
+      </select>
+    </label>
+    <label>Trier par
+      <select id="f-sort">
+        <option value="score">Score (qualité/prix)</option>
+        <option value="price">Prix croissant</option>
+        <option value="rating">Note décroissante</option>
+      </select>
+    </label>
+    <button class="btn" id="f-apply">Appliquer</button>
+  </div>
+
+  <div class="card">
+    <table aria-label="Résultats du comparateur">
+      <thead><tr>
+        <th>Fournisseur</th><th>Offre</th><th>Prix/mois</th><th>Détails</th><th>Note</th><th>Score</th><th></th>
+      </tr>${(o===best||o===cheapest)?`<tr><td colspan="7" class="small">`+(o===best?'<span class="pill">🏆 Meilleur rapport Q/P</span> ':'')+(o===cheapest?'<span class="pill">💸 Offre la moins chère</span>':'')+`</td></tr>`:''}</thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="small">* Données démo. Remplacez via <a href="admin.html">Admin local</a> vos fichiers JSON puis envoyez-les sur GitHub.</p>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+
+<div class="nav">
+  <span>Suivez-nous :</span>
+  <a href="https://facebook.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">Facebook</a> ·
+  <a href="https://instagram.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">Instagram</a> ·
+  <a href="https://twitter.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">X/Twitter</a> ·
+  <a href="social.html">Tous les réseaux</a>
+</div>
+</footer>
+<script>
+const EURO = Intl.NumberFormat(navigator.language,{style:'currency',currency:'EUR'});
+function fmt(n, cur='EUR'){ try{ return new Intl.NumberFormat(navigator.language,{style:'currency',currency:cur}).format(n); }catch{ return (n.toFixed? n.toFixed(2):n)+' '+cur; } }
+async function load(){ const r = await fetch('assets/providers/providers.json'); return await r.json(); }
+function total12(of){ 
+  const pm = of.price_month||0; 
+  const act = of.activation_fee||0; 
+  const promoM = of.promo_months||0; 
+  const promoR = of.promo_discount||0; // € de réduction par mois promo
+  const promo = Math.max(0, promoM*promoR);
+  return pm*12 + act - promo; 
+}
+function score(of){ 
+  const t = total12(of);
+  const rating = of.rating||3.5; 
+  const q = Math.min(5, Math.max(0, rating))/5; 
+  const p = t>0? 1/t : 0; 
+  return Math.round((q*0.6 + p*0.4) * 100000); 
+}
+function details(of){ 
+  if(of.category==='internet') return (of.speed_mbps? of.speed_mbps+' Mbps':'') + (of.hardware? ' · '+of.hardware:'');
+  if(of.category==='mobile') return (of.data_gb? of.data_gb+' Go':'') + (of.calls? ' · '+of.calls:'');
+  if(of.category==='electricity') return (of.kWh_price? (of.kWh_price+' €/kWh'):'' ) + (of.green? ' · Vert':'');
+  if(of.category==='gas') return (of.kWh_price? (of.kWh_price+' €/kWh'):''); 
+  return '';
+}
+async function render(){
+  const data = await load();
+  const country = (localStorage.getItem('econya_country')||'FR').toUpperCase();
+  const selCountry = document.getElementById('f-country'); selCountry.value = country;
+  const url = new URL(location.href);
+  const cat = url.searchParams.get('cat') || 'internet';
+  document.getElementById('f-cat').value = cat;
+
+  const sort = document.getElementById('f-sort').value;
+  let offers = data.offers.filter(o=> o.country===selCountry.value && o.category===cat);
+  offers = offers.map(o=> Object.assign({score:score(o)}, o));
+  offers.sort((a,b)=> sort==='price'? a.price_month-b.price_month : sort==='rating'? b.rating-a.rating : b.score-a.score);
+
+  const rows = document.getElementById('rows');
+  const cheapest = offers.slice().sort((a,b)=> total12(a)-total12(b))[0]; const best = offers[0];
+  rows.innerHTML = offers.map(o=>`
+    <tr>
+      <td><strong>${o.provider}</strong></td>
+      <td>${o.plan} <span class="pill">${o.contract}</span></td>
+      <td>${fmt(o.price_month, o.currency||'EUR')}</td>
+      <td>${details(o)}</td>
+      <td>${(o.rating||0).toFixed(1)}★</td>
+      <td><strong>${o.score}</strong><br/><small>Total 12m: ${fmt(total12(o))}</small></td>
+      <td><a class="btn" href="${o.affiliate_url}" target="_blank" rel="noopener">Choisir</a></td>
+    </tr>${(o===best||o===cheapest)?`<tr><td colspan="7" class="small">`+(o===best?'<span class="pill">🏆 Meilleur rapport Q/P</span> ':'')+(o===cheapest?'<span class="pill">💸 Offre la moins chère</span>':'')+`</td></tr>`:''}
+  `).join('') || '<tr><td colspan="7">Aucune offre pour ce filtre.</td></tr>${(o===best||o===cheapest)?`<tr><td colspan="7" class="small">`+(o===best?'<span class="pill">🏆 Meilleur rapport Q/P</span> ':'')+(o===cheapest?'<span class="pill">💸 Offre la moins chère</span>':'')+`</td></tr>`:''}';
+}
+document.getElementById('f-apply').addEventListener('click', ()=>{
+  const selCountry = document.getElementById('f-country').value;
+  localStorage.setItem('econya_country', selCountry);
+  const cat = document.getElementById('f-cat').value;
+  const sort = document.getElementById('f-sort').value;
+  const url = new URL(location.href); url.searchParams.set('cat', cat); history.replaceState({},'',url);
+  render();
+});
+render();
+</script>
+<script src="assets/personalize.js"></script>
+<script src="assets/cookies.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{
+  "last_update": "2025-08-12",
+  "partners": [
+    {
+      "name": "Banque ÉcoPlus",
+      "category": "bank",
+      "countries": [
+        "FR",
+        "BE",
+        "CH",
+        "CA"
+      ],
+      "url": "https://example-awin.com/track/bank-ecoplus",
+      "logo": "assets/partners/bank_ecoplus.png",
+      "tagline": "Compte courant à petits frais",
+      "perk": "Jusqu’à 50€ d’économie/an"
+    },
+    {
+      "name": "Assur Safe",
+      "category": "insurance",
+      "countries": [
+        "FR",
+        "BE",
+        "CH"
+      ],
+      "url": "https://example-tradedoubler.com/assur-safe",
+      "logo": "assets/partners/assur_safe.png",
+      "tagline": "Assurance auto/mr à prix serré",
+      "perk": "-12% moyen selon profil"
+    },
+    {
+      "name": "Voyage Zen",
+      "category": "travel",
+      "countries": [
+        "FR",
+        "ES",
+        "IT",
+        "PT"
+      ],
+      "url": "https://example-rakuten.com/voyage-zen",
+      "logo": "assets/partners/voyage_zen.png",
+      "tagline": "Hôtels & séjours",
+      "perk": "-20% Premium"
+    },
+    {
+      "name": "Sport Pass",
+      "category": "leisure",
+      "countries": [
+        "FR",
+        "GB",
+        "DE"
+      ],
+      "url": "https://example-awin.com/sport-pass",
+      "logo": "assets/partners/sport_pass.png",
+      "tagline": "Loisirs & salles de sport",
+      "perk": "30 jours offerts"
+    },
+    {
+      "name": "Énergie Vert",
+      "category": "energy",
+      "countries": [
+        "FR"
+      ],
+      "url": "https://example-td.com/energie-vert",
+      "logo": "assets/partners/energie_vert.png",
+      "tagline": "Fournisseur énergie verte",
+      "perk": "8% d’économie estimée"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "last_update": "2025-08-12",
+  "stations": [
+    {
+      "country": "FR",
+      "name": "Station Eco Paris 12",
+      "city": "Paris",
+      "address": "12 Rue Verte",
+      "lat": 48.84,
+      "lon": 2.395,
+      "prices": {
+        "SP95": 1.79,
+        "E10": 1.72,
+        "Diesel": 1.68
+      },
+      "updated_at": "2025-08-01T08:00:00Z"
+    },
+    {
+      "country": "FR",
+      "name": "Carburant+ Bercy",
+      "city": "Paris",
+      "address": "Quai de Bercy",
+      "lat": 48.835,
+      "lon": 2.381,
+      "prices": {
+        "SP95": 1.83,
+        "E10": 1.76,
+        "Diesel": 1.71
+      },
+      "updated_at": "2025-08-12T07:00:00Z"
+    },
+    {
+      "country": "FR",
+      "name": "Essence Zen Nanterre",
+      "city": "Nanterre",
+      "address": "5 Av. de la Paix",
+      "lat": 48.896,
+      "lon": 2.206,
+      "prices": {
+        "SP95": 1.77,
+        "E10": 1.7,
+        "Diesel": 1.65
+      },
+      "updated_at": "2025-08-10T10:00:00Z"
+    },
+    {
+      "country": "FR",
+      "name": "DieselMax Montreuil",
+      "city": "Montreuil",
+      "address": "Bd de Chanzy",
+      "lat": 48.863,
+      "lon": 2.449,
+      "prices": {
+        "SP95": 1.82,
+        "E10": 1.74,
+        "Diesel": 1.66
+      },
+      "updated_at": "2025-08-09T09:00:00Z"
+    },
+    {
+      "country": "FR",
+      "name": "SP Zen Saint-Denis",
+      "city": "Saint-Denis",
+      "address": "Rue République",
+      "lat": 48.936,
+      "lon": 2.357,
+      "prices": {
+        "SP95": 1.75,
+        "E10": 1.69,
+        "Diesel": 1.67
+      },
+      "updated_at": "2025-08-11T09:30:00Z"
+    },
+    {
+      "country": "BE",
+      "name": "FuelBe Brussels",
+      "city": "Bruxelles",
+      "address": "Rue du Parc",
+      "lat": 50.846,
+      "lon": 4.352,
+      "prices": {
+        "SP95": 1.71,
+        "E10": 1.68,
+        "Diesel": 1.6
+      },
+      "updated_at": "2025-08-05T09:00:00Z"
+    },
+    {
+      "country": "MA",
+      "name": "Station Atlas Rabat",
+      "city": "Rabat",
+      "address": "Av. Mohamed V",
+      "lat": 34.02,
+      "lon": -6.841,
+      "prices": {
+        "SP95": 14.9,
+        "Diesel": 13.1
+      },
+      "currency": "MAD",
+      "updated_at": "2025-08-03T08:00:00Z"
+    }
+  ]
+}

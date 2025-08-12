@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">\1
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://api.econya.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=()"/>
+
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Econya — Vos économies grandissent avec vous</title>
+  <meta name="description" content="App d’économies connectée à votre banque : visualisez, comparez, économisez."/>
+  <meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+  <meta property="og:description" content="App d’économies connectée à votre banque : visualisez, comparez, économisez."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="/"/>
+  <meta property="og:image" content="assets/logo.svg"/>
+  <meta name="theme-color" content="#0e1512"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="preload" href="assets/logo.svg" as="image"/>
+  <link rel="stylesheet" href="assets/style.css"/>
+<script type="application/ld+json">{
+"@context":"https://schema.org",
+"@type":"Organization",
+"name":"Econya",
+"url":"https://example.com",
+"logo":"https://example.com/assets/logo.svg",
+"slogan":"Vos économies grandissent avec vous"
+}</script>
+</head><body>
+<header>
+  <a class="brand" href="index.html"><img loading="lazy" src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
+  <nav class="nav"><span class="badge" id="greet-name">Bonjour</span> <span class="badge" title="Score d’économie" id="econya-score">—</span> 
+    <a href="assistant.html">Assistant IA</a>
+    <a href="avantages.html">Avantages</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="partenaires.html">Partenaires</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="bank-link.html" data-bank-state>Connecter ma banque</a>
+  </nav>
+</header>
+<div class="wrap">
+  <h1>Vos économies grandissent avec vous</h1>
+  <div class="card"><p>Reliez votre banque, visualisez vos dépenses et déclenchez des <strong>actions immédiates</strong> pour économiser.</p></div>
+  <section class="card">
+    <h2>Nos bons plans partenaires</h2>
+    <div class="grid" id="partners-grid"></div>
+    <div style="margin-top:10px"><a class="btn" href="partenaires.html">Voir toutes les offres</a></div>
+  <div style="margin-top:10px"><a class="btn" href="messages.html">Ouvrir la messagerie</a></div>
+</section>
+<div class="card"><a class="btn" href="fuel.html">Essence moins chère près de moi</a></div>
+<div class="card"><a class="btn" href="pages/FR.html">France</a> <a class="btn" href="pages/MA.html">Maroc</a> <a class="btn" href="pages/BE.html">Belgique</a> <a class="btn" href="pages/CA.html">Canada</a> <a class="btn" href="pages/GB.html">Royaume-Uni</a> <a class="btn" href="pages/US.html">États-Unis</a></div>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+  <div class="nav">
+    <a href="legal.html">Mentions légales</a> ·
+    <a href="privacy.html">Vie privée</a> ·
+    <a href="terms.html">CGU</a> ·
+    <a href="contact.html">Contact</a>
+  </div>
+
+<div class="nav">
+  <span>Suivez-nous :</span>
+  <a href="https://facebook.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">Facebook</a> ·
+  <a href="https://instagram.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">Instagram</a> ·
+  <a href="https://twitter.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">X/Twitter</a> ·
+  <a href="social.html">Tous les réseaux</a>
+</div>
+</footer>
+<script src="assets/main.js"></script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}</script>
+
+<script>
+(function(){
+  if(!localStorage.getItem('econya_onboarded')){
+    const b = document.createElement('div');
+    b.className='card'; b.innerHTML='<strong>Nouveau ?</strong> Suivez l’<a href="onboarding.html">onboarding en 3 étapes</a> pour économiser rapidement.';
+    document.querySelector('.wrap')?.prepend(b);
+  }
+})();
+</script>
+<script src="assets/personalize.js"></script>
+<script src="assets/cookies.js"></script>
+<script src="assets/social-popup.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body></html>

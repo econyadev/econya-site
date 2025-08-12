@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Status — Econya</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body>
+<div class="wrap">
+  <h1>Status</h1>
+  <div class="card"><strong>Version</strong> v6.7 — 2025-08-12</div>
+  <div class="card" id="s"></div>
+</div>
+<script>
+(function(){
+  const box = document.getElementById('s');
+  const api = localStorage.getItem('econya_verify_api') || 'https://example.com';
+  box.textContent = 'Vérification de l’API...';
+  fetch(api.replace(/\/$/, '') + '/status').then(r=>r.json()).then(j=>{
+    box.innerHTML = '<strong>API</strong> OK — clients: ' + (j.clients||[]).join(', ');
+  }).catch(()=> box.textContent = 'API indisponible (configurer econya_verify_api)');
+})();
+</script>
+<script src="assets/personalize.js"></script>
+<script src="assets/cookies.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body></html>

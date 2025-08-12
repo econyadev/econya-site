@@ -1,0 +1,121 @@
+{
+  "FR": {
+    "name": "France",
+    "notices": [
+      "Investissement : capital à risque. Vérifiez l’éligibilité PEA/assurance-vie avant d’investir.",
+      "Crypto : prestataires enregistrés/agréés par l’AMF uniquement.",
+      "Publicité financière : respect des mentions obligatoires (AMF)."
+    ],
+    "refs": [
+      {
+        "label": "AMF",
+        "url": "https://www.amf-france.org"
+      },
+      {
+        "label": "Service-Public (épargne)",
+        "url": "https://www.service-public.fr/particuliers/vosdroits/N19806"
+      }
+    ],
+    "features": {
+      "stocks": true,
+      "etf": true,
+      "crypto": true,
+      "commodities": true
+    }
+  },
+  "BE": {
+    "name": "Belgique",
+    "notices": [
+      "FSMA : règles strictes pour la publicité crypto et produits risqués.",
+      "ETF/Trackers : vérifiez la fiscalité (TOB, précompte)."
+    ],
+    "refs": [
+      {
+        "label": "FSMA",
+        "url": "https://www.fsma.be/fr"
+      }
+    ],
+    "features": {
+      "stocks": true,
+      "etf": true,
+      "crypto": true,
+      "commodities": true
+    }
+  },
+  "MA": {
+    "name": "Maroc",
+    "notices": [
+      "Crypto : communication officielle Bank Al-Maghrib — prudence et conformité.",
+      "Investissements : privilégiez prestataires autorisés localement."
+    ],
+    "refs": [
+      {
+        "label": "Bank Al-Maghrib",
+        "url": "https://www.bkam.ma"
+      }
+    ],
+    "features": {
+      "stocks": true,
+      "etf": true,
+      "crypto": false,
+      "commodities": true
+    }
+  },
+  "CA": {
+    "name": "Canada",
+    "notices": [
+      "Crypto : plateformes enregistrées auprès des autorités provinciales (CSA).",
+      "Produits à effet de levier : restrictions selon province."
+    ],
+    "refs": [
+      {
+        "label": "CSA",
+        "url": "https://www.securities-administrators.ca/"
+      }
+    ],
+    "features": {
+      "stocks": true,
+      "etf": true,
+      "crypto": true,
+      "commodities": true
+    }
+  },
+  "GB": {
+    "name": "Royaume-Uni",
+    "notices": [
+      "FCA : règles “financial promotions”. Risk warning obligatoire.",
+      "ISA : vérifiez l’éligibilité des produits."
+    ],
+    "refs": [
+      {
+        "label": "FCA",
+        "url": "https://www.fca.org.uk/"
+      }
+    ],
+    "features": {
+      "stocks": true,
+      "etf": true,
+      "crypto": true,
+      "commodities": true
+    }
+  },
+  "US": {
+    "name": "États-Unis",
+    "notices": [
+      "SEC/FINRA : conformité requise. Approbations pour options/margin.",
+      "ETF/ETN : vérifiez le prospectus et les frais."
+    ],
+    "refs": [
+      {
+        "label": "SEC",
+        "url": "https://www.sec.gov/"
+      }
+    ],
+    "features": {
+      "stocks": true,
+      "etf": true,
+      "crypto": true,
+      "commodities": true
+    }
+  }
+}

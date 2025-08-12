@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Onboarding — Econya</title>
+  <meta name="description" content="Démarrez en 3 étapes : budget, connexion bancaire, première économie."/>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
+  <nav class="nav"><span class="badge" id="greet-name">Bonjour</span> 
+    <a href="onboarding.html"><strong>Onboarding</strong></a>
+    <a href="assistant.html">Assistant IA</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="partenaires.html">Partenaires</a>
+    <a href="messages.html">Messages</a>
+  </nav>
+</header>
+<div class="wrap">
+  <h1 id="onb-hello">Bienvenue 👋</h1>
+<script>document.addEventListener("DOMContentLoaded",()=>{const n=(localStorage.getItem("econya_firstname")||"").trim(); if(n){document.getElementById("onb-hello").textContent="Bienvenue, "+n+" 👋";}});</script>
+  <ol class="card">
+    <li><strong>Renseigner mon budget</strong> — ouvrez l’<a href="assistant.html">Assistant IA</a> et remplissez la section <em>Mon budget</em>, puis “Enregistrer”.</li>
+    <li><strong>Connecter ma banque</strong> — cliquez “Connecter ma banque” (démo), puis revenez au <a href="dashboard.html">Dashboard</a>.</li>
+    <li><strong>Activer une première économie</strong> — visitez <a href="partenaires.html">Partenaires</a>, choisissez une offre pertinente et suivez le lien.</li>
+  </ol>
+  <div class="card">
+    <button class="btn" onclick="localStorage.setItem('econya_onboarded','1'); window.location='assistant.html'">J’ai compris, allons-y</button>
+  </div>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+</footer>
+<script src="assets/main.js"></script>
+<script src="assets/personalize.js"></script>
+<script src="assets/cookies.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body>
+</html>
