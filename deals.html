@@ -1,49 +1,36 @@
-
-<!DOCTYPE html><html lang="fr"><head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Econya — Vos économies grandissent avec vous</title>
-<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
-<link rel="manifest" href="manifest.webmanifest"/>
-<link rel="icon" href="assets/logo.svg"/>
-<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
-<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bons plans — Econya</title>
+<meta name="description" content="Bons plans">
+<meta property="og:title" content="Bons plans — Econya"/>
+<meta property="og:description" content="Bons plans"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="assets/logo.svg"/>
-<meta name="theme-color" content="#0e1512"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
 <link rel="stylesheet" href="assets/style.css"/>
+<script src="assets/env.js"></script>
+<script defer src="assets/i18n.js"></script>
 <script defer src="assets/main.js"></script>
-</head><body>
-
-<nav class="top">
-  <a class="brand" href="index.html">
-    <img src="assets/logo.svg" alt="Econya" />
-    <span>Econya</span>
-  </a>
-  <div class="links">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="comparator.html">Comparateur</a>
-    <a href="simulators.html">Comptable</a>
-    <a href="tarifs.html">Tarifs</a>
-    <a href="deals.html">Bons plans</a>
-    <a href="interests.html">Intérêts</a>
-    <a href="assistant.html">Assistant IA</a>
-    <a href="contact.html">Contact</a>
-  </div>
+</head><body><header class="nav"><div class="nav-inner container">
+<a class="brand" href="index.html"><img src="assets/logo.svg" class="logo"/><span class="wordmark">Econya</span></a>
+<nav>
+  <a href="index.html" data-i18n="nav_home">Accueil</a>
+  <a href="comparator-pro.html" data-i18n="nav_comp">Comparateur Pro</a>
+  <a href="coach-eco.html" data-i18n="nav_coach">Coach Eco</a>
+  <a href="deals.html" data-i18n="nav_deals">Bons plans</a>
+  <a href="giftcards.html" data-i18n="nav_gift">Cartes cadeaux</a>
+  <a href="markets.html" data-i18n="nav_markets">Marchés</a>
+  <a href="travel.html" data-i18n="nav_travel">Voyages</a>
+  <a href="tarifs.html" data-i18n="nav_tarifs">Tarifs</a>
+  <a href="partners.html" data-i18n="nav_partners">Partenaires</a>
+  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+  <a href="contact.html" data-i18n="nav_contact">Contact</a>
+  <select id="langSel" aria-label="Langue"></select>
 </nav>
-
-<main class="container">
-  <h1>Bons plans partenaires</h1>
-  <div id="deals" class="list"></div>
-</main>
-
-<footer>
-  <div class="f-links">
-    <a href="legal.html">Mentions légales</a>
-    <a href="privacy.html">Vie privée</a>
-    <a href="terms.html">CGU</a>
-  </div>
-  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
-</footer>
-
-</body></html>
+</div></header><main class='container section fade-in'>
+<h2>Bons plans</h2>
+<p>Offres partenaires et meilleures promos vérifiées. Transparence : si une offre non-partenaire est meilleure, on l'affiche quand même.</p>
+<div id="dealsRoot"></div><script defer src="assets/deals.js"></script>
+</main><footer class="footer container">
+  <div>© 2025 Econya — Vos économies grandissent avec vous</div>
+  <div class="small"><a href="privacy.html">Vie privée</a> • <a href="terms.html">CGU</a></div>
+</footer></body></html>

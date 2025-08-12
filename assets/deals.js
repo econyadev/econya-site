@@ -1,0 +1,1 @@
+document.getElementById('dealsRoot').innerHTML='<p>Liste des bons plans (affiliation). Ajoutez vos IDs partenaires pour activer.</p>';

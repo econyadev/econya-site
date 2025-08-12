@@ -1,0 +1,1 @@
+/* handled inline on tarifs.html */

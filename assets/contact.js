@@ -1,0 +1,1 @@
+document.getElementById('contactRoot').innerHTML='<form><input placeholder="Votre email"/><button class="btn">Envoyer</button></form>';

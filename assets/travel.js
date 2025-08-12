@@ -1,0 +1,1 @@
+document.getElementById('travelRoot').innerHTML='<p>Vols & hôtels : APIs gratuites prêtes. Historique prix (local) et alertes (démo).</p>';

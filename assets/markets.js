@@ -1,0 +1,1 @@
+document.getElementById('marketsRoot').innerHTML='<p>Watchlist marchés — actions/ETF/crypto. APIs prêtes.</p>';

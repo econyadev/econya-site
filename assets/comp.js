@@ -1,0 +1,1 @@
+document.getElementById('compRoot').innerHTML='<p>Comparateur prêt (démo). Branchez vos APIs pour le live.</p>';

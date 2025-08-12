@@ -1,46 +1,61 @@
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Econya — Vos économies grandissent avec vous</title>
-<meta name="description" content="Econya — L'application qui vous aide à payer moins cher et à faire grandir votre épargne. Lancement prochainement.">
-<link rel="icon" href="assets/logo.svg"/><link rel="stylesheet" href="assets/style.css"/>
-<meta property="og:title" content="Econya — Vos économies grandissent avec vous">
-<meta property="og:description" content="Payer moins cher, comparer, épargner : Econya arrive bientôt.">
-<meta property="og:image" content="assets/logo.svg"><meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://econya.fr/">
-<script>(function(){var h=location.hostname;if(h==="www.econya.fr"){document.documentElement.classList.add("redirecting");setTimeout(function(){location.replace(location.href.replace("www.",""));},80);}})();</script>
-<style>.redirecting body::before{content:"Redirection sécurisée…";position:fixed;inset:auto 0 0 0;background:rgba(16,31,26,.9);color:#ecf6f1;padding:10px 16px;text-align:center;font:600 14px/1.2 Inter,system-ui}</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="card">
-    <div class="bg-blob" aria-hidden="true"></div>
-    <div class="header">
-      <img src="assets/logo.svg" alt="Logo Econya"><div>
-        <div class="badge">Bientôt disponible</div>
-        <h1>Econya — Vos économies grandissent avec vous</h1>
-        <p class="lead">Une app sobre et puissante pour <strong>payer moins cher</strong>, comparer et faire grandir votre épargne.</p>
-      </div>
+<meta name="description" content="Comparez, économisez et suivez vos progrès. Coach Eco, comparateur, bons plans, cartes cadeaux, marchés.">
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+<meta property="og:description" content="Comparez, économisez et suivez vos progrès. Coach Eco, comparateur, bons plans, cartes cadeaux, marchés."/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="assets/style.css"/>
+<script src="assets/env.js"></script>
+<script defer src="assets/i18n.js"></script>
+<script defer src="assets/main.js"></script>
+</head><body>
+<header class="nav"><div class="nav-inner container">
+<a class="brand" href="index.html"><img src="assets/logo.svg" class="logo"/><span class="wordmark">Econya</span></a>
+<nav>
+  <a href="index.html" data-i18n="nav_home">Accueil</a>
+  <a href="comparator-pro.html" data-i18n="nav_comp">Comparateur Pro</a>
+  <a href="coach-eco.html" data-i18n="nav_coach">Coach Eco</a>
+  <a href="deals.html" data-i18n="nav_deals">Bons plans</a>
+  <a href="giftcards.html" data-i18n="nav_gift">Cartes cadeaux</a>
+  <a href="markets.html" data-i18n="nav_markets">Marchés</a>
+  <a href="travel.html" data-i18n="nav_travel">Voyages</a>
+  <a href="tarifs.html" data-i18n="nav_tarifs">Tarifs</a>
+  <a href="partners.html" data-i18n="nav_partners">Partenaires</a>
+  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+  <a href="contact.html" data-i18n="nav_contact">Contact</a>
+  <select id="langSel" aria-label="Langue"></select>
+</nav>
+</div></header>
+<main class="container hero fade-in">
+  <div class="hero-left">
+    <span class="badge">Nouveau</span>
+    <h1 data-i18n="hero_title">Vos économies grandissent avec vous</h1>
+    <p data-i18n="hero_sub">Comparez, économisez et suivez vos progrès avec Coach Eco.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="comparator-pro.html" data-i18n="cta_comp">Essayer le Comparateur Pro</a>
+      <a class="btn" href="coach-eco.html" data-i18n="cta_play">Voir les Playbooks</a>
     </div>
-
-    <form class="form" onsubmit="subscribe(event)">
-      <input id="email" type="email" placeholder="Votre email pour être informé(e)"/>
-      <button type="submit">Soyez informé du lancement</button>
-      <span id="okmsg" class="small" style="display:none;margin-left:8px">Merci, vous êtes inscrit(e) ✔</span>
-    </form>
-
-    <div class="footer">
-      <div class="small notice">Lancement prochainement • Dernière mise à jour : 2025-08-12</div>
-      <div class="links small">
-        <a href="#" aria-label="Facebook">Facebook</a>
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="X">X/Twitter</a>
-      </div>
+    <div id="nowDeal" class="deal-widget" aria-live="polite">Chargement…</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-video">
+      <canvas id="treeCanvas" width="420" height="300" aria-label="Arbre d'économies"></canvas>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><span id="kpiMonth">0 €</span><small data-i18n="kpi_month">économisé ce mois</small></div>
+      <div class="kpi"><span id="kpiYoY">+0%</span><small data-i18n="kpi_yoy">vs mois dernier</small></div>
     </div>
   </div>
-</div>
-<script src="assets/main.js" defer></script>
-</body>
-</html>
+</main>
+
+<section class="container grid3">
+  <div class="card"><h3>Banque & Dépenses</h3><p>Connectez votre banque (à venir) ou essayez le mode démo.</p><a class="btn" href="bank-link.html">Connexion bancaire</a></div>
+  <div class="card"><h3>Énergie & Télécom</h3><p>Comparez tarifs, engagement, frais cachés — trouvez la meilleure offre.</p><a class="btn" href="comparator-pro.html">Comparer</a></div>
+  <div class="card"><h3>Voyages & Loisirs</h3><p>Vols, hôtels, activités — alertes prix et historique 30/90j.</p><a class="btn" href="travel.html">Explorer</a></div>
+</section>
+<footer class="footer container">
+  <div>© 2025 Econya — Vos économies grandissent avec vous</div>
+  <div class="small"><a href="privacy.html">Vie privée</a> • <a href="terms.html">CGU</a></div>
+</footer></body></html>

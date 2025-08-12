@@ -1,0 +1,1 @@
+document.getElementById('bankRoot').innerHTML='<p>Intégration bancaire (Bridge/Tink/Nordigen) — en démo, saisissez vos 3–5 dépenses pour suggestions rapides.</p>';

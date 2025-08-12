@@ -1,0 +1,1 @@
+document.getElementById('gcRoot').innerHTML='<p>Cartes cadeaux : meilleures remises et alertes (démo).</p>';

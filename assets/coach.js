@@ -1,0 +1,1 @@
+document.getElementById('coachRoot').innerHTML='<p>Coach Eco prêt : playbooks et conseils personnalisés (démo).</p>';
