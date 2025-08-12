@@ -1,0 +1,9 @@
+:root{--bg:#0e1512;--card:#101c18;--text:#e6f3ef;--muted:#9bc8b9;--brand:#2f935a;--accent:#1c6e43}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'DejaVu Sans',sans-serif}
+.card{background:var(--card);border:1px solid #18332a;border-radius:16px;padding:18px;margin:14px 0}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--card);border-bottom:1px solid #18332a}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;border-radius:10px;background:radial-gradient(circle at 30% 30%,#3ac37b 0%,var(--brand) 60%,var(--accent) 100%)}
+nav a{color:#8ee5b2;text-decoration:none;margin:0 8px;padding:8px 10px;border:1px solid #18332a;border-radius:10px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
+.btn{border:1px solid #18332a;background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px}
