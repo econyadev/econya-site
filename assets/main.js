@@ -1,85 +1,65 @@
 (()=>{
-  // Apply saved theme (default dark)
-  const saved = localStorage.getItem('econya_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-
-  const burger = document.querySelector('.burger');
-  const drawer = document.querySelector('.drawer');
-  const backdrop = document.querySelector('.backdrop');
-  burger?.addEventListener('click', ()=>{ drawer.classList.add('open'); backdrop.classList.add('show'); });
-  backdrop?.addEventListener('click', ()=>{ drawer.classList.remove('open'); backdrop.classList.remove('show'); });
-
-  const l = document.querySelector('.logo3d');
-  if(l){ l.classList.add('pop'); setTimeout(()=>l.classList.remove('pop'), 1300); }
-
-  // Theme toggles
-  function updateThemeButtons(theme){
-    document.querySelectorAll('#themeToggle, #themeToggleDrawer').forEach(btn=>{
-      if(!btn) return;
-      btn.textContent = theme==='dark' ? '🌙' : '☀️';
-      btn.title = theme==='dark' ? 'Passer en clair' : 'Passer en sombre';
-    });
-  }
-  updateThemeButtons(saved);
-  function toggleTheme(){
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = current==='dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('econya_theme', next);
-    updateThemeButtons(next);
-  }
-  document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
-  document.getElementById('themeToggleDrawer')?.addEventListener('click', toggleTheme);
-
-  // A/B CTA
-  const variant = localStorage.getItem('econya_ab') || (Math.random() < 0.5 ? 'A':'B');
-  localStorage.setItem('econya_ab', variant);
-  document.querySelectorAll('[data-cta]').forEach(btn => { if(variant==='B'){ btn.classList.add('ghost'); } });
-
-  // Bank link indicator (demo state)
   const linked = !!localStorage.getItem('econya_bank_linked');
   document.querySelectorAll('[data-bank-state]').forEach(el=> el.textContent = linked ? 'Banque connectée ✓' : 'Connecter ma banque');
 
-  // API helpers
-  const API_BASE = localStorage.getItem('econya_api_base') || 'http://localhost:3000';
-  window.EconyaAPI = {
-    base: API_BASE,
-    token: () => localStorage.getItem('econya_jwt') || '',
-    setBase: (u) => { localStorage.setItem('econya_api_base', u); location.reload(); },
-    login: async () => {
-      try{
-        const r = await fetch(`${API_BASE}/auth/mock-login`, {method:'POST', headers:{'Content-Type':'application/json'}});
-        if(!r.ok) throw new Error('login failed');
-        const {token} = await r.json();
-        localStorage.setItem('econya_jwt', token);
-        return token;
-      }catch(e){
-        console.error(e);
-        alert('Login API échoué. Vérifie que le backend tourne sur '+API_BASE);
-      }
-    },
-    authHeader: () => ({ 'Authorization': 'Bearer ' + (localStorage.getItem('econya_jwt')||'') })
-  };
+  async function loadPartners(){
+    try{
+      const r = await fetch('assets/partners/partners.json');
+      const data = await r.json();
+      return data;
+    }catch(e){ console.warn('partners load failed', e); return {partners:[]}; }
+  }
+  async function renderPartners(container){
+    const data = await loadPartners();
+    const country = (localStorage.getItem('econya_country') || '').toUpperCase();
+    const category = (new URLSearchParams(location.search).get('cat') || '').toLowerCase();
+    const partners = data.partners
+      .filter(p => !country || !p.countries || p.countries.includes(country))
+      .filter(p => !category || p.category===category);
+    container.innerHTML = partners.map(p => `
+      <div class="card part-card">
+        <img src="${p.logo}" alt="${p.name}"/>
+        <div><strong>${p.name}</strong><br/><small>${p.tagline||''}</small></div>
+        <div>${p.perk||''}</div>
+        <div><a class="btn" href="${p.url}" target="_blank" rel="noopener">Voir l’offre</a></div>
+      </div>
+    `).join('') || '<p>Aucune offre pour ce filtre pour le moment.</p>';
+  }
+  const grid = document.getElementById('partners-grid');
+  if(grid){ renderPartners(grid); }
 
-  // Simple chart
-  window.drawIncomeSpend = (canvas, income, spend)=>{
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0,0,W,H);
-    const max = Math.max(...income, ...spend, 1);
-    ctx.strokeStyle = 'rgba(0,0,0,.2)'; if((document.documentElement.getAttribute('data-theme')||'dark')==='dark'){ ctx.strokeStyle='rgba(255,255,255,.2)'; }
-    ctx.beginPath(); ctx.moveTo(40,10); ctx.lineTo(40,H-30); ctx.lineTo(W-10,H-30); ctx.stroke();
-    const step = (W-60)/Math.max(1, income.length-1);
-    function plot(arr, color){
-      ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
-      arr.forEach((v,i)=>{
-        const x = 40 + i*step;
-        const y = (H-30) - (v/max)*(H-40);
-        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-      });
-      ctx.stroke();
-    }
-    plot(spend, '#ef4444');
-    plot(income, '#22c55e');
-  };
+  const form = document.getElementById('filters');
+  if(form){
+    form.addEventListener('change', ()=>{
+      const country = form.country.value.toUpperCase();
+      const category = form.category.value;
+      if(country) localStorage.setItem('econya_country', country);
+      const url = new URL(location.href);
+      if(category) url.searchParams.set('cat', category); else url.searchParams.delete('cat');
+      history.replaceState({}, '', url);
+      renderPartners(document.getElementById('partners-grid'));
+    });
+  }
+})();
+// v6.7 Economy Score
+(function(){
+  function getNum(k, d){ return parseFloat(localStorage.getItem(k)||d) || 0 }
+  function computeScore(){
+    const income = getNum('econya_income', 1800);
+    const rent   = getNum('econya_rent', 650);
+    const commute= getNum('econya_commute', 80);
+    let subs = 0; try{ subs = (JSON.parse(localStorage.getItem('econya_subs')||'[]')||[]).reduce((a,s)=>a+(s.price||0),0);}catch{}
+    const pot = subs*0.25 + 120*0.12/12 + 800*0.08/12 + 60/12;
+    const discr = Math.max(0, income - rent - commute - subs);
+    const ratio = discr>0 ? Math.min(1, pot/Math.max(1,discr)) : 0;
+    const score = Math.round(ratio*100);
+    localStorage.setItem('econya_score', String(score));
+    return score;
+  }
+  function renderScore(){
+    const s = computeScore();
+    const badge = document.getElementById('econya-score');
+    if(badge){ badge.textContent = s + '/100'; }
+  }
+  window.addEventListener('DOMContentLoaded', renderScore);
 })();

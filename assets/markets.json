@@ -1,0 +1,44 @@
+{
+  "last_update": "2025-08-12",
+  "indices": [
+    {
+      "symbol": "^FCHI",
+      "name": "CAC 40",
+      "price": 7500.0
+    },
+    {
+      "symbol": "^FTSE",
+      "name": "FTSE 100",
+      "price": 7600.0
+    },
+    {
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "price": 5200.0
+    }
+  ],
+  "commodities": [
+    {
+      "symbol": "XAU",
+      "name": "Or (oz)",
+      "price": 2350.0
+    },
+    {
+      "symbol": "XAG",
+      "name": "Argent (oz)",
+      "price": 28.0
+    }
+  ],
+  "crypto": [
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": 60000.0
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "price": 2800.0
+    }
+  ]
+}

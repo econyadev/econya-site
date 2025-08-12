@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Rapport mensuel — Econya</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+  <style>@media print{ .noprint{display:none} body{background:#fff;color:#000} .card{border:none;box-shadow:none} }</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="rep-title">Rapport mensuel — Econya</h1>
+<script>document.addEventListener("DOMContentLoaded",()=>{const n=(localStorage.getItem("econya_firstname")||"").trim(); if(n){document.getElementById("rep-title").textContent="Rapport mensuel — "+n;}});</script>
+  <div class="noprint card">
+    <button class="btn" onclick="window.print()">Exporter en PDF (Imprimer)</button>
+    <button class="btn" onclick="downloadCSV()">Exporter CSV</button>
+  </div>
+  <div class="card" id="summary"></div>
+  <div class="card" id="actions"></div>
+</div>
+<script>
+function euro(n){ try{return new Intl.NumberFormat(navigator.language,{style:'currency',currency:'EUR'}).format(n);}catch{return n.toFixed(2)+' €'} }
+function getNum(k, d){ return parseFloat(localStorage.getItem(k)||d)||0 }
+function load(){
+  const income = getNum('econya_income',1800), rent=getNum('econya_rent',650), commute=getNum('econya_commute',80);
+  let subs=0; let list=[]; try{ list = JSON.parse(localStorage.getItem('econya_subs')||'[]'); subs=list.reduce((a,s)=>a+(s.price||0),0);}catch{}
+  const pot = subs*0.25 + 120*0.12/12 + 800*0.08/12 + 60/12;
+  document.getElementById('summary').innerHTML = `
+    <h3>Budget & potentiel d’économies (mensuel)</h3>
+    <ul>
+      <li>Revenus : <strong>${euro(income)}</strong></li>
+      <li>Loyer : ${euro(rent)} — Transport : ${euro(commute)} — Abonnements : ${euro(subs)}</li>
+      <li>Potentiel d’économies estimé : <strong>${euro(pot)}</strong></li>
+    </ul>`;
+  document.getElementById('actions').innerHTML = `
+    <h3>Actions recommandées</h3>
+    <ul>
+      <li>Réduire abonnements de 25% (ciblés)</li>
+      <li>Comparer assurance auto (-12% annuel)</li>
+      <li>Comparer énergie (-8% annuel)</li>
+      <li>Comparer banque (frais CB/tenue)</li>
+    </ul>`;
+}
+function downloadCSV(){
+  const rows = [
+    ['Champ','Valeur'],
+    ['Revenus', localStorage.getItem('econya_income')||''],
+    ['Loyer', localStorage.getItem('econya_rent')||''],
+    ['Transport', localStorage.getItem('econya_commute')||''],
+    ['Abonnements', (localStorage.getItem('econya_subs')||'').replaceAll(',',';')],
+    ['Score', localStorage.getItem('econya_score')||'']
+  ];
+  const csv = rows.map(r=>r.map(x=>`"${(x||'').toString().replaceAll('"','""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'econya_rapport.csv'; a.click(); URL.revokeObjectURL(a.href);
+}
+load();
+</script>
+<script src="assets/personalize.js"></script>
+<script src="assets/cookies.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body>
+</html>

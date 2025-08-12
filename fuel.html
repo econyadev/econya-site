@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Essence moins chère — Econya</title>
+  <meta name="description" content="Trouvez les stations-service les moins chères près de vous : SP95, E10, Diesel. Économisez à chaque plein."/>
+  <link rel="stylesheet" href="assets/style.css"/>
+  <style>
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);padding:4px 8px;border-radius:999px;font-size:.9rem}
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
+  <nav class="nav">
+    <a href="assistant.html">Assistant IA</a>
+    <a href="comparator.html">Comparateur</a>
+    <a href="simulators.html">Simulateurs</a>
+    <a href="fuel.html"><strong>Essence</strong></a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+<div class="wrap grid">
+  <section class="card">
+    <h1>Essence moins chère</h1>
+    <div class="row">
+      <label>Carburant
+        <select id="f-fuel"><option>SP95</option><option>E10</option><option>Diesel</option></select>
+      </label>
+      <label>Pays
+        <select id="f-country"><option>FR</option><option>BE</option><option>MA</option></select>
+      </label>
+      <label>Rayon (km)
+        <input id="f-radius" type="number" value="15" min="1" step="1"/>
+      </label>
+      <button class="btn" id="geo">Utiliser ma position</button>
+      <button class="btn" id="apply">Appliquer</button>
+    </div>
+    <div id="summary" class="small" style="margin-top:6px"></div>
+    <div id="list" style="margin-top:10px"></div>
+  </section>
+  <aside class="card">
+    <h3>Astuces plein</h3>
+    <ul>
+      <li>Évitez de faire le plein près des autoroutes (prix +0,10€ à +0,20€).</li>
+      <li>Regroupez vos trajets : moins de détours → moins d’essence.</li>
+      <li>Pression des pneus correcte = -3% de consommation.</li>
+    </ul>
+    <div class="card"><a class="btn" href="comparator.html?cat=mobile">Réduire mon forfait mobile</a></div>
+  </aside>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+</footer>
+<script>
+async function loadStations(){ const r = await fetch('assets/fuel/stations.json'); return await r.json(); }
+function haversine(lat1, lon1, lat2, lon2){ const R=6371; const toRad=x=>x*Math.PI/180; const dLat=toRad(lat2-lat1); const dLon=toRad(lon2-lon1); const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2; return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); }
+function fmt(n,cur='EUR'){ try{ return new Intl.NumberFormat(navigator.language,{style:'currency',currency:cur}).format(n);}catch{ return (n.toFixed? n.toFixed(2):n)+' '+cur; } }
+async function render(pos){
+  const data = await loadStations();
+  const fuel = document.getElementById('f-fuel').value;
+  const country = (document.getElementById('f-country').value||'FR').toUpperCase();
+  const radius = parseFloat(document.getElementById('f-radius').value||'15')||15;
+  const list = data.stations.filter(s=> s.country===country && s.prices && (fuel in s.prices));
+  let lat=null, lon=null;
+  if(pos){ lat=pos.coords.latitude; lon=pos.coords.longitude; }
+  const center = lat? {lat,lon} : null;
+  const withDist = list.map(s=>{ 
+    const cur = s.currency|| (country==='MA'?'MAD':'EUR');
+    const price = s.prices[fuel];
+    const d = center? haversine(center.lat, center.lon, s.lat, s.lon) : null;
+    return Object.assign({price,currency:cur,distance:d}, s);
+  });
+  const filtered = withDist.filter(s=> center? (s.distance||999)<=radius : true);
+  filtered.sort((a,b)=> (a.price-b.price) || ((a.distance||999)-(b.distance||999)) );
+  const median = filtered.length? filtered[Math.floor(filtered.length/2)].price : 0;
+  const perFill = 50;
+  document.getElementById('summary').textContent = 'Stations trouvées: '+filtered.length + (center? ' — autour de vous':'' ) + '. Économie estimée / plein: ' + (filtered.length? fmt(Math.max(0, (median - filtered[0].price))*perFill, filtered[0].currency):'—');
+  document.getElementById('list').innerHTML = filtered.slice(0,40).map(s=>`
+    <div class="card row">
+      <div style="min-width:200px"><strong>${s.name}</strong><br/><span class="small">${s.address}, ${s.city}</span></div>
+      <div><span class="pill">${fuel}: <strong>${s.price.toFixed(2)} ${s.currency==='MAD'?'MAD':'€'}</strong></span></div>
+      ${s.distance!=null? `<div class="small">à ~${s.distance.toFixed(1)} km</div>` : ''}
+      <div class="small">MAJ: ${(s.updated_at||'').split('T')[0]}</div>
+    </div>
+  `).join('') || '<div class="card">Aucune station dans ce filtre.</div>';
+}
+document.getElementById('apply').onclick = ()=> render(null);
+document.getElementById('geo').onclick = ()=> navigator.geolocation && navigator.geolocation.getCurrentPosition(render, ()=> render(null));
+window.addEventListener('DOMContentLoaded', ()=>{ 
+  const c = (localStorage.getItem('econya_country')||'FR').toUpperCase();
+  document.getElementById('f-country').value = c;
+  render(null);
+});
+</script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body>
+</html>

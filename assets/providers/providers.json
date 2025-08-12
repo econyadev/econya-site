@@ -1,0 +1,137 @@
+{
+  "last_update": "2025-08-12",
+  "offers": [
+    {
+      "country": "FR",
+      "category": "electricity",
+      "provider": "VoltEco",
+      "plan": "Fixe 12 mois",
+      "price_month": 62.9,
+      "contract": "12m",
+      "rating": 4.5,
+      "kWh_price": 0.19,
+      "green": true,
+      "affiliate_url": "https://example-awin.com/volteco"
+    },
+    {
+      "country": "FR",
+      "category": "electricity",
+      "provider": "KiloLite",
+      "plan": "Indexé marché",
+      "price_month": 58.4,
+      "contract": "sans engagement",
+      "rating": 4.0,
+      "kWh_price": 0.185,
+      "green": false,
+      "affiliate_url": "https://example-td.com/kilolite"
+    },
+    {
+      "country": "FR",
+      "category": "gas",
+      "provider": "GazZen",
+      "plan": "Fixe 24 mois",
+      "price_month": 49.9,
+      "contract": "24m",
+      "rating": 4.3,
+      "kWh_price": 0.09,
+      "green": true,
+      "affiliate_url": "https://example-rakuten.com/gazzen"
+    },
+    {
+      "country": "FR",
+      "category": "internet",
+      "provider": "FiberMax",
+      "plan": "Fibre 1 Gbps",
+      "price_month": 24.99,
+      "contract": "12m",
+      "rating": 4.4,
+      "speed_mbps": 1000,
+      "hardware": "Box incluse",
+      "affiliate_url": "https://example-awin.com/fibermax"
+    },
+    {
+      "country": "FR",
+      "category": "internet",
+      "provider": "NetZen",
+      "plan": "Fibre 500 Mbps",
+      "price_month": 19.99,
+      "contract": "12m",
+      "rating": 4.2,
+      "speed_mbps": 500,
+      "hardware": "Box incluse",
+      "affiliate_url": "https://example-td.com/netzen"
+    },
+    {
+      "country": "FR",
+      "category": "mobile",
+      "provider": "Mobile+",
+      "plan": "150 Go 5G",
+      "price_month": 14.99,
+      "contract": "sans engagement",
+      "rating": 4.1,
+      "data_gb": 150,
+      "calls": "illimités",
+      "affiliate_url": "https://example-awin.com/mobileplus"
+    },
+    {
+      "country": "FR",
+      "category": "mobile",
+      "provider": "EcoMobile",
+      "plan": "30 Go 4G",
+      "price_month": 5.99,
+      "contract": "sans engagement",
+      "rating": 4.0,
+      "data_gb": 30,
+      "calls": "illimités",
+      "affiliate_url": "https://example-td.com/ecomobile"
+    },
+    {
+      "country": "BE",
+      "category": "internet",
+      "provider": "BelFiber",
+      "plan": "Fibre 1 Gbps",
+      "price_month": 29.99,
+      "contract": "12m",
+      "rating": 4.3,
+      "speed_mbps": 1000,
+      "hardware": "Modem",
+      "affiliate_url": "https://example.com/belfiber"
+    },
+    {
+      "country": "BE",
+      "category": "mobile",
+      "provider": "BeMobile",
+      "plan": "40 Go 5G",
+      "price_month": 12.99,
+      "contract": "sans engagement",
+      "rating": 4.0,
+      "data_gb": 40,
+      "calls": "illimités",
+      "affiliate_url": "https://example.com/bemobile"
+    },
+    {
+      "country": "MA",
+      "category": "internet",
+      "provider": "AtlasNet",
+      "plan": "Fibre 200 Mbps",
+      "price_month": 299,
+      "contract": "12m",
+      "rating": 4.0,
+      "speed_mbps": 200,
+      "currency": "MAD",
+      "affiliate_url": "https://example.com/atlasnet"
+    },
+    {
+      "country": "MA",
+      "category": "mobile",
+      "provider": "SaharaTel",
+      "plan": "25 Go 4G",
+      "price_month": 49,
+      "contract": "sans engagement",
+      "rating": 3.9,
+      "data_gb": 25,
+      "currency": "MAD",
+      "affiliate_url": "https://example.com/saharatel"
+    }
+  ]
+}

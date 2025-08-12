@@ -1,0 +1,61 @@
+{
+  "FR": {
+    "stocks_etf": [
+      {
+        "name": "Broker A",
+        "pea": true,
+        "isa": false,
+        "fees": "0€ ordre ETF",
+        "url": "https://example-broker-a.com/?utm_source=econya&utm_medium=deals&utm_campaign=stocks"
+      },
+      {
+        "name": "Broker B",
+        "pea": false,
+        "isa": true,
+        "fees": "Actions fractionnées",
+        "url": "https://example-broker-b.com/?utm_source=econya&utm_medium=deals&utm_campaign=stocks"
+      },
+      {
+        "name": "Broker C",
+        "pea": true,
+        "isa": true,
+        "fees": "PEA éligible, frais réduits",
+        "url": "https://example-broker-c.com/?utm_source=econya&utm_medium=deals&utm_campaign=stocks"
+      }
+    ],
+    "tax_notes": [
+      "PEA : gains et dividendes sous conditions (durée/versements).",
+      "TOB : non applicable en FR, voir BE."
+    ]
+  },
+  "BE": {
+    "stocks_etf": [
+      {
+        "name": "Broker EU",
+        "pea": false,
+        "isa": false,
+        "fees": "ETF diversifiés",
+        "url": "https://example-broker-eu.com/?utm_source=econya&utm_medium=deals&utm_campaign=stocks"
+      }
+    ],
+    "tax_notes": [
+      "TOB (taxe sur les opérations de bourse) peut s’appliquer.",
+      "Précompte mobilier sur dividendes selon conventions."
+    ]
+  },
+  "GB": {
+    "stocks_etf": [
+      {
+        "name": "Broker UK",
+        "pea": false,
+        "isa": true,
+        "fees": "ISA eligible",
+        "url": "https://example-broker-uk.com/?utm_source=econya&utm_medium=deals&utm_campaign=stocks"
+      }
+    ],
+    "tax_notes": [
+      "ISA : plafonds annuels, produits éligibles.",
+      "Financial Promotions rules (FCA)."
+    ]
+  }
+}

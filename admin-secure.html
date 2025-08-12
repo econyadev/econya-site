@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin sécurisé — Econya</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body>
+<div class="wrap">
+  <h1>Admin sécurisé</h1>
+  <div class="card">
+    <label>JWT (Bearer) <input id="jwt" placeholder="collez ici le token admin" /></label>
+    <button class="btn" id="savejwt">Valider</button>
+  </div>
+  <div class="card">
+    <button class="btn" id="pull">Charger providers depuis l’API</button>
+    <button class="btn" id="push">Publier providers vers l’API</button>
+    <button class="btn" id="add">Ajouter une offre</button>
+  </div>
+  <div class="card"><textarea id="editor" style="width:100%;min-height:55vh;background:#0b1a16;color:#d7efe4;border-radius:12px;border:1px solid rgba(255,255,255,.12)"></textarea></div>
+</div>
+<script>
+const api = ()=> (localStorage.getItem('econya_verify_api')||'').replace(/\/$/, '');
+const jwtIn = document.getElementById('jwt');
+document.getElementById('savejwt').onclick = ()=>{ localStorage.setItem('econya_admin_jwt', jwtIn.value||''); alert('JWT sauvegardé'); };
+document.getElementById('pull').onclick = async ()=>{
+  if(!api()) return alert('Configurez econya_verify_api dans le localStorage.');
+  const r = await fetch(api()+'/admin/providers'); if(!r.ok) return alert('Erreur API');
+  document.getElementById('editor').value = JSON.stringify(await r.json(), null, 2);
+};
+document.getElementById('push').onclick = async ()=>{
+  if(!api()) return alert('Configurez econya_verify_api');
+  let data; try{ data = JSON.parse(document.getElementById('editor').value); }catch(e){ return alert('JSON invalide'); }
+  const r = await fetch(api()+'/admin/providers', {method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('econya_admin_jwt')||'')}, body: JSON.stringify(data)});
+  if(r.ok){ alert('Publié ✅'); } else { alert('Erreur API ('+r.status+')'); }
+};
+document.getElementById('add').onclick = ()=>{
+  const country = prompt('Pays (ex: FR)')||'FR';
+  const category = prompt('Catégorie (electricity|gas|internet|mobile)')||'internet';
+  const provider = prompt('Fournisseur ?')||'NewProvider';
+  const plan = prompt('Nom de l\'offre ?')||'Plan';
+  const price = parseFloat(prompt('Prix/mois ?')||'0')||0;
+  const rating = parseFloat(prompt('Note sur 5 ?')||'4')||4;
+  const url = prompt('URL affiliation ?')||'#';
+  const offer = {country, category, provider, plan, price_month:price, rating, affiliate_url:url};
+  try{
+    const ed = document.getElementById('editor');
+    const j = JSON.parse(ed.value||'{"offers":[]}');
+    j.offers = j.offers || []; j.offers.push(offer);
+    ed.value = JSON.stringify(j, null, 2);
+    alert('Offre ajoutée. Cliquez Publier pour envoyer à l\'API.');
+  }catch(e){ alert('JSON invalide'); }
+};
+</script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body></html>

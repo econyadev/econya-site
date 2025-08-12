@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Simulateurs — Econya</title>
+  <meta name="description" content="Estimez votre facture et trouvez l’offre idéale pour électricité, gaz, Internet, et mobile."/>
+  <link rel="stylesheet" href="assets/style.css"/>
+  <style>
+    .sim-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+    @media(max-width:900px){{ .sim-grid{{grid-template-columns:1fr}} }}
+    .kpi{{display:inline-block;padding:8px 10px;border-radius:10px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);font-weight:700}}
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
+  <nav class="nav">
+    <a href="assistant.html">Assistant IA</a>
+    <a href="comparator.html">Comparateur</a>
+    <a href="simulators.html"><strong>Simulateurs</strong></a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+<div class="wrap">
+  <h1>Simulateurs — factures & forfaits</h1>
+  <div class="card sim-grid">
+    <section class="card">
+      <h3>Électricité</h3>
+      <label>Conso (kWh / mois) <input id="el-kwh" type="number" min="0" step="1" value="180"/></label>
+      <label>Prix kWh (si connu) <input id="el-price" type="number" min="0" step="0.001" placeholder="ex: 0.19"/></label>
+      <button class="btn" onclick="simElectricity()">Estimer & comparer</button>
+      <div id="el-out" style="margin-top:8px"></div>
+    </section>
+    <section class="card">
+      <h3>Gaz</h3>
+      <label>Conso (kWh / mois) <input id="ga-kwh" type="number" min="0" step="1" value="300"/></label>
+      <label>Prix kWh (si connu) <input id="ga-price" type="number" min="0" step="0.001" placeholder="ex: 0.09"/></label>
+      <button class="btn" onclick="simGas()">Estimer & comparer</button>
+      <div id="ga-out" style="margin-top:8px"></div>
+    </section>
+    <section class="card">
+      <h3>Internet</h3>
+      <label>Débit souhaité (Mbps) <input id="in-mbps" type="number" min="10" step="10" value="500"/></label>
+      <button class="btn" onclick="simInternet()">Voir les offres adaptées</button>
+      <div id="in-out" style="margin-top:8px"></div>
+    </section>
+    <section class="card">
+      <h3>Appareils (énergie)</h3>
+      <p class="small">Renseignez l’usage: la conso estimée s’ajoute à l’électricité.</p>
+      <div id="appliances">
+        <div>💡 LED 10W — Heures/jour <input type="number" data-w="10" data-h="1" value="3"></div>
+        <div>🧺 Lave-linge 500W — Cycles/semaine <input type="number" data-w="500" data-cycles="1" value="3"></div>
+        <div>❄️ Frigo 150W — Heures/jour <input type="number" data-w="150" data-h="24" value="24"></div>
+        <div>🖥️ PC 120W — Heures/jour <input type="number" data-w="120" data-h="2" value="2"></div>
+      </div>
+      <button class="btn" onclick="calcAppliances()">Calculer & injecter</button>
+      <div id="ap-out" style="margin-top:8px"></div>
+    </section>
+    <section class="card">
+      <h3>Mobile</h3>
+      <label>Data mensuelle (Go) <input id="mo-gb" type="number" min="1" step="1" value="40"/></label>
+      <button class="btn" onclick="simMobile()">Voir les offres adaptées</button>
+      <div id="mo-out" style="margin-top:8px"></div>
+    </section>
+  </div>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+
+<div class="nav">
+  <span>Suivez-nous :</span>
+  <a href="https://facebook.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">Facebook</a> ·
+  <a href="https://instagram.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">Instagram</a> ·
+  <a href="https://twitter.com/econya?utm_source=site&utm_medium=footer&utm_campaign=social" target="_blank" rel="noopener">X/Twitter</a> ·
+  <a href="social.html">Tous les réseaux</a>
+</div>
+</footer>
+<script>
+function fmtEUR(n){{ try{{ return new Intl.NumberFormat(navigator.language,{{style:'currency',currency:'EUR'}}).format(n); }}catch{{ return (n.toFixed? n.toFixed(2):n)+' €'; }} }}
+async function catOffers(cat){{ 
+  const api = localStorage.getItem('econya_verify_api'); 
+  const country = (localStorage.getItem('econya_country')||'FR').toUpperCase();
+  if(api){{ 
+    try{{ 
+      const r = await fetch(api.replace(/\/$/,'') + `/compare?country=${{encodeURIComponent(country)}}&cat=${{encodeURIComponent(cat)}}`);
+      if(r.ok) return (await r.json()).offers||[];
+    }}catch{{}} 
+  }}
+  const j = await (await fetch('assets/providers/providers.json')).json();
+  return j.offers.filter(o=> o.country===country && o.category===cat);
+}}
+async function kWhFromAppliances(){
+  // Approx: (W * h)/1000 par jour → *30
+  let kwh=0;
+  document.querySelectorAll('#appliances input').forEach(inp=>{
+    const W = parseFloat(inp.getAttribute('data-w')||'0')||0;
+    const h = parseFloat(inp.getAttribute('data-h')||inp.value||'0')||0;
+    const cyc = parseFloat(inp.getAttribute('data-cycles')||'0')||0;
+    if(cyc>0){ kwh += (W*1.0 * 1.0)/1000 * cyc * 4; } // approx 1h par cycle * 4 semaines
+    else{ kwh += (W*h)/1000 * 30; }
+  });
+  return kwh;
+}
+function calcAppliances(){
+  const kwh = kWhFromAppliances();
+  document.getElementById('ap-out').textContent = '≈ ' + kwh.toFixed(1) + ' kWh/mois (ajoutés au simulateur électricité)';
+  const el = document.getElementById('el-kwh'); el.value = (parseFloat(el.value||'0') + kwh).toFixed(1);
+}
+function simElectricity(){{ 
+  const kwh = parseFloat(document.getElementById('el-kwh').value||'0');
+  const price = parseFloat(document.getElementById('el-price').value||'0');
+  const offers = await catOffers('electricity');
+  const rows = offers.map(o=>{{ 
+    const unit = (o.kWh_price||price||0.19); 
+    const est = unit * kwh; 
+    return `<div>• <strong>${{o.provider}}</strong> — ${{fmtEUR(o.price_month||est)}} (est: ${{fmtEUR(est)}} @ ${{unit}}€/kWh) <a class="btn" href="${{o.affiliate_url}}" target="_blank" rel="noopener">Choisir</a></div>`; 
+  }}).join('') || '<em>Aucune offre trouvée.</em>';
+  document.getElementById('el-out').innerHTML = rows + `
+    <div style="margin-top:6px"><a class="btn" href="comparator.html?cat=electricity">Comparer tout</a></div>`;
+}}
+async function simGas(){{ 
+  const kwh = parseFloat(document.getElementById('ga-kwh').value||'0');
+  const price = parseFloat(document.getElementById('ga-price').value||'0');
+  const offers = await catOffers('gas');
+  const rows = offers.map(o=>{{ 
+    const unit = (o.kWh_price||price||0.09); 
+    const est = unit * kwh; 
+    return `<div>• <strong>${{o.provider}}</strong> — ${{fmtEUR(o.price_month||est)}} (est: ${{fmtEUR(est)}} @ ${{unit}}€/kWh) <a class="btn" href="${{o.affiliate_url}}" target="_blank" rel="noopener">Choisir</a></div>`; 
+  }}).join('') || '<em>Aucune offre trouvée.</em>';
+  document.getElementById('ga-out').innerHTML = rows + `
+    <div style="margin-top:6px"><a class="btn" href="comparator.html?cat=gas">Comparer tout</a></div>`;
+}}
+async function simInternet(){{ 
+  const mbps = parseFloat(document.getElementById('in-mbps').value||'0');
+  const offers = (await catOffers('internet')).filter(o=> (o.speed_mbps||0) >= mbps);
+  const rows = offers.map(o=> `<div>• <strong>${{o.provider}}</strong> — ${{fmtEUR(o.price_month)}} (${(o.speed_mbps||'')} Mbps) <a class="btn" href="${{o.affiliate_url}}" target="_blank" rel="noopener">Choisir</a></div>`).join('') || '<em>Aucune offre trouvée.</em>';
+  document.getElementById('in-out').innerHTML = rows + `
+    <div style="margin-top:6px"><a class="btn" href="comparator.html?cat=internet">Comparer tout</a></div>`;
+}}
+async function simMobile(){{ 
+  const gb = parseFloat(document.getElementById('mo-gb').value||'0');
+  const offers = (await catOffers('mobile')).filter(o=> (o.data_gb||0) >= gb);
+  const rows = offers.map(o=> `<div>• <strong>${{o.provider}}</strong> — ${{fmtEUR(o.price_month)}} (${(o.data_gb||'')} Go) <a class="btn" href="${{o.affiliate_url}}" target="_blank" rel="noopener">Choisir</a></div>`).join('') || '<em>Aucune offre trouvée.</em>';
+  document.getElementById('mo-out').innerHTML = rows + `
+    <div style="margin-top:6px"><a class="btn" href="comparator.html?cat=mobile">Comparer tout</a></div>`;
+}}
+</script>
+<script src="assets/cookies.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body>
+</html>

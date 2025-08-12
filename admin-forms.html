@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin (formulaires) — Econya</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body>
+<div class="wrap">
+  <h1>Admin — Offres</h1>
+  <div class="card">
+    <label>JWT (Bearer) <input id="jwt" placeholder="collez ici le token admin"></label>
+    <button class="btn" id="savejwt">Valider</button>
+    <small class="small">Le token reste en local.</small>
+  </div>
+  <div class="card">
+    <h3>Ajouter / Éditer une offre</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+      <label>Pays<input id="f-country" value="FR"></label>
+      <label>Catégorie<select id="f-cat"><option>electricity</option><option>gas</option><option>internet</option><option>mobile</option></select></label>
+      <label>Fournisseur<input id="f-provider"></label>
+      <label>Offre<input id="f-plan"></label>
+      <label>Prix/mois<input id="f-price" type="number" step="0.01"></label>
+      <label>Note (0-5)<input id="f-rating" type="number" step="0.1" value="4.0"></label>
+      <label>Frais activation<input id="f-act" type="number" step="0.01" value="0"></label>
+      <label>Mois promo<input id="f-promoM" type="number" step="1" value="0"></label>
+      <label>Réduc/mois promo<input id="f-promoR" type="number" step="0.01" value="0"></label>
+      <label>URL affiliation<input id="f-url"></label>
+      <label>Détails (JSON facultatif)<input id="f-extra" placeholder='{"kWh_price":0.19}'></label>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn" id="add">Ajouter</button>
+      <button class="btn" id="publish">Publier vers l’API</button>
+      <input type="file" id="csv" accept=".csv"> <button class="btn" id="import">Importer CSV</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Catalogue en cours</h3>
+    <pre id="count" class="small"></pre>
+    <textarea id="editor" style="width:100%;min-height:50vh;background:#0b1a16;color:#d7efe4;border-radius:12px;border:1px solid rgba(255,255,255,.12)"></textarea>
+  </div>
+</div>
+<script>
+const api = ()=> (localStorage.getItem('econya_verify_api')||'').replace(/\/$/,''); 
+document.getElementById('savejwt').onclick = ()=> localStorage.setItem('econya_admin_jwt', document.getElementById('jwt').value||'');
+function rows(){ try{ return (JSON.parse(document.getElementById('editor').value)||{}).offers||[] }catch{return []} }
+function refreshCount(){ document.getElementById('count').textContent = rows().length + ' offres'; }
+async function load(){
+  const r = await fetch(api()+'/admin/providers'); const j = await r.json();
+  document.getElementById('editor').value = JSON.stringify(j, null, 2); refreshCount();
+}
+function add(){
+  const obj = {country:val('f-country'), category:val('f-cat'), provider:val('f-provider'), plan:val('f-plan'),
+               price_month:parseFloat(val('f-price')||'0')||0, rating:parseFloat(val('f-rating')||'0')||0,
+               activation_fee:parseFloat(val('f-act')||'0')||0, promo_months:parseFloat(val('f-promoM')||'0')||0, promo_discount:parseFloat(val('f-promoR')||'0')||0,
+               affiliate_url:val('f-url')};
+  try{ const extra = JSON.parse(val('f-extra')||'{}'); Object.assign(obj, extra); }catch{}
+  const ed = document.getElementById('editor'); const j = JSON.parse(ed.value||'{"offers":[]}'); j.offers=j.offers||[]; j.offers.push(obj); ed.value=JSON.stringify(j,null,2); refreshCount();
+}
+function val(id){ return (document.getElementById(id).value||'').trim() }
+async function publish(){
+  const ed = document.getElementById('editor'); let data; try{ data=JSON.parse(ed.value) }catch{ return alert('JSON invalide') }
+  const r = await fetch(api()+'/admin/providers', {method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('econya_admin_jwt')||'')}, body: JSON.stringify(data)});
+  alert(r.ok?'Publié ✅':'Erreur '+r.status);
+}
+document.getElementById('add').onclick = add;
+document.getElementById('publish').onclick = publish;
+document.getElementById('import').onclick = async ()=>{
+  const f = document.getElementById('csv').files[0]; if(!f) return alert('Choisissez un CSV');
+  const txt = await f.text(); const lines = txt.split(/\r?\n/).filter(Boolean);
+  const head = lines.shift().split(',').map(h=>h.trim());
+  const req = ["country","category","provider","plan","price_month","rating"];
+  for(const k of req){ if(!head.includes(k)) return alert('Colonnes requises: '+req.join(',')); }
+  const items = lines.map(L=>{ const cols=L.split(','); const o={}; head.forEach((h,i)=> o[h]=cols[i] ); o.price_month=parseFloat(o.price_month||'0')||0; o.rating=parseFloat(o.rating||'0')||0; return o; });
+  const ed = document.getElementById('editor'); const j = JSON.parse(ed.value||'{"offers":[]}'); j.offers=(j.offers||[]).concat(items); ed.value=JSON.stringify(j,null,2); refreshCount();
+};
+load().catch(()=>{});
+</script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body></html>

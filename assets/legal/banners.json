@@ -1,0 +1,26 @@
+{
+  "FR": {
+    "top": "Investir comporte des risques. Vérifiez l’éligibilité PEA et les frais.",
+    "foot": "PEA/assurance-vie : consultez votre intermédiaire."
+  },
+  "GB": {
+    "top": "Règles FCA - Financial promotions. Mention de risque obligatoire.",
+    "foot": "Vérifiez l’éligibilité ISA et les plafonds."
+  },
+  "BE": {
+    "top": "FSMA : règles strictes sur la publicité. Soyez prudents.",
+    "foot": "TOB et fiscalité locale peuvent s’appliquer."
+  },
+  "MA": {
+    "top": "Crypto restreinte. Privilégiez prestataires autorisés localement.",
+    "foot": "Renseignez-vous auprès des autorités locales."
+  },
+  "CA": {
+    "top": "CSA : plateformes enregistrées uniquement.",
+    "foot": "Produits à levier soumis à restrictions."
+  },
+  "US": {
+    "top": "SEC/FINRA : respect des règles. Le capital est à risque.",
+    "foot": "Lisez le prospectus avant d’investir."
+  }
+}

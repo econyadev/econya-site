@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+\1
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://api.econya.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=()"/>
+
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Messages — Econya</title>
+  <meta name="description" content="Discutez en privé avec vos contacts pour partager les meilleurs plans et économies."/>
+  <meta property="og:title" content="Messages — Econya"/>
+  <meta property="og:description" content="Discutez en privé avec vos contacts pour partager les meilleurs plans et économies."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="assets/logo.svg"/>
+  <meta name="theme-color" content="#0e1512"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html"><img loading="lazy" src="assets/logo.svg" alt="Econya" style="width:34px;height:34px;border-radius:8px"/> <strong>Econya</strong></a>
+  <nav class="nav"><span class="badge" id="greet-name">Bonjour</span> 
+    <a href="avantages.html">Avantages</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="partenaires.html">Partenaires</a>
+    <a href="messages.html"><strong>Messages</strong></a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="bank-link.html" data-bank-state>Connecter ma banque</a>
+  </nav>
+</header>
+<div class="wrap">
+  <div class="card" style="margin-top:8px"><label>Mon pseudo&nbsp;: <input id="username-set" placeholder="ex: alex" style="padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.12)"/></label> <button id="username-save" class="btn">Valider</button> <small class="small">Utilisé pour la messagerie en temps réel</small></div>
+
+  <h1>Messages privés</h1>
+  <p class="small">Démonstration hors-ligne : vos messages sont stockés en local sur votre appareil. Pour le temps réel chiffré, branchez un backend (ex. WebSocket + JWT).</p>
+  <div class="chat-wrap">
+    <aside class="contacts" id="contact-list" aria-label="Contacts"></aside>
+    <section>
+      <div id="thread" class="thread" aria-live="polite"></div>
+      <div class="composer">
+        <input id="composer-input" type="text" placeholder="Écrire un message… (Entrée pour envoyer)"/>
+        <button id="composer-send">Envoyer</button>
+      </div>
+    </section>
+  </div>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+  <div class="nav">
+    <a href="legal.html">Mentions légales</a> ·
+    <a href="privacy.html">Vie privée</a> ·
+    <a href="terms.html">CGU</a> ·
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+<script src="assets/chat.js"></script>
+<script src="assets/ws.js"></script>
+
+<script>
+(function(){
+  const unameIn = document.getElementById('username-set');
+  const saveBtn = document.getElementById('username-save');
+  const meKey = 'econya_me';
+  function currentName(){ try{ return JSON.parse(localStorage.getItem(meKey)||'{}').name || '' }catch{return ''} }
+  function setName(n){ localStorage.setItem(meKey, JSON.stringify({id:'me', name:n||'Moi'})); }
+  if(unameIn){ unameIn.value = currentName(); }
+  saveBtn && saveBtn.addEventListener('click', ()=>{
+    const n = (unameIn.value||'').trim() || 'Moi';
+    setName(n);
+    if(window._econya_ws_connect){ window._econya_ws_connect(n); alert('Connecté en tant que '+n); }
+  });
+
+  // Hook receiving messages from WS into the encrypted local thread
+  window._econya_ws_incoming = (from, text, ts)=>{
+    const pane = document.getElementById('thread');
+    if(!pane || !pane.dataset.active) return;
+    // naive: drop if active thread is not 'from'
+    const active = pane.dataset.active;
+    if(active !== from) return;
+    const el2 = document.createElement('div');
+    el2.className='msg them';
+    el2.innerHTML = `<div>${text.replace(/[&<>]/g,'')}</div><div class="meta">${new Date(ts).toLocaleString()}</div>`;
+    pane.appendChild(el2); pane.scrollTop = pane.scrollHeight;
+  };
+
+  // Override sendCurrent when WS is available (non-intrusive): monkey patch
+  const btn = document.getElementById('composer-send');
+  const input = document.getElementById('composer-input');
+  function trySendWS(){
+    const pane = document.getElementById('thread'); const to = pane.dataset.active;
+    const text = input.value.trim(); if(!text || !to) return false;
+    if(window._econya_ws_send && window._econya_ws_send(to, text)){ return true; }
+    return false;
+  }
+  if(btn){
+    const oldHandler = btn.onclick;
+    btn.onclick = async ()=>{
+      if(!trySendWS()){ oldHandler && oldHandler(); } // fallback to local AES flow (already in chat.js)
+    };
+  }
+  if(input){
+    const oldKey = input.onkeydown;
+    input.onkeydown = (e)=>{
+      if(e.key==='Enter' && !e.shiftKey){
+        e.preventDefault();
+        if(!trySendWS()){ oldKey && oldKey(e); }
+      }else{ oldKey && oldKey(e); }
+    };
+  }
+})();
+</script>
+
+<script src="assets/personalize.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const n=(localStorage.getItem('econya_firstname')||'').trim();
+  const meKey='econya_me';
+  if(n){
+    try{
+      const me=JSON.parse(localStorage.getItem(meKey)||'{}');
+      if(!me.name || me.name==='Moi'){ localStorage.setItem(meKey, JSON.stringify({id:'me', name:n})); }
+      const input=document.getElementById('username-set'); if(input && !input.value) input.value=n;
+    }catch{}
+  }
+});
+</script>
+<script src="assets/cookies.js"></script>
+<script src="assets/consent.js"></script>
+<script src="assets/analytics.js"></script>
+<script src="assets/compliance.js"></script>
+<script src="assets/partners-router.js"></script>
+<script src="assets/push-subscribe.js"></script>
+</body>
+</html>

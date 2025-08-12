@@ -1,44 +1,35 @@
-:root{ --bg:#0e1512; --card:#101c18; --muted:#22312b; --text:#d7efe4; --accent:#2ecc71; --accent2:#14b8a6; --chip:#0b332a; }
-:root[data-theme="light"]{ --bg:#f6fffb; --card:#ffffff; --muted:#d7efe4; --text:#0e1512; --accent:#10b981; --accent2:#0ea5a5; --chip:#e8faf2; }
-*{box-sizing:border-box}
+:root{ --bg:#0e1512; --card:#0f1c18; --text:#d7efe4; --accent:#22c55e; --accent2:#0ea5a5; --chip:#0b332a; }
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Arial}
-a{color:#0ea5a5;text-decoration:none}
-a:hover{text-decoration:underline}
-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(180deg,rgba(10,20,16,.8),rgba(10,20,16,.2));backdrop-filter:blur(6px);padding:14px 18px;border-bottom:1px solid rgba(0,0,0,.06)}
-:root[data-theme="light"] header{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.6));border-bottom:1px solid rgba(0,0,0,.06)}
-.brand{display:flex;align-items:center;gap:10px}
-.wordmark{font-weight:700;letter-spacing:.3px}
-.links{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.btn{background:var(--accent);border:none;color:#082016;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:700}
-.btn.ghost{background:transparent;border:1px solid var(--accent);color:inherit}
-.wrap{max-width:1100px;margin:0 auto;padding:20px}
-.card{background:var(--card);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:16px;margin:16px 0}
-.badge{background:var(--chip);padding:5px 10px;border-radius:999px;font-size:.85rem;border:1px solid rgba(0,0,0,.06)}
-.chips{display:flex;gap:10px;flex-wrap:wrap}
-.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center}
-@media(max-width:900px){ .hero{grid-template-columns:1fr} }
-.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.kpi{background:var(--chip);border:1px solid rgba(0,0,0,.06);padding:14px;border-radius:14px;text-align:center}
-.burger{display:none;background:none;border:none}
-.burger span{display:block;width:24px;height:2px;background:currentColor;margin:5px 0}
-@media(max-width:860px){ .links{display:none} .burger{display:block} }
-.drawer{position:fixed;inset:0 0 0 auto;width:76vw;max-width:360px;background:var(--card);transform:translateX(100%);transition:.25s;padding:18px;display:flex;flex-direction:column;gap:12px;border-left:1px solid rgba(0,0,0,.06)}
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.25s}
-.drawer.open{transform:translateX(0)}
-.backdrop.show{opacity:1;pointer-events:auto}
-.logo3d{width:40px;height:40px;display:grid;place-items:center;perspective:600px}
-.logo3d img{width:36px;height:36px;transform:rotateX(35deg) rotateY(-15deg) translateZ(0); filter: drop-shadow(0 8px 18px rgba(20,255,160,.25));}
-.logo3d.pop{animation:pop3d 1.1s cubic-bezier(.2,1,.2,1) both}
-@keyframes pop3d{
-  0%{ transform:translateZ(0) scale(.7); filter:blur(1px) drop-shadow(0 0 0 rgba(0,0,0,0)); }
-  50%{ transform:translateZ(20px) scale(1.1); }
-  100%{ transform:translateZ(0) scale(1); }
-}
-.tree{margin:12px auto;width:200px;height:180px;position:relative}
-.tree .crown{width:120px;height:120px;background:linear-gradient(180deg,#6ee7b7,#34d399);border-radius:50%;margin:auto;position:relative;top:8px;box-shadow:0 14px 40px rgba(20,200,130,.18)}
-.tree .trunk{width:26px;height:70px;background:linear-gradient(180deg,#b7791f,#7c4a10);border-radius:14px;margin:0 auto;position:relative;top:12px}
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,.06);text-align:left}
-caption{padding:10px 0;font-weight:700}
-.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--chip);border:1px solid rgba(0,0,0,.06);border-radius:999px}
-footer{border-top:1px solid rgba(0,0,0,.06);padding-top:10px;margin-top:30px}
+a{color:var(--accent2)}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(0,0,0,.25);position:sticky;top:0}
+.brand{display:flex;gap:10px;align-items:center}
+.wrap{max-width:1100px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;margin:14px 0}
+.btn{background:var(--accent);color:#082016;border:none;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:900px){ .grid{grid-template-columns:1fr} }
+.part-card{display:flex;flex-direction:column;gap:8px}
+.part-card img{width:100%;height:120px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+.filterbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+select,input{padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0b1a16;color:var(--text)}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:12px;margin-top:24px}
+.nav a{margin-right:10px}
+
+
+/* --- Messaging (v6.2) --- */
+.chat-wrap{display:grid;grid-template-columns:280px 1fr;gap:14px}
+@media(max-width:900px){ .chat-wrap{grid-template-columns:1fr} }
+.contacts{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:10px;max-height:70vh;overflow:auto}
+.contact{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;cursor:pointer}
+.contact:hover{background:rgba(255,255,255,.06)}
+.contact.active{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35)}
+.contact .avatar{width:32px;height:32px;border-radius:50%;background:#143;display:grid;place-items:center;font-weight:800}
+.thread{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:12px;max-height:70vh;overflow:auto}
+.msg{max-width:70%;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.06)}
+.msg.me{align-self:flex-end;background:#1f3a34}
+.msg.them{align-self:flex-start;background:#10231e}
+.msg .meta{opacity:.7;font-size:.8rem;margin-top:4px}
+.composer{display:flex;gap:10px;margin-top:10px}
+.composer input{flex:1;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0b1a16;color:var(--text)}
+.composer button{padding:10px 14px;border-radius:12px;border:none;background:var(--accent);color:#082016;font-weight:800;cursor:pointer}
+.small{opacity:.75;font-size:.9rem}
