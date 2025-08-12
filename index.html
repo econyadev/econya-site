@@ -1,63 +1,46 @@
-
-<!DOCTYPE html><html lang="fr"><head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Econya — Vos économies grandissent avec vous</title>
-<meta name="description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
-<link rel="manifest" href="manifest.webmanifest"/>
-<link rel="icon" href="assets/logo.svg"/>
-<meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
-<meta property="og:description" content="App d’économies connectées à votre banque : visualisez vos dépenses, comparez (banques, voyages, énergie, assurances), déclenchez des actions immédiates pour économiser."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="assets/logo.svg"/>
-<meta name="theme-color" content="#0e1512"/>
-<link rel="stylesheet" href="assets/style.css"/>
-<script defer src="assets/main.js"></script>
-</head><body>
+<meta name="description" content="Econya — L'application qui vous aide à payer moins cher et à faire grandir votre épargne. Lancement prochainement.">
+<link rel="icon" href="assets/logo.svg"/><link rel="stylesheet" href="assets/style.css"/>
+<meta property="og:title" content="Econya — Vos économies grandissent avec vous">
+<meta property="og:description" content="Payer moins cher, comparer, épargner : Econya arrive bientôt.">
+<meta property="og:image" content="assets/logo.svg"><meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://econya.fr/">
+<script>(function(){var h=location.hostname;if(h==="www.econya.fr"){document.documentElement.classList.add("redirecting");setTimeout(function(){location.replace(location.href.replace("www.",""));},80);}})();</script>
+<style>.redirecting body::before{content:"Redirection sécurisée…";position:fixed;inset:auto 0 0 0;background:rgba(16,31,26,.9);color:#ecf6f1;padding:10px 16px;text-align:center;font:600 14px/1.2 Inter,system-ui}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="bg-blob" aria-hidden="true"></div>
+    <div class="header">
+      <img src="assets/logo.svg" alt="Logo Econya"><div>
+        <div class="badge">Bientôt disponible</div>
+        <h1>Econya — Vos économies grandissent avec vous</h1>
+        <p class="lead">Une app sobre et puissante pour <strong>payer moins cher</strong>, comparer et faire grandir votre épargne.</p>
+      </div>
+    </div>
 
-<nav class="top">
-  <a class="brand" href="index.html">
-    <img src="assets/logo.svg" alt="Econya" />
-    <span>Econya</span>
-  </a>
-  <div class="links">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="comparator.html">Comparateur</a>
-    <a href="simulators.html">Comptable</a>
-    <a href="tarifs.html">Tarifs</a>
-    <a href="deals.html">Bons plans</a>
-    <a href="interests.html">Intérêts</a>
-    <a href="assistant.html">Assistant IA</a>
-    <a href="contact.html">Contact</a>
+    <form class="form" onsubmit="subscribe(event)">
+      <input id="email" type="email" placeholder="Votre email pour être informé(e)"/>
+      <button type="submit">Soyez informé du lancement</button>
+      <span id="okmsg" class="small" style="display:none;margin-left:8px">Merci, vous êtes inscrit(e) ✔</span>
+    </form>
+
+    <div class="footer">
+      <div class="small notice">Lancement prochainement • Dernière mise à jour : 2025-08-12</div>
+      <div class="links small">
+        <a href="#" aria-label="Facebook">Facebook</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="X">X/Twitter</a>
+      </div>
+    </div>
   </div>
-</nav>
-
-<header class="hero">
-  <h1>Vos économies grandissent avec vous</h1>
-  <p>Reliez votre banque, visualisez vos dépenses et déclenchez des <strong>actions immédiates</strong> pour économiser.</p>
-  <div class="cta">
-    <a class="btn primary" href="dashboard.html">Voir le Dashboard</a>
-    <a class="btn" href="comparator.html">Ouvrir le Comparateur</a>
-  </div>
-</header>
-<section class="cards">
-  <article><h3>Banques & Crédits</h3><p>Comparez banques, frais et crédits adaptés.</p></article>
-  <article><h3>Voyages & Hôtels</h3><p>Trouvez les meilleures offres selon votre profil.</p></article>
-  <article><h3>Énergie & Télécom</h3><p>Électricité, gaz, internet, mobile : payez moins, même qualité.</p></article>
-  <article><h3>Sport & Loisirs</h3><p>Abonnements et billets au meilleur prix.</p></article>
-</section>
-<section class="tree">
-  <canvas id="econyaTree" width="340" height="220" aria-label="Votre arbre d’économies"></canvas>
-  <p class="kpi">Grâce à vos actions, vous avez économisé <strong id="savedAmount">125,50 €</strong><br/><small>Démonstration — montant formaté selon votre devise locale</small></p>
-</section>
-
-<footer>
-  <div class="f-links">
-    <a href="legal.html">Mentions légales</a>
-    <a href="privacy.html">Vie privée</a>
-    <a href="terms.html">CGU</a>
-  </div>
-  <div class="copy">© 2025 Econya — Vos économies grandissent avec vous</div>
-</footer>
-
-</body></html>
+</div>
+<script src="assets/main.js" defer></script>
+</body>
+</html>
