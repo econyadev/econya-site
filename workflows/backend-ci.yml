@@ -1,0 +1,51 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare env
+        run: cp .env.example .env
+
+      - name: Start server in background
+        run: |
+          nohup npm start >/tmp/econya.log 2>&1 &
+          sleep 2
+          echo "Server started"
+
+      - name: Hit endpoints
+        run: |
+          curl -s -X POST http://localhost:3000/auth/mock-login | jq . || true
+          TOKEN=$(curl -s -X POST http://localhost:3000/auth/mock-login | jq -r .token)
+          echo "Got token: ${TOKEN:0:10}..."
+          curl -s -H "Authorization: Bearer $TOKEN" "http://localhost:3000/me/transactions?from=2025-07-01&to=2025-07-31" | jq '.[0]'
+      
+      - name: Stop server
+        if: always()
+        run: pkill -f "node server.js" || true
+
+      - name: Upload server logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: econya-server-logs
+          path: /tmp/econya.log
