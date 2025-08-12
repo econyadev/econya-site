@@ -1,157 +1,48 @@
-<!-- bump -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Econya — Arbre & économies</title>
-<style>
-  :root{
-    --bg:#0e1512;--card:#101c18;--text:#e6f3ef;--muted:#9bc8b9;--brand:#2f935a;--accent:#1c6e43;
-  }
-  [data-theme="light"]{
-    --bg:#f6f4ec;--card:#ffffff;--text:#1c2b25;--muted:#4f6f63;--brand:#2f935a;--accent:#1c6e43;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'DejaVu Sans',sans-serif}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 16px;background:linear-gradient(0deg,var(--card),var(--card))}
-  .brand{display:flex;align-items:center;gap:10px}
-  .logo{width:40px;height:40px;border-radius:10px;background:radial-gradient(circle at 30% 30%,#3ac37b 0%,var(--brand) 60%,var(--accent) 100%)}
-  h1{margin:0;font-size:20px}
-  .wrap{max-width:980px;margin:0 auto;padding:20px}
-  .tabs{display:flex;gap:8px;margin:8px 0 16px}
-  .tab{padding:8px 12px;border-radius:999px;background:var(--card);border:1px solid #18332a;cursor:default}
-  .hero{display:grid;place-items:center;padding:12px}
-  .card{background:var(--card);border:1px solid #18332a;border-radius:16px;padding:18px;margin:14px 0}
-  .kpi{font-size:18px;margin-top:8px}
-  .toggle{appearance:none;border:1px solid #18332a;background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
-  /* TREE */
-  .stage{width:280px;height:280px;position:relative}
-  svg{width:100%;height:100%}
-  .grow{transform-origin:50% 100%;transform:scale(0);animation:grow 5s ease-out forwards}
-  @keyframes grow{to{transform:scale(1)}}
-  /* leaves/confetti */
-  .leaf{position:absolute;width:8px;height:8px;background:#3ac37b;border-radius:50%;opacity:.0;animation:fall 1.6s ease-out forwards}
-  @keyframes fall{
-    0%{transform:translateY(-10px) translateX(0) scale(.6);opacity:0}
-    30%{opacity:.9}
-    100%{transform:translateY(120px) translateX(var(--dx)) scale(1);opacity:0}
-  }
-  footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Accueil — Econya</title>
+  <meta name="description" content="Econya — Vos économies grandissent avec vous. Économisez efficacement et suivez votre progression."/>
+  <meta name="theme-color" content="#2f935a"/>
+
+  <meta property="og:title" content="Accueil — Econya"/>
+  <meta property="og:description" content="Econya — Vos économies grandissent avec vous. Économisez efficacement et suivez votre progression."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://econyadev.github.io/econya-site/index.html"/>
+  <meta property="og:image" content="https://econyadev.github.io/econya-site/assets/logo.png"/>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg"/>
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
+  <link rel="manifest" href="./manifest.webmanifest"/>
+  <link rel="stylesheet" href="./assets/style.css"/>
 </head>
 <body>
 <header>
-  <div class="brand"><div class="logo"></div><h1>Econya</h1></div>
-  <button id="themeBtn" class="toggle" aria-label="Changer le thème">🌙 Mode sombre</button>
+  <div class="brand">
+    <img src="./assets/logo.png" alt="Econya logo"/>
+    <strong>Econya</strong>
+  </div>
+  <nav>
+    <a href="./index.html">Accueil</a>
+    <a href="./banques.html">Banques</a>
+    <a href="./voyages.html">Voyages</a>
+    <a href="./sport.html">Sport & Loisirs</a>
+    <a href="./bons-plans.html">Bons plans</a>
+    <a href="./captures.html">Captures</a>
+    <a href="./contact.html">Contact</a>
+    <a href="./legal.html">Legal</a>
+    <a href="./tarifs.html">Tarifs</a>
+    <a data-play href="#" class="btn">Google Play</a>
+  </nav>
 </header>
-
 <div class="wrap">
-  <div class="tabs">
-    <div class="tab">💳 Banques & Crédits</div>
-    <div class="tab">✈️ Voyages & Hôtels</div>
-    <div class="tab">🏟️ Sport & Loisirs</div>
-    <div class="tab">🛍️ Bons plans</div>
-  </div>
-
-  <div class="hero card" style="text-align:center">
-    <div class="stage" id="stage" aria-label="Arbre de vos économies">
-      <!-- SVG arbre réaliste stylisé -->
-      <svg viewBox="0 0 200 200" class="grow" role="img" aria-label="Arbre qui pousse">
-        <!-- sol -->
-        <ellipse cx="100" cy="180" rx="60" ry="10" fill="#1a2a23"/>
-        <!-- tronc -->
-        <path d="M96 170 C94 150,92 140,94 120 C78 110,82 95,94 94 C92 82,98 70,106 70 C108 62,116 58,122 62 C128 66,126 78,118 84 C130 92,130 106,116 110 C114 140,114 150,112 170 Z"
-          fill="#6b4b2a"/>
-        <!-- feuillage -->
-        <g fill="#2f935a">
-          <circle cx="120" cy="70" r="24"/>
-          <circle cx="100" cy="90" r="28"/>
-          <circle cx="135" cy="95" r="22"/>
-          <circle cx="85"  cy="110" r="20"/>
-          <circle cx="115" cy="115" r="24"/>
-        </g>
-        <!-- reflets -->
-        <g fill="#61d498" opacity=".25">
-          <circle cx="112" cy="84" r="10"/>
-          <circle cx="130" cy="100" r="8"/>
-        </g>
-      </svg>
-    </div>
-    <div class="kpi" id="kpi">Grâce à vos actions, vous avez économisé <strong>—</strong></div>
-    <small style="color:var(--muted)">Démo : montant formaté selon votre devise locale</small>
-  </div>
-
   <div class="card">
-    <h3>Ce que vous verrez ici</h3>
-    <ul>
-      <li>🔎 Offres hebdo classées par économie potentielle</li>
-      <li>🌍 Devises & langues automatiques</li>
-      <li>🌳 Arbre qui grandit à chaque palier (50 € / 100 € / 500 € / 1 000 €)</li>
-    </ul>
+    <h1>Accueil</h1>
+    <p>Econya — Vos économies grandissent avec vous. Économisez efficacement et suivez votre progression.</p>
   </div>
 </div>
-
-<footer>© <span id="year"></span> Econya — Votre argent mérite de grandir avec vous.</footer>
-
-<script>
-  // --------- Thème auto + bascule ----------
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const saved = localStorage.getItem('econya_theme');
-  const theme = saved || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme==='dark'?'dark':'light');
-  const btn = document.getElementById('themeBtn');
-  function setBtnLabel(){
-    const isDark = document.documentElement.getAttribute('data-theme')!=='light';
-    btn.textContent = isDark ? '🌙 Mode sombre' : '☀️ Mode clair';
-  }
-  setBtnLabel();
-  btn.onclick = () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current==='light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next==='dark'?'dark':'light');
-    localStorage.setItem('econya_theme', next);
-    setBtnLabel();
-  };
-
-  // --------- Montant en devise locale ----------
-  const currencyByRegion = {
-    FR:'EUR', BE:'EUR', LU:'EUR', DE:'EUR', ES:'EUR', IT:'EUR', PT:'EUR',
-    NL:'EUR', IE:'EUR', AT:'EUR', FI:'EUR', GR:'EUR',
-    US:'USD', GB:'GBP', CA:'CAD', CH:'CHF', JP:'JPY', MA:'MAD', AE:'AED',
-    DZ:'DZD', TN:'TND', SN:'XOF', CI:'XOF', ML:'XOF', BF:'XOF', NE:'XOF', TG:'XOF', BJ:'XOF',
-    CM:'XAF', GA:'XAF', CG:'XAF', TD:'XAF', GQ:'XAF', CF:'XAF'
-  };
-  const locale = navigator.language || 'fr-FR';
-  const regionMatch = locale.match(/[-_](\w{2})$/);
-  const region = regionMatch ? regionMatch[1].toUpperCase() : 'FR';
-  const currency = currencyByRegion[region] || 'EUR';
-  // Démo : 125.5
-  const amount = 125.5;
-  const formatted = new Intl.NumberFormat(locale, { style:'currency', currency }).format(amount);
-  document.getElementById('kpi').innerHTML = `Grâce à vos actions, vous avez économisé <strong>${formatted}</strong>`;
-
-  // --------- Petites feuilles "confetti" ----------
-  const stage = document.getElementById('stage');
-  function spawnLeaf(){
-    const el = document.createElement('div');
-    el.className = 'leaf';
-    el.style.left = (120 + (Math.random()*60-30)) + 'px';
-    el.style.top  = (90 + (Math.random()*30-10)) + 'px';
-    el.style.setProperty('--dx', (Math.random()*60-30) + 'px');
-    stage.appendChild(el);
-    setTimeout(()=>el.remove(), 1700);
-  }
-  // Lance quelques feuilles pendant la croissance
-  let bursts = 0;
-  const confetti = setInterval(()=>{
-    bursts++;
-    for(let i=0;i<3;i++) spawnLeaf();
-    if(bursts>6) clearInterval(confetti);
-  }, 400);
-
-  // Année pied de page
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+<footer>© 2025 Econya — Vos économies grandissent avec vous.</footer>
+<script src="./assets/main.js"></script>
 </body>
 </html>
