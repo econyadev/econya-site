@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Econya — Vos économies grandissent avec vous</title>
+  <meta name="description" content="Application d’économies connectée à votre banque : visualisez dépenses & revenus et agissez vite pour économiser."/>
+  <meta property="og:title" content="Econya — Vos économies grandissent avec vous"/>
+  <meta property="og:description" content="Application d’économies connectée à votre banque : visualisez dépenses & revenus et agissez vite pour économiser."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="/"/>
+  <meta property="og:image" content="assets/logo.svg"/>
+  <meta name="theme-color" content="#0e1512"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="preload" href="assets/logo.svg" as="image"/>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html" aria-label="Accueil Econya">
+    <div class="logo3d" aria-hidden="true">
+      <img src="assets/logo.svg" alt="" />
+    </div>
+    <span class="wordmark">Econya</span>
+  </a>
+  <nav class="links" aria-label="Navigation principale">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="comparator.html">Comparateur</a>
+    <a href="comptable.html">Comptable</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="presse.html">Presse</a>
+    <a href="avis.html">Avis</a>
+    <a class="btn" href="bank-link.html" data-bank-state>Connecter ma banque</a>
+    <button id="themeToggle" class="btn ghost" aria-label="Basculer thème">🌙</button>
+  </nav>
+  <button class="burger" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+</header>
+<div class="backdrop"></div>
+<aside class="drawer" aria-hidden="true">
+  <a href="dashboard.html">Dashboard</a>
+  <a href="comparator.html">Comparateur</a>
+  <a href="comptable.html">Comptable</a>
+  <a href="tarifs.html">Tarifs</a>
+  <a href="presse.html">Presse</a>
+  <a href="avis.html">Avis</a>
+  <a class="btn" href="bank-link.html" data-bank-state>Connecter ma banque</a>
+  <button id="themeToggleDrawer" class="btn ghost" aria-label="Basculer thème">🌙</button>
+</aside>
 
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <h1>Vos économies grandissent avec vous</h1>
+      <p>Reliez votre banque, visualisez vos dépenses et déclenchez des <strong>actions immédiates</strong> pour économiser au quotidien.</p>
+      <div class="chips">
+  <span class="chip">Banques & Crédits</span>
+  <span class="chip">Voyages & Hôtels</span>
+  <span class="chip">Sport & Loisirs</span>
+  <span class="chip">Bons plans</span>
+</div>
+      <div class="card" style="margin-top:12px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn" href="bank-link.html" data-cta data-bank-state>Connecter ma banque</a>
+          <a class="btn ghost" href="dashboard.html" data-cta>Voir le Dashboard</a>
+          <a class="btn" href="tarifs.html">Tarifs</a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+  <div class="tree" aria-hidden="true">
+    <div class="crown"></div>
+    <div class="trunk"></div>
+  </div>
+  <p style="text-align:center;margin-top:8px">Grâce à vos actions, vous avez économisé <strong>125,50 €</strong><br/><small>Démonstration — montant formaté selon votre devise locale</small></p>
+</div>
+  </section>
+
+  <section class="card">
+    <h2>Presse & avis</h2>
+    <div class="chips">
+      <span class="chip">⭐️⭐️⭐️⭐️⭐️ 4,8/5</span>
+      <span class="chip">Badge “Top économie du jour”</span>
+      <span class="chip">Mentionné par FinTech FR</span>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>© 2025 Econya — <em>Vos économies grandissent avec vous</em>.</div>
+  <nav aria-label="Liens de bas de page">
+    <a href="legal.html">Mentions légales</a>
+    <a href="privacy.html">Vie privée</a>
+    <a href="terms.html">CGU</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>
