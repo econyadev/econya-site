@@ -1,0 +1,6 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+Amazon UK Tech,tech,Europe,UK,Amazon Associates,Amazon,https://www.amazon.co.uk/,GBP,-,-,1-3%,Catégorie tech
+O2 UK SIM-only,mobile,Europe,UK,Awin,O2,https://www.o2.co.uk/shop/sim-cards/simplicity,GBP,9,18,-,Sans engagement
+Sky Broadband,telecom,Europe,UK,Awin,Sky,https://www.sky.com/broadband,GBP,-,-,-,Offres fibre
+Ryanair Deals,travel,Europe,IE,CJ/Impact,Ryanair,https://www.ryanair.com/,EUR,-,-,-,Tarifs low-cost
+Hostelworld FR,travel,Europe,FR,AWIN/CJ,Hostelworld,https://www.hostelworld.com/,EUR,-,-,-,Auberges

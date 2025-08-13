@@ -1,0 +1,6 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+Amazon US Coupons,shopping,NA,US,Amazon Associates,Amazon,https://www.amazon.com/coupons,USD,-,-,1-3%,Coupons
+Walmart Specials,shopping,NA,US,Impact,Walmart,https://www.walmart.com/,USD,-,-,-,Everyday low price
+T-Mobile Prepaid,mobile,NA,US,-,T-Mobile,https://prepaid.t-mobile.com/,USD,-,-,-,Sans contrat
+CheapOair Promo,travel,NA,US,CJ,CheapOair,https://www.cheapoair.com/,USD,-,-,-,Vols pas chers
+Booking US,travel,NA,US,Booking Affiliate,Booking,https://www.booking.com/index.en-us.html?aid=ECONYA,USD,-,-,4%,Hôtels US
