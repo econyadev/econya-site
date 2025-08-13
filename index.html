@@ -19,3 +19,29 @@
   <!-- CSS -->
   <link rel="stylesheet" href="assets/style.css?v=1003" />
 </head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="assets/logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach.html">Coach Eco</a>
+      <a href="partenaires.html">Partenaires</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <h1>Vos économies grandissent avec vous</h1>
+    <p>Comparez, économisez et suivez vos progrès.</p>
+    <p>
+      <a class="btn" href="comparateur.html">Essayer le Comparateur</a>
+      <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
+    </p>
+  </main>
+
+  <footer class="footer">© <span id="y"></span> Econya</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script defer src="assets/main.js?v=1003"></script>
+</body>
