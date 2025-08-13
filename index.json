@@ -1,0 +1,88 @@
+{
+  "sources": [
+    {
+      "id": "africa_asia",
+      "label": "Afrique/Asie (base)",
+      "path": "data/affiliates/africa_asia.csv",
+      "category": "general",
+      "region": "Africa/Asia"
+    },
+    {
+      "id": "africa_asia_ext",
+      "label": "Afrique/Asie (étendu)",
+      "path": "data/affiliates/africa_asia_ext.csv",
+      "category": "general",
+      "region": "Africa/Asia"
+    },
+    {
+      "id": "mena_maghreb",
+      "label": "MENA / Maghreb",
+      "path": "data/affiliates/mena_maghreb.csv",
+      "category": "general",
+      "region": "MENA"
+    },
+    {
+      "id": "europe",
+      "label": "Europe (base)",
+      "path": "data/affiliates/europe.csv",
+      "category": "general",
+      "region": "Europe"
+    },
+    {
+      "id": "europe_extra",
+      "label": "Europe (extra)",
+      "path": "data/affiliates/europe_extra.csv",
+      "category": "general",
+      "region": "Europe"
+    },
+    {
+      "id": "north_america",
+      "label": "Amérique du Nord",
+      "path": "data/affiliates/north_america.csv",
+      "category": "general",
+      "region": "NA"
+    },
+    {
+      "id": "latam",
+      "label": "Amérique Latine",
+      "path": "data/affiliates/latam.csv",
+      "category": "general",
+      "region": "LATAM"
+    },
+    {
+      "id": "apac",
+      "label": "Asie-Pacifique",
+      "path": "data/affiliates/apac.csv",
+      "category": "general",
+      "region": "APAC"
+    },
+    {
+      "id": "uk_ie",
+      "label": "UK / Ireland",
+      "path": "data/affiliates/uk_ie.csv",
+      "category": "general",
+      "region": "Europe"
+    },
+    {
+      "id": "voyages_hotels",
+      "label": "Voyages/Hôtels (base)",
+      "path": "data/affiliates/voyages_hotels.csv",
+      "category": "travel",
+      "region": "Global"
+    },
+    {
+      "id": "voyages_hotels_extra",
+      "label": "Voyages/Hôtels (extra)",
+      "path": "data/affiliates/voyages_hotels_extra.csv",
+      "category": "travel",
+      "region": "Global"
+    },
+    {
+      "id": "giftcards",
+      "label": "Cartes cadeaux & recharges",
+      "path": "data/affiliates/giftcards.csv",
+      "category": "giftcard",
+      "region": "Global"
+    }
+  ]
+}

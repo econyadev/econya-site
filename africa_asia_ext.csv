@@ -1,0 +1,6 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+Jumia Maroc - Electronique,shopping,MENA,MA,Jumia,Jumia,https://www.jumia.ma/electronique/?aff_id=ECONYA,MAD,-,-,1-3%,Catégorie électronique
+AliExpress Coupons,shopping,APAC,SG,Admitad/Awin,AliExpress,https://coupon.aliexpress.com/en?aff=ECONYA,USD,-,-,1-3%,Coupons globaux
+Temu Deals,shopping,APAC,SG,Impact,Temu,https://www.temu.com/deals.html,USD,-,-,-,Programme selon pays
+Shopee MY Vouchers,shopping,APAC,MY,Shopee,Shopee,https://shopee.com.my/m/voucher?aff=ECONYA,MYR,-,-,1%,Bons d’achat
+Lazada TH Flash Sale,shopping,APAC,TH,Lazada,Lazada,https://www.lazada.co.th/deals/?aff=ECONYA,THB,-,-,1%,Ventes flash

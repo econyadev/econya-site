@@ -1,0 +1,4 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+Revolut UK Plan,bank,Europe,UK,Affiliate,Revolut,https://www.revolut.com/,GBP,-,-,-,Plan standard/premium
+Monzo Current Account,bank,Europe,UK,Affiliate,Monzo,https://monzo.com/,GBP,-,-,-,Compte courant
+Irish Rail,travel,Europe,IE,Affiliate,Irish Rail,https://www.irishrail.ie/,EUR,-,-,-,Billets train

@@ -1,0 +1,6 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+IAM/Maroc Telecom Fibre,telecom,MENA,MA,-,Maroc Telecom,https://www.iam.ma/,MAD,-,-,-,Consultez les promos
+Orange Tunisie Mobile,mobile,MENA,TN,-,Orange,https://www.orange.tn/,TND,-,-,-,Séries limitées
+Inwi Offres Fixe,telecom,MENA,MA,-,Inwi,https://www.inwi.ma/,MAD,-,-,-,Fibre/ADSL
+Air Arabia promos,travel,MENA,MA,Affiliate,Air Arabia,https://www.airarabia.com/,EUR,-,-,-,Promos de saison
+Booking MA,travel,MENA,MA,Booking Affiliate,Booking,https://www.booking.com/index.fr.html?aid=ECONYA,EUR,-,-,4%,Genius deals

@@ -1,0 +1,5 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+MercadoLibre Ofertas,shopping,LATAM,BR,Affiliate,MercadoLibre,https://ofertas.mercadolivre.com.br/,BRL,-,-,-,Deals
+Claro BR Pre-pago,mobile,LATAM,BR,-,Claro,https://www.claro.com.br/para-voce/celular/pre-pago/,BRL,-,-,-,Prépayé
+Despegar Promo,travel,LATAM,AR,Affiliate,Despegar,https://www.despegar.com.ar/,ARS,-,-,-,Voyages
+LATAM Airlines,travel,LATAM,CL,Affiliate,LATAM,https://www.latamairlines.com/,USD,-,-,-,Promos saison

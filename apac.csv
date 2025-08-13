@@ -1,0 +1,5 @@
+name,category,region,country,platform,brand,url,currency,price,old_price,commission,notes
+Rakuten JP Marketplace,shopping,APAC,JP,Rakuten Affiliate,Rakuten,https://www.rakuten.co.jp/,JPY,-,-,-,Marketplace JP
+Klook Expériences,travel,APAC,SG,Impact,Klook,https://www.klook.com/,USD,-,-,-,Activités & pass
+Qoo10 Deals,shopping,APAC,SG,Affiliate,Qoo10,https://www.qoo10.sg/,SGD,-,-,-,Deals Qoo10
+AirAsia Superapp,travel,APAC,MY,Affiliate,AirAsia,https://www.airasia.com/,MYR,-,-,-,Vols + hôtels
