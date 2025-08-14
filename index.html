@@ -3,64 +3,155 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Econya – Vos économies grandissent avec vous</title>
+
+  <title>Econya — Vos économies grandissent avec vous</title>
   <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
-  <!-- Politique de sécurité de contenu : ressources locales + appel API Render -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self';
-    style-src 'self';
-    img-src 'self' data:;
-    connect-src 'self' https://econya-backend.onrender.com;
-    object-src 'none';
-    base-uri 'self';
-    frame-ancestors 'self';
-  ">
+  <!-- SEO / Social -->
+  <meta property="og:title" content="Econya — Vos économies grandissent avec vous" />
+  <meta property="og:description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://econya.fr/" />
+  <meta property="og:image" content="assets/social-card.png" />
 
-  <!-- Favicons / logos (RACINE) -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <!-- CSP : ressources locales + API backend (Render) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src 'self';
+          style-src 'self';
+          img-src 'self' data:;
+          font-src 'self';
+          connect-src 'self' https://econya-backend.onrender.com;
+          object-src 'none';
+          base-uri 'self';
+          frame-ancestors 'self';
+        ">
 
-  <!-- CSS (RACINE) -->
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/svg+xml" href="logo.svg" />
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Skip link accessibilité -->
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
 
-  <!-- Barre du haut -->
-  <header class="topbar">
-    <a class="brand" href="/">
-      <img src="logo.svg" alt="Econya" height="28" />
-      <span>Econya</span>
+  <!-- En-tête -->
+  <header class="topbar container">
+    <a class="brand" href="/" aria-label="Econya, retour à l’accueil">
+      <img src="logo.svg" alt="" height="28" />
+      <span class="brand-name">Econya</span>
     </a>
-    <nav class="nav">
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav">
+      <span class="nav-toggle-line"></span>
+      <span class="nav-toggle-line"></span>
+      <span class="nav-toggle-line"></span>
+      <span class="sr-only">Ouvrir le menu</span>
+    </button>
+
+    <nav id="nav" class="nav" aria-label="Navigation principale">
       <a href="comparateur.html">Comparateur Pro</a>
-      <a href="coach-eco.html">Coach Eco</a>
+      <a href="coach-eco.html">Coach&nbsp;Eco</a>
       <a href="partenaires.html">Partenaires</a>
+      <a href="playbooks.html">Playbooks</a>
     </nav>
   </header>
 
-  <!-- Section héro -->
-  <main class="hero">
-    <h1>Vos économies grandissent avec vous</h1>
-    <p>Comparez, enregistrez et suivez vos progrès.</p>
+  <!-- Hero -->
+  <main id="contenu">
+    <section class="hero container">
+      <div class="hero-content">
+        <h1 class="hero-title">Vos économies grandissent <span>avec vous</span></h1>
+        <p class="hero-subtitle">Comparez, enregistrez et suivez vos progrès, simplement.</p>
 
-    <div class="cta-row">
-      <a class="btn" href="comparateur.html">Essayer le comparateur</a>
-      <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
-    </div>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="comparateur.html">Essayer le comparateur</a>
+          <a class="btn btn-ghost" href="playbooks.html">Voir les Playbooks</a>
+        </div>
 
-    <!-- Badge de statut backend -->
-    <div id="api-status" class="api-badge">Vérification du backend…</div>
+        <!-- Badge de statut backend -->
+        <div id="api-status" class="api-status" role="status" aria-live="polite">
+          Vérification du backend…
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <!-- placeholder illustration (remplace par un visuel si tu veux) -->
+        <img src="assets/illustration.svg" alt="" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- Points forts -->
+    <section class="features container">
+      <h2 class="section-title">Pourquoi Econya&nbsp;?</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Comparaisons claires</h3>
+          <p>Des tableaux lisibles, des métriques utiles, pas de jargon inutile.</p>
+        </article>
+
+        <article class="card">
+          <h3>Suivi intelligent</h3>
+          <p>Enregistrez vos choix et suivez vos progrès au fil du temps.</p>
+        </article>
+
+        <article class="card">
+          <h3>Bons plans vérifiés</h3>
+          <p>Des opportunités triées et contextualisées pour économiser mieux.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Comment ça marche -->
+    <section class="how container">
+      <h2 class="section-title">Comment ça marche</h2>
+      <ol class="steps">
+        <li><strong>Comparez</strong> vos options en 2&nbsp;minutes.</li>
+        <li><strong>Choisissez</strong> avec confiance grâce aux indicateurs clairs.</li>
+        <li><strong>Suivez</strong> l’impact dans votre tableau de bord.</li>
+      </ol>
+    </section>
   </main>
 
   <!-- Pied de page -->
-  <footer class="footer">
-    <span id="year"></span> © Econya
+  <footer class="footer container">
+    <div class="footer-col">
+      <a class="brand mini" href="/">
+        <img src="logo.svg" alt="" height="22" />
+        <span class="brand-name">Econya</span>
+      </a>
+      <p class="muted"><span id="year"></span> © Econya</p>
+    </div>
+    <nav class="footer-col" aria-label="Liens de bas de page">
+      <a href="legal.html">Mentions légales</a>
+      <a href="vie privée.html">Vie privée</a>
+      <a href="partenaires.html">Partenaires</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </footer>
 
   <!-- IMPORTANT : charger env.js AVANT main.js -->
-  <!-- assets/env.js doit contenir : window.ECONYA_API_BASE = 'https://econya-backend.onrender.com'; -->
   <script src="assets/env.js"></script>
-  <script src="main.js" defer></script>
+  <script src="main.js"></script>
+
+  <!-- Petit JS pour le burger menu + année -->
+  <script>
+    // année dans le footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // burger menu
+    const btn = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('nav');
+    if (btn && nav) {
+      btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        nav.classList.toggle('open');
+      });
+    }
+  </script>
 </body>
 </html>
+
