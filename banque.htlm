@@ -3,126 +3,110 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Econya — Mes comptes</title>
-  <meta name="description" content="Reliez votre banque, analysez vos dépenses et vos revenus avec Econya." />
-
-  <!-- Favicon + CSS de ton site s'ils existent -->
+  <title>Econya – Connexion bancaire (démo)</title>
+  <meta name="description" content="Analyse simple des revenus et dépenses. Démo de connexion bancaire Econya." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Sécurité de base : on autorise notre backend Render -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src 'self';
-          style-src 'self' 'unsafe-inline';
-          img-src 'self' data:;
-          connect-src 'self' https://econya-backend.onrender.com;
-          object-src 'none';
-          base-uri 'self';
-          frame-ancestors 'self';
-        ">
+  <!-- Sécurité simple -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    connect-src 'self' https://econya-backend.onrender.com;
+    object-src 'none'; base-uri 'self'; frame-ancestors 'self';
+  ">
 </head>
-<body>
-
-  <!-- Barre haute minimaliste (reutilise la charte) -->
+<body class="bank">
   <header class="topbar">
-    <a class="brand" href="index.html">
+    <a class="brand" href="/">
       <img src="logo.svg" alt="Econya" height="28" />
       <span>Econya</span>
     </a>
     <nav class="nav">
       <a href="comparateur.html">Comparateur Pro</a>
-      <a href="coach-eco.html">Coach Eco</a>
-      <a href="partenaires.html">Partenaires</a>
+      <a href="coach-eco.html">Coach Éco</a>
+      <a class="active" href="banque.html">Banque (démo)</a>
       <a href="playbooks.html">Playbooks</a>
     </nav>
   </header>
 
-  <main class="container" style="max-width:980px">
-    <h1>Mes comptes</h1>
-    <p class="muted">Reliez votre banque (démo), puis consultez vos analyses et transactions par mois.</p>
+  <main class="container">
+    <h1>Connexion bancaire (démo)</h1>
 
-    <!-- Statut API + Connexion banque -->
-    <section class="card" style="margin-top:12px">
-      <h2 style="margin:0 0 12px 0">Connexion bancaire</h2>
+    <!-- Badges d’état -->
+    <div class="badges">
+      <span id="api-status" class="badge ghost">API…</span>
+      <span id="ob-status"  class="badge ghost">Open Banking…</span>
+      <span id="plan-badge" class="badge premium ghost" title="Plan actuel">Gratuit</span>
+    </div>
 
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div id="api-status" class="badge">Vérification du backend…</div>
-        <div id="ob-status" class="badge ghost">Banque non reliée</div>
-      </div>
-
-      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
-        <button id="ob-connect-btn" class="btn">Relier ma banque (démo)</button>
-        <button id="ob-reset-btn" class="btn ghost">Réinitialiser (tests)</button>
-      </div>
-
-      <p class="muted" style="margin-top:8px">
-        Démo : un parcours fictif s’ouvre, cliquez “Autoriser” puis revenez ici. Le statut passera en <strong>relié</strong>.
-      </p>
+    <!-- Bloc comptes -->
+    <section class="card" style="margin-top:16px">
+      <h2>Mes comptes</h2>
+      <div id="accounts" class="accounts"></div>
     </section>
 
-    <!-- Aperçu analytique -->
-    <section class="card" style="margin-top:20px">
-      <h2 style="margin:0 0 12px 0">Synthèse</h2>
-      <div class="kpi-grid">
-        <div class="kpi">
-          <div class="kpi-label">Dépenses du mois</div>
-          <div class="kpi-value" id="kpi-exp">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Revenus du mois</div>
-          <div class="kpi-value" id="kpi-inc">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Économies (revenus – dépenses)</div>
-          <div class="kpi-value" id="kpi-sav">—</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Transactions (démo)  -->
-    <section class="card" style="margin-top:20px">
-      <h2 style="margin:0 0 12px 0">Transactions (démo)</h2>
-
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <label for="tx-month" class="muted">Mois :</label>
-        <input id="tx-month" type="month" />
+    <!-- Filtres + actions -->
+    <section class="card" style="margin-top:16px">
+      <div class="row" style="align-items:center; gap:12px; flex-wrap:wrap">
+        <h2 style="margin:0">Transactions</h2>
+        <label style="display:flex; align-items:center; gap:8px">
+          Mois :
+          <input id="tx-month" type="month" />
+        </label>
         <button id="tx-load" class="btn">Charger</button>
+        <button id="tx-export" class="btn ghost">Exporter CSV</button>
+        <a href="comparateur.html" class="btn ghost">Comparer maintenant</a>
       </div>
+      <div class="kpis" id="kpis" style="margin-top:12px"></div>
+      <div class="row" style="gap:16px; align-items:flex-start; margin-top:12px; flex-wrap:wrap">
+        <div class="table-wrap">
+          <table class="table" id="tx-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Libellé</th><th>Catégorie</th>
+                <th style="text-align:right; min-width:120px">Montant</th>
+              </tr>
+            </thead>
+            <tbody id="tx-tbody"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" style="text-align:right"><strong>Total</strong></td>
+                <td id="tx-total" style="text-align:right">0,00 €</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-      <div style="overflow:auto;margin-top:12px">
-        <table class="table" id="tx-table" style="min-width:560px">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Libellé</th>
-              <th>Catégorie</th>
-              <th style="text-align:right">Montant (€)</th>
-            </tr>
-          </thead>
-          <tbody id="tx-tbody">
-            <!-- rempli par JS -->
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="3" style="text-align:right">Total</td>
-              <td id="tx-total" style="text-align:right">0,00</td>
-            </tr>
-          </tfoot>
-        </table>
+        <!-- Répartition par catégorie -->
+        <div class="card" style="min-width:280px; flex:1">
+          <h3>Répartition par catégorie</h3>
+          <ul id="cat-split" class="cat-split"></ul>
+          <div id="premium-hint" class="hint">
+            Répartition détaillée & graphiques — <a href="#" id="open-premium">Passez en Premium</a>
+          </div>
+        </div>
       </div>
     </section>
 
+    <section class="card" style="margin-top:16px">
+      <h2>Connexion Open Banking</h2>
+      <p>Démo : démarrez un parcours de connexion (mock).</p>
+      <button id="ob-start" class="btn">Relier ma banque</button>
+    </section>
   </main>
 
   <footer class="footer">
     <span id="year"></span> © Econya
   </footer>
 
-  <!-- IMPORTANT : env.js AVANT banque.js -->
-  <script src="actifs/env.js"></script>
-  <script src="actifs/banque.js"></script>
+  <!-- Variables d’environnement (URL backend) -->
+  <script src="assets/env.js"></script>
+  <!-- Logiques front de la page banque -->
+  <script src="assets/bank.js"></script>
 </body>
 </html>
+
 
