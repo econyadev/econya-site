@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Playbooks – Econya</title>
-  <meta name="description" content="Guides pratiques pour économiser au quotidien." />
+  <title>Playbooks — Econya</title>
+  <meta name="description" content="Des guides concrets pour économiser mieux." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
-  <script src="assets/env.js"></script>
-  <script src="main.js" defer></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html"><img src="logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
-    <nav class="nav">
+    <a class="brand" href="index.html"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></a>
+    <nav class="nav" aria-label="Navigation principale">
       <a href="comparateur.html">Comparateur</a>
-      <a class="active" href="playbooks.html">Playbooks</a>
-      <a href="coach-eco.html">Coach Eco</a>
+      <a href="coach-eco.html">Coach Éco</a>
+      <a href="partenaires.html">Partenaires</a>
+      <a href="playbooks.html" aria-current="page">Playbooks</a>
     </nav>
   </header>
 
-  <main class="page">
+  <main class="container" style="padding:24px 0 40px">
     <h1>Playbooks</h1>
-    <p>Quelques guides arrivent très bientôt.</p>
-    <p>Statut API : <strong id="status">vérification…</strong></p>
+    <p class="sub">Quelques guides arrivent très bientôt.</p>
+    <div class="grid-3" style="margin-top:16px">
+      <article class="card"><h3 style="margin-top:0">Réduire ma facture mobile</h3><p>Astuce n°1, n°2, n°3…</p></article>
+      <article class="card"><h3 style="margin-top:0">Optimiser mon forfait internet</h3><p>Astuce n°1, n°2, n°3…</p></article>
+      <article class="card"><h3 style="margin-top:0">Frais bancaires : les éviter</h3><p>Astuce n°1, n°2, n°3…</p></article>
+    </div>
   </main>
 
-  <footer class="footer"><span id="year"></span> © Econya</footer>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></div>
+      <nav class="footer-nav"><a href="legal.html">Mentions légales</a><a href="vie-privée.html">Vie privée</a><a href="partenaires.html">Partenaires</a><a href="contact.html">Contact</a></nav>
+      <div class="copy"><span id="year"></span> © Econya</div>
+    </div>
+  </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    checkBackend().then(s => {
-      const el = document.getElementById('status');
-      if (s === 'ok') { el.textContent = 'Backend connecté ✅'; el.style.color = '#115c2d'; }
-      else { el.textContent = 'Backend indisponible ❌'; el.style.color = '#a00'; }
-    });
-  </script>
+  <script src="actifs/env.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
+
