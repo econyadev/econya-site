@@ -1,104 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Connexion bancaire — Econya</title>
-  <meta name="description" content="Reliez votre banque pour analyser revenus et dépenses avec le Coach Éco." />
+  <title>Econya — Mes comptes</title>
+  <meta name="description" content="Reliez votre banque, analysez vos dépenses et vos revenus avec Econya." />
+
+  <!-- Favicon + CSS de ton site s'ils existent -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Sécurité de base : on autorise notre backend Render -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src 'self';
+          style-src 'self' 'unsafe-inline';
+          img-src 'self' data:;
+          connect-src 'self' https://econya-backend.onrender.com;
+          object-src 'none';
+          base-uri 'self';
+          frame-ancestors 'self';
+        ">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="index.html"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></a>
-  <nav class="nav" aria-label="Navigation principale">
-    <a href="comparateur.html">Comparateur</a>
-    <a href="coach-eco.html">Coach Éco</a>
-    <a href="banque.html" aria-current="page">Banque</a>
-    <a href="pricing.html">Tarifs</a>
-  </nav>
-</header>
 
-<main class="container" style="padding:24px 0 40px">
-  <h1>Relier ma banque</h1>
-  <p class="sub">Statut API : <span id="api-status" class="badge">Vérification…</span></p>
+  <!-- Barre haute minimaliste (reutilise la charte) -->
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <img src="logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach-eco.html">Coach Eco</a>
+      <a href="partenaires.html">Partenaires</a>
+      <a href="playbooks.html">Playbooks</a>
+    </nav>
+  </header>
 
-  <section class="card" style="margin-top:16px">
-    <h2 style="margin-top:0">Connexion</h2>
-    <p>Nous utilisons un fournisseur d’open-banking pour agréger vos transactions en lecture seule (pas de virements). Vous choisissez vos comptes, et vous pouvez révoquer l’accès à tout moment.</p>
+  <main class="container" style="max-width:980px">
+    <h1>Mes comptes</h1>
+    <p class="muted">Reliez votre banque (démo), puis consultez vos analyses et transactions par mois.</p>
 
-    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">
-      <button id="connect" class="btn">Connecter ma banque</button>
-      <button id="disconnect" class="btn ghost">Déconnecter</button>
-      <span id="link-status" class="badge">Non connecté</span>
-    </div>
-  </section>
+    <!-- Statut API + Connexion banque -->
+    <section class="card" style="margin-top:12px">
+      <h2 style="margin:0 0 12px 0">Connexion bancaire</h2>
 
-  <section id="insights" class="card" style="margin-top:16px; display:none">
-    <h2 style="margin-top:0">Aperçu analytique</h2>
-    <div id="insight-body">
-      <p class="sub">Exemple (démo) : répartition mensuelle dépenses / revenus.</p>
-      <div class="grid-3" style="gap:12px">
-        <article class="card"><h3 style="margin-top:0">Revenus mensuels</h3><p><strong id="rev">2 000 €</strong></p></article>
-        <article class="card"><h3 style="margin-top:0">Dépenses fixes</h3><p><strong id="fix">1 050 €</strong></p></article>
-        <article class="card"><h3 style="margin-top:0">Dépenses variables</h3><p><strong id="var">650 €</strong></p></article>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div id="api-status" class="badge">Vérification du backend…</div>
+        <div id="ob-status" class="badge ghost">Banque non reliée</div>
       </div>
-      <p style="margin-top:12px">Épargne potentielle estimée : <strong id="save">300 €</strong>/mois</p>
-      <a class="btn" href="coach-eco.html">Envoyer au Coach Éco</a>
-    </div>
-  </section>
-</main>
 
-<footer class="footer">
-  <div class="container footer-inner">
-    <div class="footer-brand"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></div>
-    <nav class="footer-nav"><a href="legal.html">Mentions légales</a><a href="vie-privée.html">Vie privée</a><a href="pricing.html">Tarifs</a><a href="contact.html">Contact</a></nav>
-    <div class="copy"><span id="year"></span> © Econya</div>
-  </div>
-</footer>
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+        <button id="ob-connect-btn" class="btn">Relier ma banque (démo)</button>
+        <button id="ob-reset-btn" class="btn ghost">Réinitialiser (tests)</button>
+      </div>
 
-<script src="actifs/env.js"></script>
-<script src="actifs/main-pages.js"></script>
-<script>
-const base = (window.ECONYA_API_BASE || '').replace(/\/+$/,'');
-const statusEl = document.getElementById('link-status');
-const insights = document.getElementById('insights');
+      <p class="muted" style="margin-top:8px">
+        Démo : un parcours fictif s’ouvre, cliquez “Autoriser” puis revenez ici. Le statut passera en <strong>relié</strong>.
+      </p>
+    </section>
 
-async function refreshStatus(){
-  if (!base) return;
-  try{
-    const r = await fetch(base + '/ob/status', {mode:'cors'});
-    const j = await r.json();
-    if (j.linked){
-      statusEl.textContent = 'Connecté ✅';
-      statusEl.style.background = '#d7f5dd';
-      statusEl.style.color = '#115c2d';
-      insights.style.display = 'block';
-    } else {
-      statusEl.textContent = 'Non connecté';
-      statusEl.style.background = '';
-      statusEl.style.color = '';
-      insights.style.display = 'none';
-    }
-  }catch(e){}
-}
-refreshStatus();
+    <!-- Aperçu analytique -->
+    <section class="card" style="margin-top:20px">
+      <h2 style="margin:0 0 12px 0">Synthèse</h2>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Dépenses du mois</div>
+          <div class="kpi-value" id="kpi-exp">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Revenus du mois</div>
+          <div class="kpi-value" id="kpi-inc">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Économies (revenus – dépenses)</div>
+          <div class="kpi-value" id="kpi-sav">—</div>
+        </div>
+      </div>
+    </section>
 
-document.getElementById('connect').addEventListener('click', async ()=>{
-  if (!base) return alert('Backend non configuré');
-  try{
-    const r = await fetch(base + '/ob/start', {mode:'cors'});
-    const j = await r.json();
-    // redirection "fournisseur" (mock)
-    location.href = j.url;
-  }catch(e){ alert('Impossible de démarrer la connexion.'); }
-});
+    <!-- Transactions (démo)  -->
+    <section class="card" style="margin-top:20px">
+      <h2 style="margin:0 0 12px 0">Transactions (démo)</h2>
 
-document.getElementById('disconnect').addEventListener('click', async ()=>{
-  if (!base) return;
-  await fetch(base + '/ob/disconnect', {method:'POST', mode:'cors'});
-  refreshStatus();
-});
-</script>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <label for="tx-month" class="muted">Mois :</label>
+        <input id="tx-month" type="month" />
+        <button id="tx-load" class="btn">Charger</button>
+      </div>
+
+      <div style="overflow:auto;margin-top:12px">
+        <table class="table" id="tx-table" style="min-width:560px">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Libellé</th>
+              <th>Catégorie</th>
+              <th style="text-align:right">Montant (€)</th>
+            </tr>
+          </thead>
+          <tbody id="tx-tbody">
+            <!-- rempli par JS -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align:right">Total</td>
+              <td id="tx-total" style="text-align:right">0,00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span id="year"></span> © Econya
+  </footer>
+
+  <!-- IMPORTANT : env.js AVANT banque.js -->
+  <script src="actifs/env.js"></script>
+  <script src="actifs/banque.js"></script>
 </body>
 </html>
+
