@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coach Eco - Econya</title>
-    <meta name="description" content="Coach Eco - Econya" />
-    <link rel="stylesheet" href="assets/style.css" />
-    <script src="assets/env.js"></script>
-    <script src="main.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coach Eco – Econya</title>
+  <meta name="description" content="Votre assistant pour optimiser vos dépenses et suivre vos économies." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="assets/env.js"></script>
+  <script src="main.js" defer></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul class="nav-menu">
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="comparateur.html">Comparateur</a></li>
-                <li><a href="playbooks.html">Playbooks</a></li>
-                <li><a href="coach-eco.html" class="active">Coach Eco</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur</a>
+      <a href="playbooks.html">Playbooks</a>
+      <a class="active" href="coach-eco.html">Coach Eco</a>
+    </nav>
+  </header>
 
-    <main>
-        <h1>Coach Eco</h1>
-        <p>Votre assistant pour optimiser vos dépenses et suivre vos économies.</p>
+  <main class="page">
+    <h1>Coach Eco</h1>
+    <p>Votre assistant pour optimiser vos dépenses et suivre vos économies.</p>
+    <p>Statut API : <strong id="status">vérification…</strong></p>
+  </main>
 
-        <div id="backend-status">
-            Statut API : <span id="status-text">Vérification...</span>
-        </div>
-    </main>
+  <footer class="footer"><span id="year"></span> © Econya</footer>
 
-    <footer>
-        <p>&copy; Econya</p>
-    </footer>
-
-    <script>
-        // Vérifier le backend au chargement
-        checkBackend().then(status => {
-            const statusEl = document.getElementById('status-text');
-            if (status === 'ok') {
-                statusEl.textContent = 'Backend connecté ✅';
-                statusEl.style.color = 'green';
-            } else {
-                statusEl.textContent = 'Backend non disponible ❌';
-                statusEl.style.color = 'red';
-            }
-        });
-    </script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    checkBackend().then(s => {
+      const el = document.getElementById('status');
+      if (s === 'ok') { el.textContent = 'Backend connecté ✅'; el.style.color = '#115c2d'; }
+      else { el.textContent = 'Backend indisponible ❌'; el.style.color = '#a00'; }
+    });
+  </script>
 </body>
 </html>
+
