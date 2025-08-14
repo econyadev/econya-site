@@ -1,21 +1,38 @@
-<!DOCTYPE html><html lang="fr"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Comparateur — Econya</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
-<link rel="stylesheet" href="style.css"/>
-</head><body>
-<header class="topbar">
-  <a class="brand" href="/"><img src="logo.svg" alt="Econya" height="28"/><span>Econya</span></a>
-  <nav class="nav"><a href="/">Accueil</a></nav>
-</header>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comparateur – Econya</title>
+  <meta name="description" content="Comparez et trouvez les meilleures offres." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="assets/env.js"></script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+    <nav class="nav">
+      <a class="active" href="comparateur.html">Comparateur</a>
+      <a href="playbooks.html">Playbooks</a>
+      <a href="coach-eco.html">Coach Eco</a>
+    </nav>
+  </header>
 
-<main class="page">
-  <h1>Comparateur</h1>
-  <p>Page de démo. Le backend est : <span id="api-status">…</span></p>
-</main>
+  <main class="page">
+    <h1>Comparateur</h1>
+    <p>Page de démonstration. Le backend est : <strong id="status">vérification…</strong></p>
+  </main>
 
-<footer class="footer"><span id="year"></span> © Econya</footer>
+  <footer class="footer"><span id="year"></span> © Econya</footer>
 
-<script src="assets/env.js" defer></script>
-<script src="main.js" defer></script>
-</body></html>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    checkBackend().then(s => {
+      const el = document.getElementById('status');
+      if (s === 'ok') { el.textContent = 'Backend connecté ✅'; el.style.color = '#115c2d'; }
+      else { el.textContent = 'Backend indisponible ❌'; el.style.color = '#a00'; }
+    });
+  </script>
+</body>
+</html>
