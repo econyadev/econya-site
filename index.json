@@ -1,88 +1,90 @@
-{
-  "sources": [
-    {
-      "id": "africa_asia",
-      "label": "Afrique/Asie (base)",
-      "path": "data/affiliates/africa_asia.csv",
-      "category": "general",
-      "region": "Africa/Asia"
-    },
-    {
-      "id": "africa_asia_ext",
-      "label": "Afrique/Asie (étendu)",
-      "path": "data/affiliates/africa_asia_ext.csv",
-      "category": "general",
-      "region": "Africa/Asia"
-    },
-    {
-      "id": "mena_maghreb",
-      "label": "MENA / Maghreb",
-      "path": "data/affiliates/mena_maghreb.csv",
-      "category": "general",
-      "region": "MENA"
-    },
-    {
-      "id": "europe",
-      "label": "Europe (base)",
-      "path": "data/affiliates/europe.csv",
-      "category": "general",
-      "region": "Europe"
-    },
-    {
-      "id": "europe_extra",
-      "label": "Europe (extra)",
-      "path": "data/affiliates/europe_extra.csv",
-      "category": "general",
-      "region": "Europe"
-    },
-    {
-      "id": "north_america",
-      "label": "Amérique du Nord",
-      "path": "data/affiliates/north_america.csv",
-      "category": "general",
-      "region": "NA"
-    },
-    {
-      "id": "latam",
-      "label": "Amérique Latine",
-      "path": "data/affiliates/latam.csv",
-      "category": "general",
-      "region": "LATAM"
-    },
-    {
-      "id": "apac",
-      "label": "Asie-Pacifique",
-      "path": "data/affiliates/apac.csv",
-      "category": "general",
-      "region": "APAC"
-    },
-    {
-      "id": "uk_ie",
-      "label": "UK / Ireland",
-      "path": "data/affiliates/uk_ie.csv",
-      "category": "general",
-      "region": "Europe"
-    },
-    {
-      "id": "voyages_hotels",
-      "label": "Voyages/Hôtels (base)",
-      "path": "data/affiliates/voyages_hotels.csv",
-      "category": "travel",
-      "region": "Global"
-    },
-    {
-      "id": "voyages_hotels_extra",
-      "label": "Voyages/Hôtels (extra)",
-      "path": "data/affiliates/voyages_hotels_extra.csv",
-      "category": "travel",
-      "region": "Global"
-    },
-    {
-      "id": "giftcards",
-      "label": "Cartes cadeaux & recharges",
-      "path": "data/affiliates/giftcards.csv",
-      "category": "giftcard",
-      "region": "Global"
-    }
-  ]
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Econya – Vos économies grandissent avec vous</title>
+  <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
+
+  <!-- CSP simple: ressources locales + appel API backend -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src 'self';
+          style-src 'self';
+          img-src 'self' data:;
+          connect-src 'self' https://econya-backend.onrender.com;
+          object-src 'none';
+          base-uri 'self';
+          frame-ancestors 'self';
+        ">
+
+  <!-- Favicons / logos (RACINE) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- CSS (RACINE) -->
+  <link rel="stylesheet" href="style.css?v=1003" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="/">
+      <!-- logo en RACINE -->
+      <img src="logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach.html">Coach Eco</a>
+      <a href="partenaires.html">Partenaires</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <h1>Vos économies grandissent avec vous</h1>
+    <p>Comparez, enregistrez et suivez vos progrès.</p>
+    <a class="btn" href="comparateur.html">Essayer le comparateur</a>
+    <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
+
+    <!-- Badge de statut backend -->
+    <div id="api-status" style="margin-top:16px;padding:8px 12px;border-radius:8px;display:inline-block;background:#eee;color:#333;font-weight:600">
+      Vérification du backend…
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span id="year"></span> © Econya
+  </footer>
+
+  <!-- Variables d’environnement (actifs/) -->
+  <script src="actifs/env.js"></script>
+
+  <!-- Script principal (RACINE) -->
+  <script src="main.js?v=1003"></script>
+
+  <script>
+    // Année auto
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Petit indicateur visuel du backend
+    (async () => {
+      const el = document.getElementById('api-status');
+      const base = (window.ECONYA_API_BASE || "").replace(/\/+$/,'');
+      if (!base) { el.textContent = "Backend non configuré"; el.style.background="#ffd9d9"; el.style.color="#a00"; return; }
+      try {
+        const res = await fetch(base + "/health", { mode: "cors" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json().catch(()=> ({}));
+        el.textContent = "Backend connecté ✅ " + (data.version ? "(" + data.version + ")" : "");
+        el.style.background = "#d7f5dd";
+        el.style.color = "#115c2d";
+      } catch (e) {
+        el.textContent = "Backend indisponible ❌";
+        el.style.background = "#ffd9d9";
+        el.style.color = "#a00";
+        console.error("Backend KO:", e);
+      }
+    })();
+  </script>
+</body>
+</html>
