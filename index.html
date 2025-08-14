@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Econya – Vos économies grandissent avec vous</title>
-    <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Econya – Vos économies grandissent avec vous</title>
+  <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
-    <!-- Ouvrir le graphique / Twitter -->
-    <meta property="og:type" content="site web" />
-    <meta property="og:title" content="Econya – Vos économies grandissent avec vous" />
-    <meta property="og:description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
-    <meta property="og:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Econya – Vos économies grandissent avec vous" />
+  <meta property="og:description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
+  <meta property="og:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
 
-    <!-- Favicon / Logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1003" />
-    <link rel="icon" type="image/png" href="assets/img/logo-dark.png?v=1003" />
+  <!-- Favicon / Logo (si tu les as dans 'actifs', adapte ces chemins) -->
+  <link rel="icon" type="image/svg+xml" href="actifs/favicon.svg?v=1003" />
+  <link rel="icon" type="image/png" href="actifs/icone-192.png?v=1003" />
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="assets/style.css?v=1003" />
+  <!-- CSS (⚠️ dossier 'actifs') -->
+  <link rel="stylesheet" href="actifs/style.css?v=1003" />
 </head>
 <body>
 
-    <header class="barre supérieure">
-        <a class="marque" href="#">
-            <img src="assets/logo.svg" alt="Econya" height="28" />
-            <span>Econya</span>
-        </a>
-        <nav class="navigation">
-            <a href="comparateur.html">Comparateur Pro</a>
-            <a href="coach.html">Coach Eco</a>
-            <a href="partenaires.html">Partenaires</a>
-        </nav>
-    </header>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="actifs/logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach.html">Coach Eco</a>
+      <a href="partenaires.html">Partenaires</a>
+    </nav>
+  </header>
 
-    <main class="héros">
-        <h1>Vos économies grandissent avec vous</h1>
-        <p>Comparez, enregistrez et suivez vos progrès.</p>
-        <a class="btn" href="comparateur.html">Essayer le comparateur</a>
-        <a class="btn fantôme" href="playbooks.html">Voir les Playbooks</a>
-    </main>
+  <main class="hero">
+    <h1>Vos économies grandissent avec vous</h1>
+    <p>Comparez, enregistrez et suivez vos progrès.</p>
+    <a class="btn" href="comparateur.html">Essayer le comparateur</a>
+    <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
+  </main>
 
-    <footer class="pied de page">
-        <span id="year"></span> © Econya
-    </footer>
+  <footer class="footer">
+    <span id="year"></span> © Econya
+  </footer>
 
-    <!-- Charger les variables d'environnement -->
-    <script src="actifs/env.js"></script>
+  <!-- Variables d’environnement (⚠️ charger AVANT main.js) -->
+  <script src="actifs/env.js"></script>
 
-    <!-- Script principal -->
-    <script src="actifs/main.js?v=1003"></script>
+  <!-- Script principal (⚠️ dossier 'actifs') -->
+  <script src="actifs/main.js?v=1003"></script>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
-
+  <script>
+    // Année auto dans le pied de page
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
+
