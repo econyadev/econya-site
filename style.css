@@ -91,3 +91,157 @@ body{background: radial-gradient(1200px 600px at 30% 10%, var(--bg-2), transpare
   .nav a{display:block; padding:.55rem .7rem}
   .nav-toggle{display:inline-block}
 }
+/* --- Badges --- */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #ddd;
+  color: #333;
+}
+.badge.ok { background: #d4edda; color: #155724; }
+.badge.ko { background: #f8d7da; color: #721c24; }
+.badge.ghost { background: #e9ecef; color: #6c757d; }
+.badge.premium { background: #fef3c7; color: #92400e; }
+
+/* --- Cartes --- */
+.card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.card h2, .card h3 {
+  margin-top: 0;
+  font-weight: 600;
+  color: #222;
+}
+
+/* --- Comptes --- */
+.accounts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+  gap: 12px;
+}
+.account {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fafafa;
+}
+.acc-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.acc-iban {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+.acc-balance {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0d7a2f;
+}
+
+/* --- Table transactions --- */
+.table-wrap {
+  flex: 2;
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.table th, .table td {
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.table thead {
+  background: #f9fafb;
+}
+.table tfoot {
+  background: #f9fafb;
+  font-weight: bold;
+}
+
+/* --- KPIs --- */
+.kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.kpi {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  flex: 1;
+  min-width: 140px;
+}
+.kpi-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+.kpi-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* --- Répartition par catégorie --- */
+.cat-split {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cat-split li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.cat-split li span {
+  color: #374151;
+}
+.cat-split li strong {
+  color: #111827;
+}
+
+/* --- Boutons --- */
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  background: #0d7a2f;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover {
+  background: #0b6527;
+}
+.btn.ghost {
+  background: #e5e7eb;
+  color: #111827;
+}
+.btn.ghost:hover {
+  background: #d1d5db;
+}
+
+/* --- Divers --- */
+.hint {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 6px;
+}
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
