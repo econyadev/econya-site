@@ -56,26 +56,37 @@
     <span id="year"></span> © Econya
   </footer>
 
-  <!-- Variables d’environnement (actifs/) -->
-  <script src="actifs/env.js"></script>
+  <!-- Variables d’environnement -->
+  <!-- ⤷ si ton dossier est 'actifs/', change 'assets/env.js' -> 'actifs/env.js' -->
+  <script src="assets/env.js"></script>
 
   <!-- Script principal (RACINE) -->
-  <script src="main.js?v=1003"></script>
+  <script src="main.js?v=1003" defer></script>
 
   <script>
     // Année auto
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Petit indicateur visuel du backend
+    // Indicateur visuel du backend (version FR: /sante + /ping)
     (async () => {
       const el = document.getElementById('api-status');
       const base = (window.ECONYA_API_BASE || "").replace(/\/+$/,'');
       if (!base) { el.textContent = "Backend non configuré"; el.style.background="#ffd9d9"; el.style.color="#a00"; return; }
+
       try {
-        const res = await fetch(base + "/health", { mode: "cors" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json().catch(()=> ({}));
-        el.textContent = "Backend connecté ✅ " + (data.version ? "(" + data.version + ")" : "");
+        // 1) /sante
+        const r1 = await fetch(base + "/sante", { mode: "cors" });
+        if (!r1.ok) throw new Error("HTTP " + r1.status);
+        const d1 = await r1.json().catch(()=> ({}));
+
+        // 2) /ping
+        const r2 = await fetch(base + "/ping", { mode: "cors" });
+        const txt = await r2.text().catch(()=> "");
+        const okPing = r2.ok && txt.trim().toLowerCase() === "pong";
+
+        el.textContent = "Backend connecté ✅"
+          + (d1.version ? " (v" + d1.version + ")" : "")
+          + (okPing ? " • pong" : "");
         el.style.background = "#d7f5dd";
         el.style.color = "#115c2d";
       } catch (e) {
