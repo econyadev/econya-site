@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Econya — Vos économies grandissent avec vous</title>
+  <title>Econya – Vos économies grandissent avec vous</title>
   <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
-  <!-- CSP simple : ressources locales + appel API backend -->
+  <!-- Politique de sécurité de contenu : ressources locales + API backend Render -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
@@ -20,84 +19,57 @@
           frame-ancestors 'self';
         ">
 
-  <!-- Favicons / logos (RACINE) -->
+  <!-- Favicon & styles (RACINE) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-
-  <!-- CSS (RACINE) -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=1004" />
 </head>
 <body>
-  <noscript>Activez JavaScript pour profiter du site.</noscript>
 
+  <!-- Barre haute -->
   <header class="topbar">
     <a class="brand" href="/">
-      <!-- logo en RACINE -->
       <img src="logo.svg" alt="Econya" height="28" />
       <span>Econya</span>
     </a>
     <nav class="nav">
       <a href="comparateur.html">Comparateur Pro</a>
-      <a href="coach.html">Coach Eco</a>
+      <a href="coach-eco.html">Coach Eco</a> <!-- lien corrigé -->
       <a href="partenaires.html">Partenaires</a>
     </nav>
   </header>
 
+  <!-- Héros -->
   <main class="hero">
     <h1>Vos économies grandissent avec vous</h1>
     <p>Comparez, enregistrez et suivez vos progrès.</p>
 
-    <div class="cta">
+    <div class="cta-row">
       <a class="btn" href="comparateur.html">Essayer le comparateur</a>
       <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
     </div>
 
-    <!-- Badge de statut backend -->
+    <!-- Badge de statut backend (rempli par main.js) -->
     <div id="api-status"
          style="margin-top:16px;padding:8px 12px;border-radius:8px;display:inline-block;background:#eee;color:#333;font-weight:600">
       Vérification du backend…
     </div>
   </main>
 
+  <!-- Pied -->
   <footer class="footer">
     <span id="year"></span> © Econya
   </footer>
 
-  <!-- Variables d’environnement (assets/) -->
-  <script src="assets/env.js" defer></script>
+  <!-- Variables d’environnement (DOSSIER: actifs/) -->
+  <script src="actifs/env.js"></script>
 
   <!-- Script principal (RACINE) -->
-  <script src="main.js" defer></script>
+  <script src="main.js?v=1004"></script>
 
-  <!-- Petit script d’appoint (année + badge) -->
+  <!-- Petite aide: année auto si jamais main.js ne le fait pas -->
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      // année auto
-      const y = document.getElementById('year');
-      if (y) y.textContent = new Date().getFullYear();
-
-      // indicateur visuel du backend
-      const el = document.getElementById('api-status');
-      const base = (window.ECONYA_API_BASE || '').replace(/\/+$/, '');
-      if (!base) {
-        el.textContent = 'Backend non configuré';
-        el.style.background = '#ffd9d9';
-        el.style.color = '#a00';
-        return;
-      }
-      try {
-        const res = await fetch(base + '/health', { mode: 'cors' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json().catch(() => ({}));
-        el.textContent = 'Backend connecté ✅ ' + (data.version ? '(' + data.version + ')' : '');
-        el.style.background = '#d7f5dd';
-        el.style.color = '#115c2d';
-      } catch (e) {
-        el.textContent = 'Backend indisponible ❌';
-        el.style.background = '#ffd9d9';
-        el.style.color = '#a00';
-        console.error('Backend KO:', e);
-      }
-    });
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
