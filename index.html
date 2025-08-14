@@ -14,17 +14,18 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
 
-  <!-- Favicon / Logo (si tu les as dans 'actifs', adapte ces chemins) -->
-  <link rel="icon" type="image/svg+xml" href="actifs/favicon.svg?v=1003" />
-  <link rel="icon" type="image/png" href="actifs/icone-192.png?v=1003" />
+  <!-- Favicons / logos (présents à la RACINE) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" href="icone-192.png" />
 
-  <!-- CSS (⚠️ dossier 'actifs') -->
-  <link rel="stylesheet" href="actifs/style.css?v=1003" />
+  <!-- CSS (à la RACINE) -->
+  <link rel="stylesheet" href="style.css?v=1003" />
 </head>
 <body>
 
   <header class="topbar">
     <a class="brand" href="/">
+      <!-- logo dans 'actifs/' -->
       <img src="actifs/logo.svg" alt="Econya" height="28" />
       <span>Econya</span>
     </a>
@@ -46,16 +47,15 @@
     <span id="year"></span> © Econya
   </footer>
 
-  <!-- Variables d’environnement (⚠️ charger AVANT main.js) -->
+  <!-- Variables d’environnement (dans 'actifs/') -->
   <script src="actifs/env.js"></script>
 
-  <!-- Script principal (⚠️ dossier 'actifs') -->
-  <script src="actifs/main.js?v=1003"></script>
+  <!-- Script principal (à la RACINE) -->
+  <script src="main.js?v=1003"></script>
 
   <script>
-    // Année auto dans le pied de page
+    // année auto
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
-
