@@ -1,3 +1,8 @@
+// Test de connexion avec le backend
+fetch(window.ECONYA_API_BASE + "/ping")
+  .then(response => response.text())
+  .then(data => console.log("Réponse du backend :", data))
+  .catch(error => console.error("Erreur de connexion au backend :", error));
 
 function econyaNotify(msg){
   let t=document.getElementById('toast'); 
