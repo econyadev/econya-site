@@ -6,7 +6,7 @@
   <title>Econya – Vos économies grandissent avec vous</title>
   <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
-  <!-- CSP stricte : uniquement les ressources locales + autoriser l’API backend -->
+  <!-- CSP simple: ressources locales + appel API backend -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
@@ -14,26 +14,23 @@
           style-src 'self';
           img-src 'self' data:;
           connect-src 'self' https://econya-backend.onrender.com;
-          font-src 'self' data:;
           object-src 'none';
           base-uri 'self';
           frame-ancestors 'self';
         ">
 
-  <!-- Open Graph / Twitter (images externes supprimées pour éviter CSP) -->
-
-  <!-- Favicons / logos (LOCALS) -->
+  <!-- Favicons / logos (RACINE) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="icon" type="image/png" href="icone-192.png" />
 
-  <!-- CSS (LOCAL) -->
+  <!-- CSS (RACINE) -->
   <link rel="stylesheet" href="style.css?v=1003" />
 </head>
 <body>
 
   <header class="topbar">
     <a class="brand" href="/">
-      <img src="actifs/logo.svg" alt="Econya" height="28" />
+      <!-- logo en RACINE -->
+      <img src="logo.svg" alt="Econya" height="28" />
       <span>Econya</span>
     </a>
     <nav class="nav">
@@ -48,22 +45,46 @@
     <p>Comparez, enregistrez et suivez vos progrès.</p>
     <a class="btn" href="comparateur.html">Essayer le comparateur</a>
     <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
+
+    <!-- Badge de statut backend -->
+    <div id="api-status" style="margin-top:16px;padding:8px 12px;border-radius:8px;display:inline-block;background:#eee;color:#333;font-weight:600">
+      Vérification du backend…
+    </div>
   </main>
 
   <footer class="footer">
     <span id="year"></span> © Econya
   </footer>
 
-  <!-- Variables d’environnement (LOCAL, doit être chargé AVANT main.js) -->
+  <!-- Variables d’environnement (actifs/) -->
   <script src="actifs/env.js"></script>
 
-  <!-- Script principal (LOCAL) -->
+  <!-- Script principal (RACINE) -->
   <script src="main.js?v=1003"></script>
 
   <script>
-    // année auto
+    // Année auto
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Petit indicateur visuel du backend
+    (async () => {
+      const el = document.getElementById('api-status');
+      const base = (window.ECONYA_API_BASE || "").replace(/\/+$/,'');
+      if (!base) { el.textContent = "Backend non configuré"; el.style.background="#ffd9d9"; el.style.color="#a00"; return; }
+      try {
+        const res = await fetch(base + "/health", { mode: "cors" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json().catch(()=> ({}));
+        el.textContent = "Backend connecté ✅ " + (data.version ? "(" + data.version + ")" : "");
+        el.style.background = "#d7f5dd";
+        el.style.color = "#115c2d";
+      } catch (e) {
+        el.textContent = "Backend indisponible ❌";
+        el.style.background = "#ffd9d9";
+        el.style.color = "#a00";
+        console.error("Backend KO:", e);
+      }
+    })();
   </script>
 </body>
 </html>
-
