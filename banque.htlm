@@ -1,112 +1,204 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Econya – Connexion bancaire (démo)</title>
-  <meta name="description" content="Analyse simple des revenus et dépenses. Démo de connexion bancaire Econya." />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Econya – Connexion bancaire</title>
+  <meta name="description" content="Connectez vos comptes et obtenez une synthèse claire de vos dépenses avec Coach Éco – Econya.">
 
-  <!-- Sécurité simple -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self';
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' data:;
-    connect-src 'self' https://econya-backend.onrender.com;
-    object-src 'none'; base-uri 'self'; frame-ancestors 'self';
-  ">
+  <!-- Favicons / logo -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preload" as="image" href="assets/logo.svg">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Variables d’environnement (définit window.ECONYA_API_BASE) -->
+  <script defer src="assets/env.js"></script>
+
+  <!-- Chart.js (pour les graphes Premium) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Logiques page banque : KPI + transactions + OB mock -->
+  <script defer src="assets/bank.js"></script>
+
+  <!-- Graphiques Premium (n’affiche que si présent) -->
+  <script defer src="assets/bank-charts.js"></script>
+
+  <style>
+    /* Petits utilitaires pour cette page */
+    .container{max-width:1040px;margin:0 auto;padding:24px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
+    .brand{display:flex;gap:10px;align-items:center;text-decoration:none}
+    .brand img{height:28px}
+    .nav a{margin-left:16px;text-decoration:none;opacity:.9}
+    .badge{display:inline-block;padding:6px 10px;border-radius:8px;font-weight:600}
+    .badge.ghost{background:#eee;color:#333}
+    .badge.ok{background:#d7f5dd;color:#115c2d}
+    .badge.ko{background:#ffd9d9;color:#a00}
+    .section{margin-top:24px}
+    .card{background:rgba(255,255,255,.06);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:16px}
+    .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:12px}
+    .kpi-label{opacity:.8;font-size:.9rem}
+    .kpi-value{font-size:1.25rem;font-weight:700}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,.08)}
+    th{text-align:left;opacity:.8}
+    td.amount{text-align:right}
+    .controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none}
+    .btn.primary{background:#1dd661;color:#063}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.25);opacity:.9}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:900px){.kpis{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+    footer{opacity:.8;text-align:center;padding:40px 12px}
+    /* Badges premium */
+    .plan-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-weight:700;background:#141; color:#9f9}
+    .premium-only{opacity:.9}
+  </style>
 </head>
-<body class="bank">
-  <header class="topbar">
-    <a class="brand" href="/">
-      <img src="logo.svg" alt="Econya" height="28" />
-      <span>Econya</span>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar container">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.svg" alt="Econya">
+      <strong>Econya</strong>
     </a>
     <nav class="nav">
       <a href="comparateur.html">Comparateur Pro</a>
       <a href="coach-eco.html">Coach Éco</a>
-      <a class="active" href="banque.html">Banque (démo)</a>
+      <a href="partenaires.html">Partenaires</a>
       <a href="playbooks.html">Playbooks</a>
     </nav>
   </header>
 
   <main class="container">
-    <h1>Connexion bancaire (démo)</h1>
+    <h1>Connexion bancaire</h1>
+    <p>Reliez vos comptes (démo), analysez vos dépenses et suivez vos progrès.</p>
 
-    <!-- Badges d’état -->
-    <div class="badges">
-      <span id="api-status" class="badge ghost">API…</span>
-      <span id="ob-status"  class="badge ghost">Open Banking…</span>
-      <span id="plan-badge" class="badge premium ghost" title="Plan actuel">Gratuit</span>
+    <!-- Badges de statut -->
+    <div class="section">
+      <span id="api-status" class="badge ghost">Vérification du backend…</span>
+      <span id="ob-status" class="badge ghost">Open-Banking prêt…</span>
     </div>
 
-    <!-- Bloc comptes -->
-    <section class="card" style="margin-top:16px">
-      <h2>Mes comptes</h2>
-      <div id="accounts" class="accounts"></div>
+    <!-- CTA Open Banking (mock) -->
+    <div class="section card">
+      <h2>Relier ma banque</h2>
+      <p>Simulation d’agrégation bancaire (parcours démo).</p>
+      <div class="controls">
+        <a id="btn-ob" class="btn primary" href="#">Se connecter à ma banque</a>
+        <a id="btn-ob-reset" class="btn ghost" href="#">Réinitialiser la liaison</a>
+      </div>
+    </div>
+
+    <!-- Synthèse / KPIs -->
+    <section class="section">
+      <h2>Synthèse</h2>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">Dépenses du mois</div>
+          <div id="kpi-spend" class="kpi-value">0,00 €</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Revenus du mois</div>
+          <div id="kpi-income" class="kpi-value">0,00 €</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Solde estimé</div>
+          <div id="kpi-balance" class="kpi-value">0,00 €</div>
+        </div>
+      </div>
     </section>
 
-    <!-- Filtres + actions -->
-    <section class="card" style="margin-top:16px">
-      <div class="row" style="align-items:center; gap:12px; flex-wrap:wrap">
-        <h2 style="margin:0">Transactions</h2>
-        <label style="display:flex; align-items:center; gap:8px">
-          Mois :
-          <input id="tx-month" type="month" />
-        </label>
-        <button id="tx-load" class="btn">Charger</button>
-        <button id="tx-export" class="btn ghost">Exporter CSV</button>
-        <a href="comparateur.html" class="btn ghost">Comparer maintenant</a>
-      </div>
-      <div class="kpis" id="kpis" style="margin-top:12px"></div>
-      <div class="row" style="gap:16px; align-items:flex-start; margin-top:12px; flex-wrap:wrap">
-        <div class="table-wrap">
-          <table class="table" id="tx-table">
-            <thead>
-              <tr>
-                <th>Date</th><th>Libellé</th><th>Catégorie</th>
-                <th style="text-align:right; min-width:120px">Montant</th>
-              </tr>
-            </thead>
-            <tbody id="tx-tbody"></tbody>
-            <tfoot>
-              <tr>
-                <td colspan="3" style="text-align:right"><strong>Total</strong></td>
-                <td id="tx-total" style="text-align:right">0,00 €</td>
-              </tr>
-            </tfoot>
-          </table>
+    <!-- Transactions (démo) -->
+    <section class="section">
+      <div class="grid-2">
+        <div>
+          <h2 style="margin-bottom:6px">Transactions (démo)</h2>
+          <div class="controls" style="margin-bottom:12px">
+            <label for="tx-month">Mois :</label>
+            <input id="tx-month" type="month" />
+            <button id="tx-load" class="btn ghost">Charger</button>
+          </div>
+
+          <div class="card" style="overflow:auto">
+            <table class="table" id="tx-table">
+              <thead>
+                <tr>
+                  <th style="min-width:120px">Date</th>
+                  <th style="min-width:260px">Libellé</th>
+                  <th>Catégorie</th>
+                  <th class="amount" style="min-width:120px">Montant</th>
+                </tr>
+              </thead>
+              <tbody id="tx-tbody">
+                <!-- Rempli par assets/bank.js -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" style="text-align:right"><strong>Total</strong></td>
+                  <td class="amount"><strong id="tx-total">0,00 €</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </div>
 
-        <!-- Répartition par catégorie -->
-        <div class="card" style="min-width:280px; flex:1">
-          <h3>Répartition par catégorie</h3>
-          <ul id="cat-split" class="cat-split"></ul>
-          <div id="premium-hint" class="hint">
-            Répartition détaillée & graphiques — <a href="#" id="open-premium">Passez en Premium</a>
+        <!-- Cartes Premium -->
+        <div>
+          <h2 style="margin-bottom:6px">Cartes <span class="premium-only">Premium</span></h2>
+          <div class="card" style="margin-bottom:12px">
+            <div class="plan-badge" title="Disponible avec le plan Premium">
+              Premium
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.2L18 21l-6-4-6 4 1.5-7.8L2 9h7l3-7z"/></svg>
+            </div>
+            <canvas id="chart-cat" height="180" style="margin-top:12px"></canvas>
+          </div>
+
+          <div class="card">
+            <div class="plan-badge">
+              Premium
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.2L18 21l-6-4-6 4 1.5-7.8L2 9h7l3-7z"/></svg>
+            </div>
+            <canvas id="chart-cashflow" height="180" style="margin-top:12px"></canvas>
           </div>
         </div>
       </div>
+
+      <!-- Upsell Premium (mobile/si charts absents) -->
+      <div id="premium-upsell" class="card" style="margin-top:12px; display:none">
+        <h3>Débloquez les graphiques avancés</h3>
+        <p>Passez en Premium pour activer l’analyse par catégories et le cash-flow mensuel.</p>
+        <a class="btn primary" href="tarifs.html">Voir les tarifs</a>
+      </div>
     </section>
 
-    <section class="card" style="margin-top:16px">
-      <h2>Connexion Open Banking</h2>
-      <p>Démo : démarrez un parcours de connexion (mock).</p>
-      <button id="ob-start" class="btn">Relier ma banque</button>
-    </section>
   </main>
 
-  <footer class="footer">
-    <span id="year"></span> © Econya
+  <footer>
+    <div><span id="year"></span> © Econya</div>
+    <div style="margin-top:8px;opacity:.8">
+      <a href="mentions.html">Mentions légales</a> ·
+      <a href="vie-privee.html">Vie privée</a> ·
+      <a href="partenaires.html">Partenaires</a> ·
+      <a href="contact.html">Contact</a>
+    </div>
   </footer>
 
-  <!-- Variables d’environnement (URL backend) -->
-  <script src="assets/env.js"></script>
-  <!-- Logiques front de la page banque -->
-  <script src="assets/bank.js"></script>
+  <script>
+    // Petite sécurité : si Chart.js ou bank-charts.js ne sont pas chargés,
+    // on affiche un encart pour promouvoir le plan Premium.
+    window.addEventListener('DOMContentLoaded', () => {
+      const upsell = document.getElementById('premium-upsell');
+      const hasCharts = !!window.Chart && typeof window.renderBankCharts === 'function';
+      if (!hasCharts && upsell) upsell.style.display = 'block';
+    });
+  </script>
 </body>
 </html>
+
 
 
