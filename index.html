@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="largeur=largeur-de-l'appareil, échelle-initiale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Econya – Vos économies grandissent avec vous</title>
     <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
@@ -11,7 +11,7 @@
     <meta property="og:title" content="Econya – Vos économies grandissent avec vous" />
     <meta property="og:description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
     <meta property="og:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
-    <meta name="twitter:card" content="résumé_grande_image" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://econya.fr/assets/img/social-card.png?v=1003" />
 
     <!-- Favicon / Logo -->
@@ -19,37 +19,42 @@
     <link rel="icon" type="image/png" href="assets/img/logo-dark.png?v=1003" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="actifs/style.css?v=1003" />
+    <link rel="stylesheet" href="assets/style.css?v=1003" />
 </head>
 <body>
 
-    <en-tête class="barre supérieure">
-        <un class="marque" href="/">
-            <image source="actifs/logo.svg" alt="Econya" hauteur="28" />
-            <portée>Econya</portée>
-        </un>
-        <navigation class="navigation">
-            <un href="comparateur.html">Comparateur Pro</un>
-            <un href="coach.html">Coach Eco</un>
-            <un href="partenaires.html">Partenaires</un>
-        </navigation>
-    </en-tête>
+    <header class="barre supérieure">
+        <a class="marque" href="#">
+            <img src="assets/logo.svg" alt="Econya" height="28" />
+            <span>Econya</span>
+        </a>
+        <nav class="navigation">
+            <a href="comparateur.html">Comparateur Pro</a>
+            <a href="coach.html">Coach Eco</a>
+            <a href="partenaires.html">Partenaires</a>
+        </nav>
+    </header>
 
-    <principal class="héros">
+    <main class="héros">
         <h1>Vos économies grandissent avec vous</h1>
         <p>Comparez, enregistrez et suivez vos progrès.</p>
-        <un class="btn" href="comparateur.html">Essayer le comparateur</un>
-        <un class="btn fantôme" href="playbooks.html">Voir les Playbooks</un>
-    </principal>
+        <a class="btn" href="comparateur.html">Essayer le comparateur</a>
+        <a class="btn fantôme" href="playbooks.html">Voir les Playbooks</a>
+    </main>
 
-    <pied de page class="pied de page">
-        <portée identifiant="et">&copy; <portée>Econya</portée></portée>
-    </pied de page>
+    <footer class="pied de page">
+        <span id="year"></span> © Econya
+    </footer>
 
-    <!-- Variables d'environnement (API Backend) -->
+    <!-- Charger les variables d'environnement -->
     <script src="actifs/env.js"></script>
 
     <!-- Script principal -->
     <script src="actifs/main.js?v=1003"></script>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
 </body>
 </html>
