@@ -3,29 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Econya – Vos économies grandissent avec vous</title>
+
+  <title>Econya — Vos économies grandissent avec vous</title>
   <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
-  <!-- Politique de sécurité de contenu : ressources locales + API backend Render -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src 'self';
-          style-src 'self';
-          img-src 'self' data:;
-          connect-src 'self' https://econya-backend.onrender.com;
-          object-src 'none';
-          base-uri 'self';
-          frame-ancestors 'self';
-        ">
+  <!-- CSP: autorise les ressources locales + requêtes vers le backend Render -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    connect-src 'self' https://econya-backend.onrender.com;
+    object-src 'none';
+    base-uri 'self';
+    frame-ancestors 'self';
+  ">
 
-  <!-- Favicon & styles (RACINE) -->
+  <!-- Favicon (RACINE) -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="style.css?v=1004" />
+
+  <!-- CSS (RACINE) -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <noscript>Veuillez activer JavaScript pour utiliser Econya.</noscript>
 
-  <!-- Barre haute -->
+  <!-- En-tête -->
   <header class="topbar">
     <a class="brand" href="/">
       <img src="logo.svg" alt="Econya" height="28" />
@@ -33,8 +36,8 @@
     </a>
     <nav class="nav">
       <a href="comparateur.html">Comparateur Pro</a>
-      <a href="coach-eco.html">Coach Eco</a> <!-- lien corrigé -->
-      <a href="partenaires.html">Partenaires</a>
+      <a href="coach-eco.html">Coach Eco</a>
+      <a href="playbooks.html">Playbooks</a>
     </nav>
   </header>
 
@@ -48,28 +51,20 @@
       <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
     </div>
 
-    <!-- Badge de statut backend (rempli par main.js) -->
-    <div id="api-status"
-         style="margin-top:16px;padding:8px 12px;border-radius:8px;display:inline-block;background:#eee;color:#333;font-weight:600">
+    <!-- Badge de statut backend (mis à jour par main.js) -->
+    <div id="api-status" style="margin-top:16px;padding:8px 12px;border-radius:8px;display:inline-block;background:#eee;color:#333;font-weight:600">
       Vérification du backend…
     </div>
   </main>
 
-  <!-- Pied -->
+  <!-- Pied de page -->
   <footer class="footer">
     <span id="year"></span> © Econya
   </footer>
 
-  <!-- Variables d’environnement (DOSSIER: actifs/) -->
-  <script src="actifs/env.js"></script>
-
-  <!-- Script principal (RACINE) -->
-  <script src="main.js?v=1004"></script>
-
-  <!-- Petite aide: année auto si jamais main.js ne le fait pas -->
-  <script>
-    const y = document.getElementById('year');
-    if (y) y.textContent = new Date().getFullYear();
-  </script>
+  <!-- Important: variables d’environnement AVANT main.js -->
+  <script src="assets/env.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
+
