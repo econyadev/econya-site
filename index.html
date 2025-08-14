@@ -6,30 +6,28 @@
   <title>Econya – Vos économies grandissent avec vous</title>
   <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
 
-  <!-- CSP simple: ressources locales + appel API backend -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src 'self';
-          style-src 'self';
-          img-src 'self' data:;
-          connect-src 'self' https://econya-backend.onrender.com;
-          object-src 'none';
-          base-uri 'self';
-          frame-ancestors 'self';
-        ">
+  <!-- CSP simple : ressources locales + appel API backend -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    img-src 'self' data:;
+    connect-src 'self' https://econya-backend.onrender.com;
+    object-src 'none';
+    base-uri 'self';
+    frame-ancestors 'self';
+  ">
 
-  <!-- Favicons / logos (RACINE) -->
+  <!-- Favicons / logos -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-  <!-- CSS (RACINE) -->
-  <link rel="stylesheet" href="style.css?v=1003" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=1004" />
 </head>
 <body>
 
   <header class="topbar">
     <a class="brand" href="/">
-      <!-- logo en RACINE -->
       <img src="logo.svg" alt="Econya" height="28" />
       <span>Econya</span>
     </a>
@@ -57,36 +55,28 @@
   </footer>
 
   <!-- Variables d’environnement -->
-  <!-- ⤷ si ton dossier est 'actifs/', change 'assets/env.js' -> 'actifs/env.js' -->
   <script src="assets/env.js"></script>
 
-  <!-- Script principal (RACINE) -->
-  <script src="main.js?v=1003" defer></script>
+  <!-- Script principal -->
+  <script src="main.js?v=1004"></script>
 
   <script>
-    // Année auto
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Indicateur visuel du backend (version FR: /sante + /ping)
     (async () => {
       const el = document.getElementById('api-status');
       const base = (window.ECONYA_API_BASE || "").replace(/\/+$/,'');
-      if (!base) { el.textContent = "Backend non configuré"; el.style.background="#ffd9d9"; el.style.color="#a00"; return; }
-
+      if (!base) { 
+        el.textContent = "Backend non configuré"; 
+        el.style.background="#ffd9d9"; 
+        el.style.color="#a00"; 
+        return; 
+      }
       try {
-        // 1) /sante
-        const r1 = await fetch(base + "/sante", { mode: "cors" });
-        if (!r1.ok) throw new Error("HTTP " + r1.status);
-        const d1 = await r1.json().catch(()=> ({}));
-
-        // 2) /ping
-        const r2 = await fetch(base + "/ping", { mode: "cors" });
-        const txt = await r2.text().catch(()=> "");
-        const okPing = r2.ok && txt.trim().toLowerCase() === "pong";
-
-        el.textContent = "Backend connecté ✅"
-          + (d1.version ? " (v" + d1.version + ")" : "")
-          + (okPing ? " • pong" : "");
+        const res = await fetch(base + "/sante", { mode: "cors" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json().catch(()=> ({}));
+        el.textContent = "Backend connecté ✅ " + (data.service ? "(" + data.service + ")" : "");
         el.style.background = "#d7f5dd";
         el.style.color = "#115c2d";
       } catch (e) {
@@ -97,5 +87,6 @@
       }
     })();
   </script>
+
 </body>
 </html>
