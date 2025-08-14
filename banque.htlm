@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion bancaire — Econya</title>
+  <meta name="description" content="Reliez votre banque pour analyser revenus et dépenses avec le Coach Éco." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="banque.html" aria-current="page">Banque</a>
+    <a href="pricing.html">Tarifs</a>
+  </nav>
+</header>
+
+<main class="container" style="padding:24px 0 40px">
+  <h1>Relier ma banque</h1>
+  <p class="sub">Statut API : <span id="api-status" class="badge">Vérification…</span></p>
+
+  <section class="card" style="margin-top:16px">
+    <h2 style="margin-top:0">Connexion</h2>
+    <p>Nous utilisons un fournisseur d’open-banking pour agréger vos transactions en lecture seule (pas de virements). Vous choisissez vos comptes, et vous pouvez révoquer l’accès à tout moment.</p>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">
+      <button id="connect" class="btn">Connecter ma banque</button>
+      <button id="disconnect" class="btn ghost">Déconnecter</button>
+      <span id="link-status" class="badge">Non connecté</span>
+    </div>
+  </section>
+
+  <section id="insights" class="card" style="margin-top:16px; display:none">
+    <h2 style="margin-top:0">Aperçu analytique</h2>
+    <div id="insight-body">
+      <p class="sub">Exemple (démo) : répartition mensuelle dépenses / revenus.</p>
+      <div class="grid-3" style="gap:12px">
+        <article class="card"><h3 style="margin-top:0">Revenus mensuels</h3><p><strong id="rev">2 000 €</strong></p></article>
+        <article class="card"><h3 style="margin-top:0">Dépenses fixes</h3><p><strong id="fix">1 050 €</strong></p></article>
+        <article class="card"><h3 style="margin-top:0">Dépenses variables</h3><p><strong id="var">650 €</strong></p></article>
+      </div>
+      <p style="margin-top:12px">Épargne potentielle estimée : <strong id="save">300 €</strong>/mois</p>
+      <a class="btn" href="coach-eco.html">Envoyer au Coach Éco</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></div>
+    <nav class="footer-nav"><a href="legal.html">Mentions légales</a><a href="vie-privée.html">Vie privée</a><a href="pricing.html">Tarifs</a><a href="contact.html">Contact</a></nav>
+    <div class="copy"><span id="year"></span> © Econya</div>
+  </div>
+</footer>
+
+<script src="actifs/env.js"></script>
+<script src="actifs/main-pages.js"></script>
+<script>
+const base = (window.ECONYA_API_BASE || '').replace(/\/+$/,'');
+const statusEl = document.getElementById('link-status');
+const insights = document.getElementById('insights');
+
+async function refreshStatus(){
+  if (!base) return;
+  try{
+    const r = await fetch(base + '/ob/status', {mode:'cors'});
+    const j = await r.json();
+    if (j.linked){
+      statusEl.textContent = 'Connecté ✅';
+      statusEl.style.background = '#d7f5dd';
+      statusEl.style.color = '#115c2d';
+      insights.style.display = 'block';
+    } else {
+      statusEl.textContent = 'Non connecté';
+      statusEl.style.background = '';
+      statusEl.style.color = '';
+      insights.style.display = 'none';
+    }
+  }catch(e){}
+}
+refreshStatus();
+
+document.getElementById('connect').addEventListener('click', async ()=>{
+  if (!base) return alert('Backend non configuré');
+  try{
+    const r = await fetch(base + '/ob/start', {mode:'cors'});
+    const j = await r.json();
+    // redirection "fournisseur" (mock)
+    location.href = j.url;
+  }catch(e){ alert('Impossible de démarrer la connexion.'); }
+});
+
+document.getElementById('disconnect').addEventListener('click', async ()=>{
+  if (!base) return;
+  await fetch(base + '/ob/disconnect', {method:'POST', mode:'cors'});
+  refreshStatus();
+});
+</script>
+</body>
+</html>
