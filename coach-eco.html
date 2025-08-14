@@ -1,163 +1,64 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coach Éco — Econya</title>
-  <meta name="description" content="Fixez des objectifs d’économie, suivez vos progrès et lancez une comparaison contextualisée." />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach Éco - Econya</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="index.html"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></a>
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="comparateur.html">Comparateur</a>
-      <a href="coach-eco.html" aria-current="page">Coach Éco</a>
-      <a href="partenaires.html">Partenaires</a>
-      <a href="playbooks.html">Playbooks</a>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="logo">Econya</a>
+        <div class="nav-links">
+            <a href="comparateur.html">Comparateur</a>
+            <a href="coach-eco.html" class="active">Coach Éco</a>
+            <a href="banque.html">Banque</a>
+            <a href="partenaires.html">Partenaires</a>
+            <a href="playbooks.html">Playbooks</a>
+        </div>
     </nav>
-  </header>
 
-  <main class="container" style="padding:24px 0 40px">
-    <h1>Coach Éco</h1>
-    <p class="sub">Quelques guides arrivent très bientôt. Statut API : <span id="api-status" class="badge">Vérification…</span></p>
+    <!-- Titre principal -->
+    <header class="hero">
+        <h1>Coach Éco</h1>
+        <p>Optimisez vos finances grâce à des analyses et recommandations personnalisées.</p>
+    </header>
 
-    <!-- Étape 1 : Profil / objectifs -->
-    <section class="card" style="margin-top:16px">
-      <h2 style="margin-top:0">Votre objectif</h2>
-      <form id="coach-form" class="grid-3" style="gap:12px">
-        <label class="card">
-          <span>Catégorie</span>
-          <select id="cat" required>
-            <option value="mobile">Téléphonie mobile</option>
-            <option value="internet">Internet</option>
-            <option value="banque">Banque</option>
-            <option value="energie">Énergie</option>
-          </select>
-        </label>
-        <label class="card">
-          <span>Dépense actuelle (€/mois)</span>
-          <input id="current" type="number" min="0" step="0.1" placeholder="ex: 39.90" required />
-        </label>
-        <label class="card">
-          <span>Objectif d’économie (%)</span>
-          <input id="target" type="number" min="0" max="90" step="1" value="20" />
-        </label>
-        <button class="btn" style="grid-column: 1 / -1" type="submit">Enregistrer l’objectif</button>
-      </form>
+    <!-- Section Synthèse -->
+    <section class="synthese">
+        <h2>Synthèse</h2>
+        <p>Analysez vos dépenses et comparez vos options pour économiser plus efficacement.</p>
+        
+        <div class="cta-row">
+            <a href="comparateur.html" class="btn">Comparer maintenant</a>
+            <a href="banque.html" class="btn ghost">Analyser mes dépenses</a>
+        </div>
     </section>
 
-    <!-- Étape 2 : Synthèse + CTA vers comparateur -->
-    <section id="synthese" class="card" style="margin-top:16px;display:none">
-      <h2 style="margin-top:0">Synthèse</h2>
-      <div id="summary"></div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">
-        <a id="go-compare" class="btn">Comparer maintenant</a>
-        <button id="reset" class="btn ghost">Réinitialiser</button>
-      </div>
+    <!-- Explications -->
+    <section class="how-it-works">
+        <h2>Comment ça marche ?</h2>
+        <ol>
+            <li>Connectez vos comptes bancaires de manière sécurisée.</li>
+            <li>Analysez vos revenus et dépenses.</li>
+            <li>Recevez des conseils personnalisés pour réduire vos coûts et optimiser vos finances.</li>
+        </ol>
     </section>
 
-    <!-- Étape 3 : Progression (localStorage) -->
-    <section class="card" style="margin-top:16px">
-      <h2 style="margin-top:0">Progression</h2>
-      <p class="sub">Le Coach suit vos économies estimées (localement dans votre navigateur).</p>
-      <div id="progress" class="grid-3" style="gap:12px"></div>
-    </section>
-  </main>
+    <!-- Badge backend -->
+    <div id="api-status">Vérification du backend...</div>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></div>
-      <nav class="footer-nav"><a href="legal.html">Mentions légales</a><a href="vie-privée.html">Vie privée</a><a href="partenaires.html">Partenaires</a><a href="contact.html">Contact</a></nav>
-      <div class="copy"><span id="year"></span> © Econya</div>
-    </div>
-  </footer>
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2025 Econya. Tous droits réservés.</p>
+    </footer>
 
-  <script src="actifs/env.js"></script>
-  <script src="main.js"></script>
-  <script>
-    // Préremplir depuis l’URL (quand on vient du Comparateur)
-    const q = new URLSearchParams(location.search);
-    if (q.has('cat')) document.getElementById('cat').value = q.get('cat');
-    if (q.has('current')) document.getElementById('current').value = q.get('current');
-    if (q.has('target')) document.getElementById('target').value = q.get('target');
-
-    // Charger profil existant
-    const KEY = 'econya_profile';
-    const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (saved) fill(saved);
-
-    // Sauvegarder objectif + montrer synthèse
-    document.getElementById('coach-form').addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const profile = {
-        cat: document.getElementById('cat').value,
-        current: Math.max(0, parseFloat(document.getElementById('current').value||0)),
-        target: Math.max(0, Math.min(90, parseFloat(document.getElementById('target').value||0)))
-      };
-      localStorage.setItem(KEY, JSON.stringify(profile));
-      fill(profile);
-      // Tick côté backend pour le “keep alive” (utilise ECONYA_API_BASE)
-      if (window.ECONYA_API_BASE) fetch(window.ECONYA_API_BASE + '/ping').catch(()=>{});
-    });
-
-    function fill(p){
-      const synth = document.getElementById('synthese');
-      const sum = document.getElementById('summary');
-      const targetRatio = p.target/100;
-      const estPrice = (p.current * (1 - targetRatio)).toFixed(2);
-      const estSave  = (p.current - estPrice).toFixed(2);
-
-      sum.innerHTML = `
-        <p>Catégorie : <strong>${p.cat}</strong></p>
-        <p>Dépense actuelle : <strong>${p.current.toFixed ? p.current.toFixed(2) : p.current} €/mois</strong></p>
-        <p>Objectif : <strong>${p.target}%</strong> → Prix visé ≈ <strong>${estPrice}€/mois</strong> (économie ≈ <strong>${estSave}€/mois</strong>)</p>
-      `;
-      synth.style.display = 'block';
-
-      // Bouton "Comparer" avec préremplissage du comparateur
-      const url = new URL('comparateur.html', location.href);
-      url.searchParams.set('cat', p.cat);
-      url.searchParams.set('current', p.current);
-      url.searchParams.set('target', p.target);
-      document.getElementById('go-compare').href = url.toString();
-
-      // Historique local
-      const histKey = 'econya_history';
-      const hist = JSON.parse(localStorage.getItem(histKey) || '[]');
-      hist.unshift({ ts: Date.now(), ...p, estPrice, estSave });
-      localStorage.setItem(histKey, JSON.stringify(hist.slice(0,12)));
-      renderHistory();
-    }
-
-    function renderHistory(){
-      const hist = JSON.parse(localStorage.getItem('econya_history') || '[]');
-      const box = document.getElementById('progress');
-      box.innerHTML = '';
-      if (!hist.length){ box.innerHTML = '<p class="sub">Aucun enregistrement pour le moment.</p>'; return; }
-      hist.forEach(h=>{
-        const el = document.createElement('article');
-        el.className = 'card';
-        const d = new Date(h.ts);
-        el.innerHTML = `
-          <h3 style="margin-top:0">${h.cat} — ${d.toLocaleDateString()}</h3>
-          <p>Actuel : <strong>${Number(h.current).toFixed(2)}€</strong> — Objectif : <strong>${h.target}%</strong></p>
-          <p>Visé : <strong>${h.estPrice}€</strong> — Gain estimé : <strong>${h.estSave}€/mois</strong></p>
-        `;
-        box.appendChild(el);
-      });
-    }
-    renderHistory();
-
-    // Reset
-    document.getElementById('reset').addEventListener('click', ()=>{
-      localStorage.removeItem('econya_profile');
-      localStorage.removeItem('econya_history');
-      location.href = 'coach-eco.html';
-    });
-  </script>
+    <!-- Scripts -->
+    <script src="assets/env.js"></script>
+    <script src="assets/main.js"></script>
 </body>
 </html>
+
 
 
