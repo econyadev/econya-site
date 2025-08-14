@@ -1,18 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Econya</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Econya – Vos économies grandissent avec vous</title>
+  <meta name="description" content="Comparez, enregistrez et suivez vos progrès. Coach Eco, comparateur et bons plans." />
+
+  <!-- Politique de sécurité de contenu : ressources locales + appel API Render -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    img-src 'self' data:;
+    connect-src 'self' https://econya-backend.onrender.com;
+    object-src 'none';
+    base-uri 'self';
+    frame-ancestors 'self';
+  ">
+
+  <!-- Favicons / logos (RACINE) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- CSS (RACINE) -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Barre du haut -->
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach-eco.html">Coach Eco</a>
+      <a href="partenaires.html">Partenaires</a>
+    </nav>
+  </header>
+
+  <!-- Section héro -->
+  <main class="hero">
     <h1>Vos économies grandissent avec vous</h1>
-    <p id="api-status">Vérification du backend...</p>
+    <p>Comparez, enregistrez et suivez vos progrès.</p>
 
-    <!-- Charger env.js en premier -->
-    <script src="assets/env.js"></script>
+    <div class="cta-row">
+      <a class="btn" href="comparateur.html">Essayer le comparateur</a>
+      <a class="btn ghost" href="playbooks.html">Voir les Playbooks</a>
+    </div>
 
-    <!-- Puis main.js -->
-    <script src="main.js"></script>
+    <!-- Badge de statut backend -->
+    <div id="api-status" class="api-badge">Vérification du backend…</div>
+  </main>
+
+  <!-- Pied de page -->
+  <footer class="footer">
+    <span id="year"></span> © Econya
+  </footer>
+
+  <!-- IMPORTANT : charger env.js AVANT main.js -->
+  <!-- assets/env.js doit contenir : window.ECONYA_API_BASE = 'https://econya-backend.onrender.com'; -->
+  <script src="assets/env.js"></script>
+  <script src="main.js" defer></script>
 </body>
 </html>
