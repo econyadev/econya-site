@@ -1,36 +1,51 @@
-<!doctype html><html lang="fr"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Coach Eco — Econya</title>
-<meta name="description" content="Coach Eco">
-<meta property="og:title" content="Coach Eco — Econya"/>
-<meta property="og:description" content="Coach Eco"/>
-<meta property="og:type" content="website"/>
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
-<link rel="stylesheet" href="assets/style.css"/>
-<script src="assets/env.js"></script>
-<script defer src="assets/i18n.js"></script>
-<script defer src="assets/main.js"></script>
-</head><body><header class="nav"><div class="nav-inner container">
-<a class="brand" href="index.html"><img src="assets/logo.svg" class="logo"/><span class="wordmark">Econya</span></a>
-<nav>
-  <a href="index.html" data-i18n="nav_home">Accueil</a>
-  <a href="comparator-pro.html" data-i18n="nav_comp">Comparateur Pro</a>
-  <a href="coach-eco.html" data-i18n="nav_coach">Coach Eco</a>
-  <a href="deals.html" data-i18n="nav_deals">Bons plans</a>
-  <a href="giftcards.html" data-i18n="nav_gift">Cartes cadeaux</a>
-  <a href="markets.html" data-i18n="nav_markets">Marchés</a>
-  <a href="travel.html" data-i18n="nav_travel">Voyages</a>
-  <a href="tarifs.html" data-i18n="nav_tarifs">Tarifs</a>
-  <a href="partners.html" data-i18n="nav_partners">Partenaires</a>
-  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
-  <a href="contact.html" data-i18n="nav_contact">Contact</a>
-  <select id="langSel" aria-label="Langue"></select>
-</nav>
-</div></header><main class='container section fade-in'>
-<h2>Coach Eco</h2>
-<p>Playbooks d’économies (court/moyen/long terme) + conseils contextualisés par pays et profil.</p>
-<div id="coachRoot"></div><script defer src="assets/coach.js"></script>
-</main><footer class="footer container">
-  <div>© 2025 Econya — Vos économies grandissent avec vous</div>
-  <div class="small"><a href="privacy.html">Vie privée</a> • <a href="terms.html">CGU</a></div>
-</footer></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coach Eco - Econya</title>
+    <meta name="description" content="Coach Eco - Econya" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <script src="assets/env.js"></script>
+    <script src="main.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="comparateur.html">Comparateur</a></li>
+                <li><a href="playbooks.html">Playbooks</a></li>
+                <li><a href="coach-eco.html" class="active">Coach Eco</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Coach Eco</h1>
+        <p>Votre assistant pour optimiser vos dépenses et suivre vos économies.</p>
+
+        <div id="backend-status">
+            Statut API : <span id="status-text">Vérification...</span>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Econya</p>
+    </footer>
+
+    <script>
+        // Vérifier le backend au chargement
+        checkBackend().then(status => {
+            const statusEl = document.getElementById('status-text');
+            if (status === 'ok') {
+                statusEl.textContent = 'Backend connecté ✅';
+                statusEl.style.color = 'green';
+            } else {
+                statusEl.textContent = 'Backend non disponible ❌';
+                statusEl.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
