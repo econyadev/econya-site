@@ -1,57 +1,73 @@
-<!doctype html><html lang="fr"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Tarifs — Econya</title>
-<meta name="description" content="Tarifs">
-<meta property="og:title" content="Tarifs — Econya"/>
-<meta property="og:description" content="Tarifs"/>
-<meta property="og:type" content="website"/>
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
-<link rel="stylesheet" href="assets/style.css"/>
-<script src="assets/env.js"></script>
-<script defer src="assets/i18n.js"></script>
-<script defer src="assets/main.js"></script>
-</head><body><header class="nav"><div class="nav-inner container">
-<a class="brand" href="index.html"><img src="assets/logo.svg" class="logo"/><span class="wordmark">Econya</span></a>
-<nav>
-  <a href="index.html" data-i18n="nav_home">Accueil</a>
-  <a href="comparator-pro.html" data-i18n="nav_comp">Comparateur Pro</a>
-  <a href="coach-eco.html" data-i18n="nav_coach">Coach Eco</a>
-  <a href="deals.html" data-i18n="nav_deals">Bons plans</a>
-  <a href="giftcards.html" data-i18n="nav_gift">Cartes cadeaux</a>
-  <a href="markets.html" data-i18n="nav_markets">Marchés</a>
-  <a href="travel.html" data-i18n="nav_travel">Voyages</a>
-  <a href="tarifs.html" data-i18n="nav_tarifs">Tarifs</a>
-  <a href="partners.html" data-i18n="nav_partners">Partenaires</a>
-  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
-  <a href="contact.html" data-i18n="nav_contact">Contact</a>
-  <select id="langSel" aria-label="Langue"></select>
-</nav>
-</div></header><main class='container section fade-in'>
-<h2>Tarifs</h2>
-<div class="pricing">
-  <div class="card">
-    <h3>Gratuit</h3>
-    <div class="price">0 €</div>
-    <ul class="feature">
-      <li><span class="check">✔</span> Comparateur limité</li>
-      <li><span class="check">✔</span> Coach Eco (base)</li>
-      <li><span class="check">✔</span> Alertes x3/mois</li>
-      <li><span class="check">✔</span> Arbre qui pousse</li>
-    </ul>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tarifs — Econya</title>
+  <meta name="description" content="Version gratuite et Premium d’Econya : comparez, suivez, analysez." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="pricing.html" aria-current="page">Tarifs</a>
+  </nav>
+</header>
+
+<main class="container" style="padding:24px 0 40px">
+  <h1>Tarifs</h1>
+  <p class="sub">Commencez gratuitement. Passez à Premium pour l’analyse bancaire avancée et l’export.</p>
+
+  <section class="grid-3" style="margin-top:16px">
+    <article class="card">
+      <h2 style="margin-top:0">Gratuit</h2>
+      <ul>
+        <li>Comparateur (formulaire simple)</li>
+        <li>Coach Éco (objectifs + historique local)</li>
+        <li>Playbooks</li>
+        <li>Support email standard</li>
+      </ul>
+      <div style="margin-top:10px"><a class="btn" href="comparateur.html">Commencer</a></div>
+    </article>
+
+    <article class="card">
+      <h2 style="margin-top:0">Premium</h2>
+      <ul>
+        <li><strong>Connexion bancaire</strong> (agrégateur open-banking)</li>
+        <li>Catégorisation automatique revenus / dépenses</li>
+        <li>Alertes personnalisées (dépenses anormales, opportunités)</li>
+        <li>Exports CSV / Excel</li>
+        <li>Support prioritaire</li>
+      </ul>
+      <div style="margin-top:10px"><a class="btn" href="banque.html">Activer</a></div>
+      <p class="sub" style="margin-top:8px">Prix indicatif : 4,99 €/mois (TBD)</p>
+    </article>
+
+    <article class="card">
+      <h2 style="margin-top:0">Pro (option)</h2>
+      <ul>
+        <li>Comparaisons avancées (scénarios multiples)</li>
+        <li>Intégration CRM / export API</li>
+        <li>Tableaux de bord partagés</li>
+      </ul>
+      <div style="margin-top:10px"><a class="btn ghost" href="contact.html">Nous contacter</a></div>
+    </article>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></div>
+    <nav class="footer-nav"><a href="legal.html">Mentions légales</a><a href="vie-privée.html">Vie privée</a><a href="contact.html">Contact</a></nav>
+    <div class="copy"><span id="year"></span> © Econya</div>
   </div>
-  <div class="card">
-    <h3>Premium</h3>
-    <div class="price">à partir de 2,99 €/mois</div>
-    <ul class="feature">
-      <li><span class="check">✔</span> Comparateur illimité</li>
-      <li><span class="check">✔</span> Coach Eco avancé + plans</li>
-      <li><span class="check">✔</span> Alertes illimitées + export</li>
-      <li><span class="check">✔</span> Offres partenaires exclusives</li>
-    </ul>
-  </div>
-</div>
-<div class="small">Tarifs localisés par pays disponibles côté app.</div>
-</main><footer class="footer container">
-  <div>© 2025 Econya — Vos économies grandissent avec vous</div>
-  <div class="small"><a href="privacy.html">Vie privée</a> • <a href="terms.html">CGU</a></div>
-</footer></body></html>
+</footer>
+
+<script src="actifs/env.js"></script>
+<script src="actifs/main-pages.js"></script>
+</body>
+</html>
