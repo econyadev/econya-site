@@ -1,1 +1,1 @@
-window.ECONYA_API_BASE = "https://ton-backend.onrender.com";
+window.ECONYA_API_BASE = "https://econya-backend.onrender.com";
