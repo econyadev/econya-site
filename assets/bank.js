@@ -1,189 +1,234 @@
-// actifs/banque.js — logiques front banque (OB mock + transactions démo)
+// assets/bank.js – banque démo (comptes + transactions + OB mock + Premium)
 
-/* Helpers */
+// Helpers
 const $ = (sel) => document.querySelector(sel);
 const apiBase = (window.ECONYA_API_BASE || "").replace(/\/+$/, "");
 
-/* Badge année */
-$("#year") && ($("#year").textContent = new Date().getFullYear());
-
-/* Badges statut */
-const apiBadge = $("#api-status");
-const obBadge  = $("#ob-status");
-
-function setBadge(el, text, ok) {
-  el.textContent = text;
-  el.classList.remove("ok","ko","ghost");
-  if (ok === true) el.classList.add("ok");
-  else if (ok === false) el.classList.add("ko");
-  else el.classList.add("ghost");
-}
-
-/* Vérif backend */
-(async () => {
-  if (!apiBase) {
-    setBadge(apiBadge, "Backend non configuré", false);
-    return;
-  }
-  try {
-    const r = await fetch(apiBase + "/sante", { mode: "cors" });
-    setBadge(apiBadge, r.ok ? "Backend connecté ✅" : "Backend indisponible ❌", r.ok);
-  } catch {
-    setBadge(apiBadge, "Backend indisponible ❌", false);
-  }
-})();
-
-/* =======================
-   Parcours Open Banking (mock)
-   ======================= */
-
-let pollTimer = null;
-
-async function getOBStatus() {
-  const r = await fetch(apiBase + "/ob/status", { mode: "cors" });
-  if (!r.ok) throw new Error("status http " + r.status);
-  return r.json();
-}
-
-async function startPolling() {
-  clearInterval(pollTimer);
-  pollTimer = setInterval(async () => {
-    try {
-      const s = await getOBStatus();
-      if (s.linked) {
-        setBadge(obBadge, "Banque reliée ✅", true);
-        clearInterval(pollTimer);
-        // une fois relié → (re)charger synthèse & transactions
-        renderKpis();
-        renderTransactions();
-      } else {
-        setBadge(obBadge, "Banque non reliée", null);
-      }
-    } catch {
-      setBadge(obBadge, "Banque non reliée", null);
-    }
-  }, 1500);
-}
-
-$("#ob-connect-btn")?.addEventListener("click", async () => {
-  if (!apiBase) return alert("Backend non configuré.");
-  try {
-    const r = await fetch(apiBase + "/ob/start", { mode: "cors" });
-    const data = await r.json();
-    if (!data.url) throw new Error("URL manquante");
-    // Ouvre le “fournisseur” (mock). Tu peux mettre _blank si tu veux nouvel onglet.
-    window.location.href = data.url;
-  } catch (e) {
-    alert("Impossible de démarrer la liaison.");
-    console.error(e);
-  }
-});
-
-$("#ob-reset-btn")?.addEventListener("click", async () => {
-  if (!apiBase) return;
-  try {
-    await fetch(apiBase + "/ob/reset", { method: "POST", mode: "cors" });
-  } catch {}
-  setBadge(obBadge, "Banque non reliée", null);
-  renderKpis(true);
-  renderTransactions(true);
-});
-
-// Au chargement : on vérifie si déjà relié
-startPolling();
-
-/* =======================
-   Données démo + KPIs
-   ======================= */
-
-// Transactions démo (revenus = positif, dépenses = négatif)
+// Démo offline si backend KO
 const DEMO_TX = [
-  { date: "2025-08-01", label: "Salaire", category: "Revenus", amount: 2200.00 },
-  { date: "2025-08-02", label: "Loyer", category: "Logement", amount: -850.00 },
-  { date: "2025-08-03", label: "Supermarché", category: "Courses", amount: -126.45 },
-  { date: "2025-08-05", label: "Abonnement mobile", category: "Télécom", amount: -19.99 },
-  { date: "2025-08-09", label: "Restaurant", category: "Sorties", amount: -42.30 },
-  { date: "2025-08-12", label: "Transport", category: "Mobilité", amount: -24.80 },
-  { date: "2025-08-15", label: "Freelance", category: "Revenus", amount: 350.00 },
-  { date: "2025-08-16", label: "Énergie", category: "Logement", amount: -68.10 },
-  { date: "2025-08-21", label: "Pharmacie", category: "Santé", amount: -14.20 },
-  { date: "2025-08-24", label: "Café", category: "Sorties", amount: -6.30 },
-  { date: "2025-08-27", label: "Cinéma", category: "Loisirs", amount: -11.50 }
+  { id: 1, date: "2025-08-03", label: "Supermarché", amount: -54.2, category: "Courses" },
+  { id: 2, date: "2025-08-05", label: "Salaire",      amount: 2200,  category: "Revenus" },
+  { id: 3, date: "2025-08-12", label: "Essence",      amount: -52.9, category: "Transport" },
+  { id: 4, date: "2025-08-18", label: "Internet",     amount: -29.9, category: "Abonnements" },
+  { id: 5, date: "2025-08-28", label: "Resto",        amount: -32.5, category: "Sorties" }
 ];
 
-// Valeur par défaut de l’input month = mois courant
-(function setDefaultMonth(){
-  const m = $("#tx-month");
-  if (!m) return;
-  const d = new Date();
-  const mm = String(d.getMonth()+1).padStart(2,"0");
-  m.value = `${d.getFullYear()}-${mm}`;
-})();
+const euro = (n) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(n);
+const fmtDate = (s) => new Date(s).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" });
 
-function parseMonthValue(v) {
-  // "YYYY-MM" → { y, m } (m = 1..12)
-  const [yy, mm] = (v || "").split("-");
-  return { y: Number(yy), m: Number(mm) };
+// Badges
+const apiBadge = $("#api-status");
+const obBadge  = $("#ob-status");
+const planBadge = $("#plan-badge");
+
+// “Plan” (simple démo côté front)
+const PLAN = localStorage.getItem("econya_plan") || "free";
+function setPlan(plan) {
+  localStorage.setItem("econya_plan", plan);
+  planBadge.textContent = (plan === "pro") ? "Premium" : "Gratuit";
+  planBadge.classList.toggle("ghost", false);
+  planBadge.classList.toggle("ok", plan === "pro");
+}
+setPlan(PLAN);
+
+// Utilities
+async function fetchWithTimeout(path, { timeout = 7000, method = "GET" } = {}) {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), timeout);
+  const url = `${apiBase}${path}`;
+  const res = await fetch(url, { method, signal: ctrl.signal, headers: { Accept: "application/json" } });
+  clearTimeout(id);
+  return res;
+}
+function setBadge(el, text, ok = null) {
+  el.textContent = text;
+  el.classList.remove("ok", "ko", "ghost");
+  if (ok === true)  el.classList.add("ok");
+  if (ok === false) el.classList.add("ko");
 }
 
-function filterByMonth(list, ym) {
-  return list.filter(tx => {
-    const d = new Date(tx.date);
-    return (d.getFullYear() === ym.y) && (d.getMonth()+1 === ym.m);
+// Vérif backend + OpenBanking (mock)
+async function checkBackend() {
+  if (!apiBase) {
+    setBadge(apiBadge, "Backend non configuré", false);
+    return false;
+  }
+  try {
+    const res = await fetchWithTimeout("/sante");
+    setBadge(apiBadge, res.ok ? "API OK" : `API ${res.status}`, res.ok);
+    return res.ok;
+  } catch {
+    setBadge(apiBadge, "API KO", false);
+    return false;
+  }
+}
+
+// Comptes
+async function loadAccounts() {
+  const wrap = $("#accounts");
+  wrap.textContent = "Chargement…";
+  try {
+    const res = await fetchWithTimeout("/mescomptes");
+    const data = await res.json();
+    wrap.innerHTML = data.accounts.map(acc => `
+      <div class="account">
+        <div class="acc-name">${acc.name}</div>
+        <div class="acc-iban">${acc.iban}</div>
+        <div class="acc-balance">${euro(acc.balance)}</div>
+      </div>
+    `).join("");
+  } catch {
+    wrap.innerHTML = `<div class="hint">Impossible de charger les comptes (démo hors ligne).<br/>Solde courant : <strong>${euro(980)}</strong></div>`;
+  }
+}
+
+// Filtres & rendu transactions
+function parseMonthValue(v) {
+  if (!v) return null;
+  const [y, m] = v.split("-").map(Number);
+  return { y, m };
+}
+function filterByMonth(items, ym) {
+  if (!ym) return items;
+  return items.filter(t => {
+    const d = new Date(t.date);
+    return d.getFullYear() === ym.y && (d.getMonth() + 1) === ym.m;
   });
 }
-
-function euro(n) {
-  return (n||0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function renderKPIs(items) {
+  const el = $("#kpis");
+  const revenus = items.filter(t => t.amount > 0).reduce((s,t) => s + t.amount, 0);
+  const depenses = items.filter(t => t.amount < 0).reduce((s,t) => s + t.amount, 0);
+  const epargne = revenus + depenses; // depenses négatives
+  el.innerHTML = `
+    <div class="kpi"><div class="kpi-label">Revenus</div><div class="kpi-value">${euro(revenus)}</div></div>
+    <div class="kpi"><div class="kpi-label">Dépenses</div><div class="kpi-value">${euro(Math.abs(depenses))}</div></div>
+    <div class="kpi"><div class="kpi-label">Épargne nette</div><div class="kpi-value">${euro(epargne)}</div></div>
+  `;
 }
-
-/* KPIs */
-function renderKpis(reset=false) {
-  const incEl = $("#kpi-inc");
-  const expEl = $("#kpi-exp");
-  const savEl = $("#kpi-sav");
-  if (reset) {
-    incEl.textContent = expEl.textContent = savEl.textContent = "—";
-    return;
-  }
-  const ym = parseMonthValue($("#tx-month").value);
-  const monthTx = filterByMonth(DEMO_TX, ym);
-  const inc = monthTx.filter(t => t.amount > 0).reduce((a,t)=>a+t.amount, 0);
-  const exp = monthTx.filter(t => t.amount < 0).reduce((a,t)=>a+t.amount, 0);
-  const sav = inc + exp; // exp est négatif
-  incEl.textContent = euro(inc);
-  expEl.textContent = euro(Math.abs(exp));
-  savEl.textContent = euro(sav);
+function renderCategories(items) {
+  const list = $("#cat-split");
+  const byCat = new Map();
+  items.forEach(t => {
+    if (t.amount < 0) {
+      byCat.set(t.category, (byCat.get(t.category) || 0) + Math.abs(t.amount));
+    }
+  });
+  const rows = [...byCat.entries()].sort((a,b) => b[1]-a[1]).slice(0, 8);
+  list.innerHTML = rows.map(([c, sum]) => `<li><span>${c}</span><strong>${euro(sum)}</strong></li>`).join("") || "<li>—</li>";
 }
-
-/* Transactions table */
-function renderTransactions(reset=false) {
+function renderTransactions(items) {
   const tbody = $("#tx-tbody");
   const totalEl = $("#tx-total");
-  if (reset) {
-    tbody.innerHTML = "";
-    totalEl.textContent = "0,00";
-    return;
-  }
-  const ym = parseMonthValue($("#tx-month").value);
-  const monthTx = filterByMonth(DEMO_TX, ym);
-
-  tbody.innerHTML = monthTx.map(tx => `
+  tbody.innerHTML = items.map(tx => `
     <tr>
-      <td>${tx.date}</td>
+      <td>${fmtDate(tx.date)}</td>
       <td>${tx.label}</td>
       <td>${tx.category}</td>
-      <td style="text-align:right;${tx.amount<0?'color:#c0392b':'color:#115c2d'}">
-        ${tx.amount<0?'-':''}${euro(Math.abs(tx.amount))}
-      </td>
+      <td style="text-align:right; color:${tx.amount>=0 ? '#0d7a2f' : '#c0392b'}">${euro(Math.abs(tx.amount))}</td>
     </tr>
   `).join("");
-
-  const total = monthTx.reduce((a,t)=>a+t.amount, 0);
+  const total = items.reduce((s,t)=> s + t.amount, 0);
   totalEl.textContent = euro(total);
+  renderKPIs(items);
+  renderCategories(items);
 }
 
-$("#tx-load")?.addEventListener("click", () => {
-  renderKpis();
-  renderTransactions();
+// Charge backend ou fallback démo
+async function loadTransactions() {
+  const ym = parseMonthValue($("#tx-month").value);
+  try {
+    const path = ym ? `/transactions?month=${ym.y}-${String(ym.m).padStart(2,"0")}` : "/transactions";
+    const res = await fetchWithTimeout(path);
+    const data = await res.json();
+    renderTransactions(data.transactions || []);
+  } catch {
+    renderTransactions(filterByMonth(DEMO_TX, ym));
+  }
+}
+
+// Export CSV (gratuit : transactions ; premium : +cat split)
+function toCSV(rows, headers) {
+  const esc = s => `"${String(s).replace(/"/g,'""')}"`;
+  const head = headers.map(esc).join(",");
+  const body = rows.map(r => headers.map(h => esc(r[h])).join(",")).join("\n");
+  return head + "\n" + body;
+}
+function download(name, content, type="text/csv") {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = name; a.click();
+  URL.revokeObjectURL(url);
+}
+function exportCSV(items) {
+  const rows = items.map(t => ({
+    date: t.date, label: t.label, category: t.category, amount: t.amount
+  }));
+  let csv = toCSV(rows, ["date","label","category","amount"]);
+  if ((localStorage.getItem("econya_plan") || "free") === "pro") {
+    // Bonus premium : ajouter un sommaire par catégorie à la fin
+    const byCat = new Map();
+    items.forEach(t => { if (t.amount<0) byCat.set(t.category,(byCat.get(t.category)||0)+Math.abs(t.amount)); });
+    const add = "\n\nRésumé par catégorie\n" + toCSV(
+      [...byCat.entries()].map(([category, total])=>({category,total})),
+      ["category","total"]
+    );
+    csv += add;
+  }
+  download("transactions.csv", csv);
+}
+
+// Open Banking (mock)
+async function startOB() {
+  try {
+    const res = await fetchWithTimeout("/ob/start");
+    const data = await res.json();
+    // redirection vers la page “fournisseur” (mock) fournie par le backend
+    window.location.href = data.url;
+  } catch {
+    setBadge(obBadge, "Impossible de démarrer", false);
+    alert("Démo OB indisponible pour le moment.");
+  }
+}
+
+// “Premium” upsell simple
+function openPremiumModal() {
+  const ok = confirm(
+    "Passer en Premium ?\n\nAvantages :\n• Catégorisation avancée & multi-comptes\n• Graphiques & budgets\n• Export enrichi & historique illimité\n\nAppuyez sur OK pour activer (démo locale)."
+  );
+  if (ok) { setPlan("pro"); alert("Premium activé (démo locale). Rechargez la page."); }
+}
+
+// Init
+document.addEventListener("DOMContentLoaded", async () => {
+  // année footer
+  $("#year").textContent = new Date().getFullYear();
+
+  // par défaut : mois en cours
+  const now = new Date();
+  $("#tx-month").value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+
+  // boutons
+  $("#tx-load").addEventListener("click", loadTransactions);
+  $("#tx-export").addEventListener("click", async () => {
+    // on réutilise ce qui est rendu à l’écran
+    const ym = parseMonthValue($("#tx-month").value);
+    try {
+      const path = ym ? `/transactions?month=${ym.y}-${String(ym.m).padStart(2,"0")}` : "/transactions";
+      const res = await fetchWithTimeout(path);
+      const data = await res.json();
+      exportCSV(data.transactions || []);
+    } catch {
+      exportCSV(filterByMonth(DEMO_TX, ym));
+    }
+  });
+  $("#ob-start").addEventListener("click", startOB);
+  $("#open-premium").addEventListener("click", (e)=>{ e.preventDefault(); openPremiumModal(); });
+
+  // checks + premières données
+  const ok = await checkBackend();
+  if (ok) { await loadAccounts(); setBadge(obBadge, "Prêt (démo)", true); }
+  await loadTransactions();
 });
+
