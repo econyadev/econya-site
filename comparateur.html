@@ -3,118 +3,112 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Comparateur — Econya</title>
-  <meta name="description" content="Comparez vos options et estimez vos économies avec Econya." />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Comparateur – Econya</title>
+  <meta name="description" content="Comparez les offres selon vos priorités (prix, satisfaction, empreinte carbone) et voyez l’économie estimée." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+    .kpi{background:#0f3c2a88;border:1px solid #ffffff12;border-radius:12px;padding:12px;text-align:center}
+    .score{font-weight:900;font-size:1.4rem;color:#9EF01A}
+    .results .item{padding:10px 0;border-bottom:1px dashed #ffffff22}
+    .results .item:last-child{border-bottom:none}
+    label{display:block;margin:.35rem 0}
+  </style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="index.html"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></a>
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="comparateur.html" aria-current="page">Comparateur</a>
-      <a href="coach-eco.html">Coach Éco</a>
-      <a href="partenaires.html">Partenaires</a>
-      <a href="playbooks.html">Playbooks</a>
-    </nav>
-  </header>
+<header class="topbar">
+  <a class="brand" href="/">
+    <img src="assets/logo.svg" alt="Econya" height="28" />
+    <span>Econya</span>
+  </a>
+  <nav class="nav">
+    <a href="comparateur.html" class="active">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
 
-  <main class="container" style="padding:24px 0 40px">
-    <h1>Comparateur</h1>
-    <p class="sub">Page de démo. Le backend est : <span id="api-status" class="badge">Vérification…</span></p>
+<main class="hero">
+  <h1>Comparateur</h1>
+  <p class="muted">Ajustez les pondérations pour obtenir un score global aligné avec vos priorités.</p>
+</main>
 
-    <section class="card" style="margin-top:16px">
-      <h2 style="margin-top:0">Votre situation</h2>
-      <form id="form" class="grid-3" style="gap:12px">
-        <label class="card">
-          <span>Catégorie</span>
-          <select id="cat" required>
-            <option value="mobile">Téléphonie mobile</option>
-            <option value="internet">Internet</option>
-            <option value="banque">Banque</option>
-            <option value="energie">Énergie</option>
-          </select>
-        </label>
-        <label class="card">
-          <span>Dépense actuelle (€/mois)</span>
-          <input id="current" type="number" min="0" step="0.1" placeholder="ex: 39.90" required />
-        </label>
-        <label class="card">
-          <span>Objectif d’économie (%)</span>
-          <input id="target" type="number" min="0" max="90" step="1" value="20" />
-        </label>
-        <button class="btn" style="grid-column: 1 / -1" type="submit">Comparer</button>
-      </form>
-    </section>
+<section class="container grid">
+  <article class="card">
+    <h2>Critères & pondérations</h2>
+    <label>Prix <input type="range" min="0" max="100" value="50" id="w-price"></label>
+    <label>Satisfaction <input type="range" min="0" max="100" value="30" id="w-rating"></label>
+    <label>Empreinte carbone <input type="range" min="0" max="100" value="20" id="w-eco"></label>
+    <div class="cta" style="margin-top:10px"><button class="btn" id="btn-compare">Comparer maintenant</button></div>
+  </article>
 
-    <section id="results" class="grid-3" style="margin-top:16px"></section>
+  <article class="card results">
+    <h2>Résultats</h2>
+    <div id="compare-results"></div>
+  </article>
+</section>
 
-    <div style="margin-top:18px">
-      <a class="btn ghost" href="coach-eco.html" id="to-coach">Passer au Coach Éco</a>
-    </div>
-  </main>
+<section class="container">
+  <div class="kpis">
+    <div class="kpi"><div id="kpi-save" class="score">0 €</div><small>Économie estimée / an</small></div>
+    <div class="kpi"><div id="kpi-co2" class="score">0 kg</div><small>CO₂ évité / an</small></div>
+    <div class="kpi"><div id="kpi-time" class="score">0 h</div><small>Temps gagné / an</small></div>
+  </div>
+</section>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand"><img class="brand-mark" src="logo.svg" alt="" /><span class="brand-name">Econya</span></div>
-      <nav class="footer-nav"><a href="legal.html">Mentions légales</a><a href="vie-privée.html">Vie privée</a><a href="partenaires.html">Partenaires</a><a href="contact.html">Contact</a></nav>
-      <div class="copy"><span id="year"></span> © Econya</div>
-    </div>
-  </footer>
+<footer class="footer">
+  <span id="year"></span> © Econya
+</footer>
 
-  <script src="actifs/env.js"></script>
-  <script src="main.js"></script>
-  <script>
-    // Hydrate depuis l’URL si le Coach a pré-rempli ?cat=&current=&target=
-    const params = new URLSearchParams(location.search);
-    if (params.has('cat')) document.getElementById('cat').value = params.get('cat');
-    if (params.has('current')) document.getElementById('current').value = params.get('current');
-    if (params.has('target')) document.getElementById('target').value = params.get('target');
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const $ = s=>document.querySelector(s);
+  const euro = n => (n||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
 
-    // Démo sans backend : on fabrique 3 offres “simulées”
-    const OFFRES = [
-      { nom:"Offre Essentielle", gain: .15 },
-      { nom:"Offre Plus",       gain: .22 },
-      { nom:"Offre Max",        gain: .28 },
-    ];
+  const DEMO_OFFERS = [
+    { id:'a', name:'Offre A', price:19.99, rating:4.3, eco:0.7 },
+    { id:'b', name:'Offre B', price:14.50, rating:4.0, eco:0.5 },
+    { id:'c', name:'Offre C', price:24.90, rating:4.8, eco:0.9 },
+    { id:'d', name:'Offre D', price: 9.99, rating:3.7, eco:0.4 },
+  ];
 
-    document.getElementById('form').addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const cat = document.getElementById('cat').value;
-      const current = Math.max(0, parseFloat(document.getElementById('current').value||0));
-      const target = Math.max(0, Math.min(90, parseFloat(document.getElementById('target').value||0))) / 100;
+  function computeScores(offers, w){
+    const maxPrice = Math.max(...offers.map(o=>o.price));
+    return offers.map(o=>{
+      const sPrice  = 1 - (o.price / maxPrice);
+      const sRating = o.rating / 5;
+      const sEco    = o.eco;
+      const totalW  = (w.price||0)+(w.rating||0)+(w.eco||0) || 1;
+      const score   = (sPrice*w.price + sRating*w.rating + sEco*w.eco)/totalW;
+      return {...o, score};
+    }).sort((a,b)=>b.score-a.score);
+  }
 
-      const wrap = document.getElementById('results');
-      wrap.innerHTML = '';
-      OFFRES.forEach(o=>{
-        const price = (current * (1 - o.gain)).toFixed(2);
-        const save  = (current - price).toFixed(2);
-        const hitTarget = o.gain >= target;
+  function renderCompare(){
+    const w = { price:+$("#w-price").value, rating:+$("#w-rating").value, eco:+$("#w-eco").value };
+    const ranked = computeScores(DEMO_OFFERS, w);
+    $("#compare-results").innerHTML = ranked.map(o=>`
+      <div class="item">
+        <div><strong>${o.name}</strong></div>
+        <div>Prix: ${euro(o.price)} • Note: ${o.rating}/5 • CO₂: ${(1-o.eco).toFixed(2)} kg</div>
+        <div>Score: <span class="score">${(o.score*100|0)}/100</span></div>
+      </div>`).join('');
+    // KPIs démo
+    $("#kpi-save").textContent = euro(Math.max(0, 120 - ranked[0].price) * 12);
+    $("#kpi-co2").textContent  = (ranked[0].eco*120).toFixed(0)+' kg';
+    $("#kpi-time").textContent = (ranked[0].rating*3).toFixed(1)+' h';
+  }
 
-        const el = document.createElement('article');
-        el.className = 'card';
-        el.innerHTML = `
-          <h3 style="margin-top:0">${o.nom} — ${cat}</h3>
-          <p>Prix estimé : <strong>${price}€/mois</strong></p>
-          <p>Économie vs actuel : <strong>${save}€/mois</strong> (${Math.round(o.gain*100)}%)</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn">Choisir</button>
-            <span class="badge" style="background:${hitTarget?'#d7f5dd':'#ffd9d9'};color:${hitTarget?'#115c2d':'#a00'}">
-              ${hitTarget ? 'Atteint l’objectif ✅' : 'Sous l’objectif ❌'}
-            </span>
-          </div>
-        `;
-        wrap.appendChild(el);
-      });
-
-      // Lien de retour vers le Coach avec le contexte courant
-      const url = new URL('coach-eco.html', location.href);
-      url.searchParams.set('cat', cat);
-      url.searchParams.set('current', current);
-      url.searchParams.set('target', (target*100).toFixed(0));
-      document.getElementById('to-coach').href = url.toString();
-    });
-  </script>
+  document.getElementById("btn-compare").addEventListener("click", renderCompare);
+  renderCompare();
+</script>
 </body>
 </html>
 
