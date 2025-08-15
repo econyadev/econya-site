@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mentions légales – Econya</title>
+<meta name="description" content="Mentions légales du site Econya : éditeur, hébergeur, propriété intellectuelle, contact." />
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="assets/sidebar.css" />
+<style>
+  .container.narrow{max-width:900px}
+  .muted{opacity:.85}
+  .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya"><span>Econya</span></a>
+  <div class="hr"></div>
+  <a class="item" href="index.html">Accueil</a>
+  <a class="item" href="comparateur.html">Comparateur</a>
+  <a class="item" href="coach-eco.html">Coach Éco</a>
+  <a class="item" href="deals.html">Bons plans</a>
+  <a class="item" href="gamification.html">Gamification</a>
+  <a class="item" href="profil-eco.html">Profil éco</a>
+  <a class="item" href="banque.html">Banque</a>
+  <a class="item" href="simulateur-epargne.html">Simulateur d’épargne</a>
+  <a class="item" href="simulateur-telecom.html">Simulateur télécom</a>
+  <a class="item" href="comparateur-energie.html">Comparateur énergie</a>
+  <a class="item" href="aide.html">Aide & FAQ</a>
+  <a class="item" href="confidentialite.html">Confidentialité</a>
+  <a class="item active" href="mentions-legales.html">Mentions légales</a>
+  <a class="item" href="tarifs.html">Tarifs</a>
+  <div class="footer">v10.3.2 • <a href="tarifs.html" style="color:#a9ffd0">Premium</a></div>
+</div>
+<button id="sb-toggle" class="sb-toggle">☰ Menu</button>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero container narrow">
+  <h1>Mentions légales</h1>
+  <p class="muted">Conformément à la législation en vigueur.</p>
+
+  <section class="card">
+    <h2>1) Éditeur du site</h2>
+    <p><strong>Econya</strong><br>
+       [Raison sociale / Nom du responsable]<br>
+       [Adresse postale]<br>
+       Email : <a href="mailto:contact@econya.example">contact@econya.example</a><br>
+       Téléphone : [Numéro]</p>
+  </section>
+
+  <section class="card">
+    <h2>2) Hébergeur</h2>
+    <p>[Nom de l’hébergeur] – [Adresse complète]<br>
+       Site web : [URL]<br>
+       Téléphone : [Numéro]</p>
+  </section>
+
+  <section class="card">
+    <h2>3) Propriété intellectuelle</h2>
+    <p>L’ensemble du contenu du site Econya (textes, images, logos, vidéos, code source) est protégé par le droit d’auteur et les droits de propriété intellectuelle.  
+    Toute reproduction, représentation, modification, publication, transmission ou adaptation, intégrale ou partielle, de tout ou partie des éléments du site, est interdite sans autorisation écrite préalable.</p>
+  </section>
+
+  <section class="card">
+    <h2>4) Responsabilité</h2>
+    <p>Econya s’efforce de fournir des informations exactes et à jour mais ne saurait être tenu responsable des erreurs ou omissions, ni des éventuelles indisponibilités du site.</p>
+  </section>
+
+  <section class="card">
+    <h2>5) Liens externes</h2>
+    <p>Le site peut contenir des liens vers d’autres sites internet. Econya n’est pas responsable du contenu ou des pratiques de ces sites tiers.</p>
+  </section>
+
+  <section class="card">
+    <h2>6) Données personnelles</h2>
+    <p>Pour toute information concernant le traitement de vos données, veuillez consulter notre <a href="confidentialite.html">politique de confidentialité</a>.</p>
+  </section>
+
+  <section class="card">
+    <h2>7) Contact</h2>
+    <p>Pour toute question ou réclamation, merci d’écrire à :  
+    <a href="mailto:contact@econya.example">contact@econya.example</a></p>
+  </section>
+</main>
+
+<footer class="footer"><span id="year"></span> © Econya</footer>
+
+<script src="assets/env.js"></script>
+<script src="assets/sidebar.js" defer></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
