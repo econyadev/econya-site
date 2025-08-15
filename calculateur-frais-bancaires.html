@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculateur de frais bancaires – Econya</title>
+<meta name="description" content="Estimez vos frais bancaires annuels (tenue de compte, carte, retraits, découvert, paiements à l’étranger) et comparez." />
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="assets/sidebar.css" />
+<style>
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+  label{display:block;margin:.35rem 0}
+  input{width:100%;padding:.55rem .65rem;border:1px solid #ffffff22;border-radius:10px;background:#073522;color:#fff}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+  .kpi{background:#0f3c2a88;border:1px solid #ffffff12;border-radius:12px;padding:12px;text-align:center}
+  .score{font-weight:900;font-size:1.4rem;color:#9EF01A}
+  .muted{opacity:.85}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{padding:8px 10px;border-bottom:1px solid #ffffff12}
+</style>
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://econya-backend.onrender.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya"><span>Econya</span></a>
+  <div class="hr"></div>
+  <a class="item" href="index.html">Accueil</a>
+  <a class="item" href="comparateur.html">Comparateur</a>
+  <a class="item" href="coach-eco.html">Coach Éco</a>
+  <a class="item" href="deals.html">Bons plans</a>
+  <a class="item" href="gamification.html">Gamification</a>
+  <a class="item" href="profil-eco.html">Profil éco</a>
+  <a class="item" href="banque.html">Banque</a>
+  <a class="item" href="simulateur-epargne.html">Simulateur d’épargne</a>
+  <a class="item" href="simulateur-telecom.html">Simulateur télécom</a>
+  <a class="item" href="comparateur-energie.html">Comparateur énergie</a>
+  <a class="item active" href="calculateur-frais-bancaires.html">Frais bancaires</a>
+  <a class="item" href="tarifs.html">Tarifs</a>
+  <div class="footer">v10.3.2 • <a href="tarifs.html" style="color:#a9ffd0">Premium</a></div>
+</div>
+<button id="sb-toggle" class="sb-toggle">☰ Menu</button>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero">
+  <h1>Calculateur de frais bancaires</h1>
+  <p class="muted">Estimation annuelle selon votre usage. Comparez à une banque alternative pour voir l’économie.</p>
+</main>
+
+<section class="container grid">
+  <article class="card">
+    <h2>Votre banque actuelle</h2>
+    <label>Frais de tenue de compte (€/an) <input id="c_account" type="number" step="1" min="0" value="24"></label>
+    <label>Carte (€/an) <input id="c_card" type="number" step="1" min="0" value="45"></label>
+    <label>Retraits hors réseau (nb / mois) <input id="c_atm" type="number" step="1" min="0" value="2"></label>
+    <label>Frais / retrait hors réseau (€) <input id="c_atm_fee" type="number" step="0.1" min="0" value="1.0"></label>
+    <label>Paiements à l’étranger (% du montant) <input id="c_fx_pct" type="number" step="0.1" min="0" value="2.0"></label>
+    <label>Montant dépensé à l’étranger / an (€) <input id="c_fx_amt" type="number" step="10" min="0" value="600"></label>
+    <label>Découvert (jours/an) <input id="c_ovr_days" type="number" step="1" min="0" value="5"></label>
+    <label>Frais/jour de découvert (€) <input id="c_ovr_fee" type="number" step="0.1" min="0" value="0.7"></label>
+  </article>
+
+  <article class="card">
+    <h2>Banque alternative (référence)</h2>
+    <label>Tenue de compte (€/an) <input id="a_account" type="number" step="1" min="0" value="0"></label>
+    <label>Carte (€/an) <input id="a_card" type="number" step="1" min="0" value="0"></label>
+    <label>Retraits hors réseau (nb/mois inclus) <input id="a_atm_free" type="number" step="1" min="0" value="3"></label>
+    <label>Frais / retrait supplémentaire (€) <input id="a_atm_fee" type="number" step="0.1" min="0" value="0.5"></label>
+    <label>Paiements étranger (% du montant) <input id="a_fx_pct" type="number" step="0.1" min="0" value="0.0"></label>
+    <label>Découvert (jour/an facturés) <input id="a_ovr_days" type="number" step="1" min="0" value="0"></label>
+    <label>Frais/jour de découvert (€) <input id="a_ovr_fee" type="number" step="0.1" min="0" value="0.0"></label>
+  </article>
+</section>
+
+<section class="container card" style="margin-top:12px">
+  <div class="btn-row">
+    <button class="btn" id="btn-calc">Calculer</button>
+    <button class="btn ghost" id="btn-save">Mémoriser</button>
+    <button class="btn ghost" id="btn-csv">Exporter CSV</button>
+    <button class="btn" id="btn-pdf">Exporter PDF</button>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="score" id="k_cur">0,00 €</div><small>Frais annuels actuels</small></div>
+    <div class="kpi"><div class="score" id="k_alt">0,00 €</div><small>Frais annuels alternatifs</small></div>
+    <div class="kpi"><div class="score" id="k_save">0,00 €</div><small>Économie potentielle</small></div>
+  </div>
+  <div style="overflow:auto;margin-top:10px">
+    <table class="table">
+      <thead><tr><th>Composant</th><th style="text-align:right">Actuel</th><th style="text-align:right">Alternatif</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="container card" style="margin-top:12px">
+  <h2>Conseil</h2>
+  <p class="muted">Si vous payez souvent à l’étranger, ciblez une banque avec **0 % frais FX**. Si vous êtes rarement à découvert, une banque **gratuite** (tenue + carte) maximise l’économie.</p>
+  <a class="btn" href="deals.html?cat=banque">Voir les offres bancaires</a>
+</section>
+
+<footer class="footer"><span id="year"></span> © Econya</footer>
+
+<script src="assets/env.js"></script>
+<script src="assets/sidebar.js" defer></script>
+<script>
+  const $=s=>document.querySelector(s);
+  $("#year").textContent=new Date().getFullYear();
+  const euro=n=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n||0);
+
+  function calcCurrent(){
+    const account=+$("#c_account").value||0;
+    const card=+$("#c_card").value||0;
+    const atmM=+$("#c_atm").value||0, atmFee=+$("#c_atm_fee").value||0;
+    const fxPct=(+$("#c_fx_pct").value||0)/100, fxAmt=+$("#c_fx_amt").value||0;
+    const ovrDays=+$("#c_ovr_days").value||0, ovrFee=+$("#c_ovr_fee").value||0;
+    return {
+      account,
+      card,
+      atm: atmM*12*atmFee,
+      fx:  fxPct*fxAmt,
+      ovr: ovrDays*ovrFee,
+    };
+  }
+  function calcAlt(){
+    const account=+$("#a_account").value||0;
+    const card=+$("#a_card").value||0;
+    const free=+$("#a_atm_free").value||0, fee=+$("#a_atm_fee").value||0;
+    const fxPct=(+$("#a_fx_pct").value||0)/100;
+    const fxAmt=+$("#c_fx_amt").value||0; // même usage
+    const ovrDays=+$("#a_ovr_days").value||0, ovrFee=+$("#a_ovr_fee").value||0;
+    // retraits sup: (c_atm - inclus) * 12
+    const atmM=+$("#c_atm").value||0;
+    const extra=Math.max(0, atmM - free);
+    return {
+      account,
+      card,
+      atm: extra*12*fee,
+      fx:  fxPct*fxAmt,
+      ovr: ovrDays*ovrFee,
+    };
+  }
+
+  function sum(o){ return Object.values(o).reduce((a,n)=>a+n,0); }
+
+  function calc(){
+    const cur=calcCurrent();
+    const alt=calcAlt();
+    const tCur=sum(cur), tAlt=sum(alt);
+    $("#k_cur").textContent=euro(tCur);
+    $("#k_alt").textContent=euro(tAlt);
+    $("#k_save").textContent=euro(Math.max(0,tCur-tAlt));
+
+    $("#rows").innerHTML = ["account","card","atm","fx","ovr"].map(k=>{
+      const label = {account:"Tenue de compte", card:"Carte", atm:"Retraits hors réseau", fx:"Paiements à l'étranger", ovr:"Découvert"}[k];
+      return `<tr><td>${label}</td><td style="text-align:right">${euro(cur[k])}</td><td style="text-align:right">${euro(alt[k])}</td></tr>`;
+    }).join("");
+  }
+
+  $("#btn-calc").addEventListener("click", calc);
+  $("#btn-save").addEventListener("click", ()=>{
+    const data={};
+    ["c_account","c_card","c_atm","c_atm_fee","c_fx_pct","c_fx_amt","c_ovr_days","c_ovr_fee",
+     "a_account","a_card","a_atm_free","a_atm_fee","a_fx_pct","a_ovr_days","a_ovr_fee"].forEach(id=>data[id]=$("#"+id).value);
+    localStorage.setItem("econya:bank:fees", JSON.stringify(data));
+    alert("Profil mémorisé ✅");
+  });
+  $("#btn-csv").addEventListener("click", ()=>{
+    const rows = [
+      ["component","current_eur","alternative_eur"],
+      ...Array.from($("#rows").querySelectorAll("tr")).map(tr=>Array.from(tr.children).map(td=>td.textContent))
+    ];
+    const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}); const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="frais-bancaires.csv"; a.click();
+  });
+  $("#btn-pdf").addEventListener("click", ()=>{
+    const base=(window.ECONYA_API_BASE||"").replace(/\/+$/,""); if(!base) return alert("Backend non configuré.");
+    window.open(base + "/export/pdf?type=frais-bancaires", "_blank");
+  });
+
+  (function init(){
+    const s=JSON.parse(localStorage.getItem("econya:bank:fees")||"{}");
+    Object.entries(s).forEach(([k,v])=>{ const el=$("#"+k); if(el) el.value=v; });
+    calc();
+  })();
+</script>
+</body>
+</html>
