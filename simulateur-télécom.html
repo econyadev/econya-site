@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simulateur télécom – Econya</title>
+<meta name="description" content="Estimez le forfait mobile/box adapté selon votre usage réel (data, appels, SMS) et calculez l'économie possible." />
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="assets/sidebar.css" />
+<style>
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+  label{display:block;margin:.35rem 0}
+  input,select{width:100%;padding:.55rem .65rem;border:1px solid #ffffff22;border-radius:10px;background:#073522;color:#fff}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{padding:8px 10px;border-bottom:1px solid #ffffff12}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+  .kpi{background:#0f3c2a88;border:1px solid #ffffff12;border-radius:12px;padding:12px;text-align:center}
+  .score{font-weight:900;font-size:1.4rem;color:#9EF01A}
+  .muted{opacity:.85}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+</style>
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://econya-backend.onrender.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya"><span>Econya</span></a>
+  <div class="hr"></div>
+  <a class="item" href="index.html">Accueil</a>
+  <a class="item" href="comparateur.html">Comparateur</a>
+  <a class="item" href="coach-eco.html">Coach Éco</a>
+  <a class="item" href="deals.html">Bons plans</a>
+  <a class="item" href="gamification.html">Gamification</a>
+  <a class="item" href="profil-eco.html">Profil éco</a>
+  <a class="item" href="banque.html">Banque</a>
+  <a class="item" href="simulateur-epargne.html">Simulateur d’épargne</a>
+  <a class="item active" href="simulateur-telecom.html">Simulateur télécom</a>
+  <a class="item" href="comparateur-energie.html">Comparateur énergie</a>
+  <a class="item" href="tarifs.html">Tarifs</a>
+  <div class="footer">v10.3.2 • <a href="tarifs.html" style="color:#a9ffd0">Premium</a></div>
+</div>
+<button id="sb-toggle" class="sb-toggle">☰ Menu</button>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero">
+  <h1>Simulateur télécom</h1>
+  <p class="muted">Recommande un forfait selon ton usage réel et estime l’économie vs ton forfait actuel.</p>
+</main>
+
+<section class="container grid">
+  <article class="card">
+    <h2>Ton usage actuel</h2>
+    <label>Data moyenne / mois (Go) <input id="data" type="number" step="0.1" min="0" value="18"></label>
+    <label>Appels par mois (heures) <input id="calls" type="number" step="0.1" min="0" value="3"></label>
+    <label>SMS / mois <input id="sms" type="number" step="10" min="0" value="80"></label>
+    <label>Prix actuel (€/mois) <input id="current" type="number" step="0.1" min="0" value="19.99"></label>
+    <label>Type contrat
+      <select id="type">
+        <option value="engage">Avec engagement</option>
+        <option value="sans">Sans engagement (MVNO)</option>
+      </select>
+    </label>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn" id="btn-run">Recommander</button>
+      <button class="btn ghost" id="btn-save">Mémoriser</button>
+      <button class="btn ghost" id="btn-csv">Exporter CSV</button>
+      <button class="btn" id="btn-pdf">Exporter PDF</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2>Recommandations</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="score" id="best-plan">—</div><small>Forfait conseillé</small></div>
+      <div class="kpi"><div class="score" id="best-price">0,00 €</div><small>Prix conseillé</small></div>
+      <div class="kpi"><div class="score" id="saving">0,00 €</div><small>Économie / mois</small></div>
+    </div>
+    <div style="overflow:auto; margin-top:10px">
+      <table class="table" id="tbl">
+        <thead><tr><th>Offre</th><th>Data</th><th>Appels/SMS</th><th style="text-align:right">Prix</th><th>Action</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <small class="muted">Liens à remplacer par tes affiliations.</small>
+  </article>
+</section>
+
+<section class="container card" style="margin-top:16px">
+  <h2>Astuce</h2>
+  <p class="muted">Renégocie à l’anniversaire du contrat et suit ta data réelle. Les **séries spéciales** des MVNO offrent souvent le meilleur rapport qualité/prix.</p>
+  <a class="btn" href="deals.html?cat=telecom">Voir les bons plans télécom</a>
+</section>
+
+<footer class="footer"><span id="year"></span> © Econya</footer>
+
+<script src="assets/env.js"></script>
+<script src="assets/sidebar.js" defer></script>
+<script>
+  const $=s=>document.querySelector(s);
+  $("#year").textContent=new Date().getFullYear();
+  const euro=n=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n||0);
+
+  function catalog(data, type){
+    // Mini catalogue démo (adapte les prix si engagement)
+    const bump = type==="engage" ? 3 : 0;
+    return [
+      {name:"Série spéciale 5 Go", data:5,  calls:"Illimités", sms:"Illimités", price: 5.99+bump, link:"#"},
+      {name:"Série spéciale 20 Go",data:20, calls:"Illimités", sms:"Illimités", price: 7.99+bump, link:"#"},
+      {name:"Série spéciale 80 Go",data:80, calls:"Illimités", sms:"Illimités", price:11.99+bump, link:"#"},
+      {name:"Série spéciale 130 Go",data:130,calls:"Illimités", sms:"Illimités", price:14.99+bump, link:"#"},
+      {name:"Box fibre 1 Gbps",   data:"—", calls:"Fixe illimité", sms:"—", price:19.99+bump, link:"#"}
+    ].filter(o => (o.data==="—" || o.data>=data-1)); // au moins la data requise
+  }
+
+  function run(){
+    const data=+$("#data").value||0;
+    const calls=+$("#calls").value||0; // (non discriminant ici, illimités)
+    const sms=+$("#sms").value||0;     // (idem)
+    const cur=+$("#current").value||0;
+    const type=$("#type").value;
+
+    const items=catalog(data,type).sort((a,b)=>a.price-b.price);
+    $("#tbody").innerHTML=items.map(o=>`
+      <tr>
+        <td>${o.name}</td>
+        <td>${o.data==="—"?"—":(o.data+" Go")}</td>
+        <td>${o.calls}/${o.sms}</td>
+        <td style="text-align:right">${euro(o.price)}</td>
+        <td><a class="btn ghost" href="${o.link}" target="_blank" rel="nofollow">Voir</a></td>
+      </tr>
+    `).join("");
+
+    const best=items[0]||{name:"—",price:0};
+    $("#best-plan").textContent=best.name;
+    $("#best-price").textContent=euro(best.price);
+    $("#saving").textContent=euro(Math.max(0, cur-best.price));
+  }
+
+  $("#btn-run").addEventListener("click", run);
+  $("#btn-save").addEventListener("click", ()=>{
+    localStorage.setItem("econya:tel:profil", JSON.stringify({
+      data:+$("#data").value||0, calls:+$("#calls").value||0, sms:+$("#sms").value||0,
+      current:+$("#current").value||0, type:$("#type").value
+    }));
+    alert("Profil mémorisé ✅");
+  });
+  $("#btn-csv").addEventListener("click", ()=>{
+    const rows=[["data_go","calls_h","sms","prix_actuel","type","forfait_conseille","prix_conseille","economie_mois"],
+      [$("#data").value,$("#calls").value,$("#sms").value,$("#current").value,$("#type").value,
+       $("#best-plan").textContent,$("#best-price").textContent,$("#saving").textContent]];
+    const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}); const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="simulateur-telecom.csv"; a.click();
+  });
+  $("#btn-pdf").addEventListener("click", ()=>{
+    const base=(window.ECONYA_API_BASE||"").replace(/\/+$/,""); if(!base) return alert("Backend non configuré.");
+    window.open(base + "/export/pdf?type=simulateur-telecom", "_blank");
+  });
+
+  (function init(){
+    const s=JSON.parse(localStorage.getItem("econya:tel:profil")||"{}");
+    if(s.data) $("#data").value=s.data;
+    if(s.calls) $("#calls").value=s.calls;
+    if(s.sms) $("#sms").value=s.sms;
+    if(s.current) $("#current").value=s.current;
+    if(s.type) $("#type").value=s.type;
+    run();
+  })();
+</script>
+</body>
+</html>
