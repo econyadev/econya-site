@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Confidentialité & Données (RGPD) – Econya</title>
+<meta name="description" content="Politique de confidentialité Econya : données collectées, finalités, bases légales, conservation, droits RGPD, cookies et sécurité." />
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="assets/sidebar.css" />
+<style>
+  .container.narrow{max-width:900px}
+  .muted{opacity:.85}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .toc a{display:inline-block;padding:.35rem .6rem;border-radius:999px;background:#ffffff12;border:1px solid #ffffff22;text-decoration:none;color:inherit}
+  .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+  .badge{display:inline-block;padding:.15rem .5rem;border-radius:999px;background:#2bd97022;border:1px solid #2bd97055;margin-left:6px}
+  /* Bandeau cookies minimal */
+  .cookiebar{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;background:#0f2e20;border:1px solid #ffffff22;border-radius:14px;padding:12px}
+  .cookiebar .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+  .cookiebar small{opacity:.9}
+</style>
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://econya-backend.onrender.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya"><span>Econya</span></a>
+  <div class="hr"></div>
+  <a class="item" href="index.html">Accueil</a>
+  <a class="item" href="comparateur.html">Comparateur</a>
+  <a class="item" href="coach-eco.html">Coach Éco</a>
+  <a class="item" href="deals.html">Bons plans</a>
+  <a class="item" href="gamification.html">Gamification</a>
+  <a class="item" href="profil-eco.html">Profil éco</a>
+  <a class="item" href="banque.html">Banque</a>
+  <a class="item" href="simulateur-epargne.html">Simulateur d’épargne</a>
+  <a class="item" href="simulateur-telecom.html">Simulateur télécom</a>
+  <a class="item" href="comparateur-energie.html">Comparateur énergie</a>
+  <a class="item" href="aide.html">Aide & FAQ</a>
+  <a class="item active" href="confidentialite.html">Confidentialité</a>
+  <a class="item" href="tarifs.html">Tarifs</a>
+  <div class="footer">v10.3.2 • <a href="tarifs.html" style="color:#a9ffd0">Premium</a></div>
+</div>
+<button id="sb-toggle" class="sb-toggle">☰ Menu</button>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero container narrow">
+  <h1>Confidentialité & Données <span class="badge">RGPD</span></h1>
+  <p class="muted">Nous expliquons ici quelles données sont traitées, pourquoi, pendant combien de temps, et vos droits.</p>
+
+  <div class="toc">
+    <a href="#qui">Qui sommes-nous ?</a>
+    <a href="#donnees">Quelles données ?</a>
+    <a href="#finalites">Finalités & bases légales</a>
+    <a href="#duree">Durées de conservation</a>
+    <a href="#partage">Partage & sous-traitants</a>
+    <a href="#cookies">Cookies & mesure d’audience</a>
+    <a href="#droits">Vos droits</a>
+    <a href="#securite">Sécurité</a>
+    <a href="#transferts">Transferts hors UE</a>
+    <a href="#contact">Contact & DPO</a>
+    <a href="#modifs">Mises à jour</a>
+  </div>
+
+  <section id="qui" class="card">
+    <h2>1) Qui sommes-nous ?</h2>
+    <p><strong>Econya</strong> (projet en cours de lancement). Responsable de traitement : <em>[Raison sociale / Nom]</em> – <em>[Adresse]</em> – Email : <a href="mailto:contact@econya.example">contact@econya.example</a>.</p>
+    <p class="muted">Lorsque des partenaires (ex. agrégateur bancaire) interviennent, ils agissent comme <em>sous-traitants</em> ou <em>responsables conjoints</em> selon les cas contractuels.</p>
+  </section>
+
+  <section id="donnees" class="card">
+    <h2>2) Quelles données collectons-nous ?</h2>
+    <ul>
+      <li><strong>Données de compte (si inscription ultérieure)</strong> : email, mot de passe haché, identifiants techniques.</li>
+      <li><strong>Données d’usage</strong> : pages consultées, préférences, simulations (stockées localement sur votre navigateur quand c’est possible).</li>
+      <li><strong>Données bancaires</strong> (optionnel, via agrégateur agréé) : transactions, soldes, catégories (jamais vos identifiants bancaires).</li>
+      <li><strong>Cookies & stockage local</strong> : préférences, consentements, états démo, analytics anonymisés (si acceptés).</li>
+    </ul>
+  </section>
+
+  <section id="finalites" class="card">
+    <h2>3) Finalités & bases légales</h2>
+    <ul>
+      <li><strong>Fourniture du service</strong> (comparateur, coach, exports) – <em>exécution du contrat</em>.</li>
+      <li><strong>Amélioration produit & sécurité</strong> – <em>intérêt légitime</em> (logs techniques, prévention fraude).</li>
+      <li><strong>Mesure d’audience</strong> (anonymisée) – <em>consentement</em>.</li>
+      <li><strong>Prospection (newsletter, offres)</strong> – <em>consentement</em> (opt-in).</li>
+      <li><strong>Obligations légales</strong> – conservation minimale requise.</li>
+    </ul>
+  </section>
+
+  <section id="duree" class="card">
+    <h2>4) Durées de conservation</h2>
+    <ul>
+      <li>Compte & facturation : durée du contrat + <em>jusqu’à 5 ans</em> (obligations légales).</li>
+      <li>Logs techniques : <em>6 à 12 mois</em> max (sécurité, diagnostic).</li>
+      <li>Mesure d’audience consentie : <em>13 mois</em> (agrégats anonymisés).</li>
+      <li>Données locales (profil, simulateurs) : <em>dans votre navigateur</em>, vous pouvez les supprimer à tout moment.</li>
+    </ul>
+  </section>
+
+  <section id="partage" class="card">
+    <h2>5) Partage & sous-traitants</h2>
+    <p>Nous limitons les partages au strict nécessaire :</p>
+    <ul>
+      <li><strong>Hébergement & CDN</strong> (ex. Render, stockage statique).</li>
+      <li><strong>Agrégateur bancaire</strong> (ex. Budget Insight / Tink) – authentification & lecture de données <em>chez l’agrégateur</em>.</li>
+      <li><strong>Outils analytics</strong> (Plausable/Umami/Matomo auto-hébergé) – uniquement si consentis.</li>
+      <li><strong>Paiement</strong> (ex. Stripe) – pour la gestion des abonnements Premium.</li>
+    </ul>
+    <p class="muted">Des clauses RGPD (DPA) sont mises en place avec les sous-traitants pertinents.</p>
+  </section>
+
+  <section id="cookies" class="card">
+    <h2>6) Cookies & mesure d’audience</h2>
+    <p><strong>Essentiels</strong> : fonctionnement du site (sécurité, préférences, sessions).<br>
+       <strong>Mesure d’audience</strong> : activée uniquement avec votre consentement (anonymisation, pas de suivi cross-site).</p>
+    <p>Vous pouvez <a href="#" id="reopen-consent">ouvrir le gestionnaire de consentement</a> pour modifier votre choix.</p>
+  </section>
+
+  <section id="droits" class="card">
+    <h2>7) Vos droits (RGPD)</h2>
+    <p>Accès, rectification, effacement, limitation, opposition, portabilité, retrait du consentement, et réclamation auprès de l’autorité compétente (CNIL en France).</p>
+  </section>
+
+  <section id="securite" class="card">
+    <h2>8) Sécurité</h2>
+    <ul>
+      <li>CSP stricte, HTTPS, principe de <em>minimisation</em>.</li>
+      <li>Chiffrement en transit ; chiffrement au repos chez les prestataires compatibles.</li>
+      <li>Aucune conservation des identifiants bancaires par Econya.</li>
+    </ul>
+  </section>
+
+  <section id="transferts" class="card">
+    <h2>9) Transferts hors UE</h2>
+    <p>Le cas échéant, ils sont encadrés par des garanties appropriées (CCS/clauses contractuelles types, pays adéquats, ou mesures supplémentaires).</p>
+  </section>
+
+  <section id="contact" class="card">
+    <h2>10) Contact & DPO</h2>
+    <p>Contact : <a href="mailto:contact@econya.example">contact@econya.example</a><br>
+       Délégué à la protection des données (si applicable) : <em>[Nom / prestataire DPO]</em></p>
+  </section>
+
+  <section id="modifs" class="card">
+    <h2>11) Mises à jour</h2>
+    <p>Nous pouvons modifier cette politique pour des raisons légales ou techniques. Nous indiquerons toujours la date de dernière mise à jour.</p>
+    <p class="muted">Version : 1.0 • Dernière mise à jour : 15/08/2025</p>
+  </section>
+
+  <p class="muted" style="margin-top:10px">Voir aussi : <a href="aide.html">Aide & FAQ</a> • <a href="tarifs.html">Tarifs</a></p>
+</main>
+
+<footer class="footer"><span id="year"></span> © Econya</footer>
+
+<script src="assets/env.js"></script>
+<script src="assets/sidebar.js" defer></script>
+
+<!-- Bandeau de consentement ultra-léger (localStorage) -->
+<script>
+  (function(){
+    const KEY="econya:consent";
+    function get(){try{return JSON.parse(localStorage.getItem(KEY)||"null");}catch{return null}}
+    function set(v){localStorage.setItem(KEY, JSON.stringify(v));}
+    function close(){document.getElementById("cookiebar")?.remove();}
+    function openManager(){ // réouvrir le bandeau
+      if(document.getElementById("cookiebar")) return;
+      show();
+    }
+    function show(){
+      if(get()) return; // déjà choisi
+      const bar=document.createElement("div");
+      bar.className="cookiebar"; bar.id="cookiebar";
+      bar.innerHTML=`
+        <div class="row">
+          <small>Nous utilisons des cookies essentiels au fonctionnement. Les mesures d’audience sont <strong>optionnelles</strong> et anonymisées. Vous pouvez choisir.</small>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn ghost" id="c-deny">Refuser</button>
+            <button class="btn" id="c-accept">Accepter</button>
+          </div>
+        </div>`;
+      document.body.appendChild(bar);
+      document.getElementById("c-accept").onclick=function(){ set({essential:true, analytics:true, date:Date.now()}); close(); };
+      document.getElementById("c-deny").onclick=function(){ set({essential:true, analytics:false, date:Date.now()}); close(); };
+    }
+    // Expose le gestionnaire sur ce document
+    document.getElementById("reopen-consent")?.addEventListener("click",(e)=>{e.preventDefault(); localStorage.removeItem(KEY); openManager();});
+    // Si aucun choix → afficher
+    show();
+
+    // Exemple d’utilisation côté analytics (à faire sur les autres pages) :
+    // const consent = get(); if (consent && consent.analytics) { /* charger Plausible/Umami ici */ }
+  })();
+
+  // Année footer
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
