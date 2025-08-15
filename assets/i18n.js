@@ -1,19 +1,30 @@
 
-async function loadI18n(){
-  const res = await fetch('assets/i18n.json'); const all = await res.json();
-  const navLang = (navigator.language||'fr').slice(0,2);
-  let current = localStorage.getItem('econya_lang') || (all[navLang]? navLang : 'fr');
-  applyI18n(all, current);
-  buildLangSel(Object.keys(all), current, (next)=>{ localStorage.setItem('econya_lang', next); applyI18n(all, next); });
+{
+  "fr": {
+    "nav_home": "Accueil",
+    "nav_compare": "Comparateur",
+    "nav_coach": "Coach Éco",
+    "nav_deals": "Bons Plans",
+    "nav_pricing": "Tarifs",
+    "hero_title": "Vos économies grandissent avec vous",
+    "cta_try": "Essayer le comparateur"
+  },
+  "en": {
+    "nav_home": "Home",
+    "nav_compare": "Compare",
+    "nav_coach": "Eco Coach",
+    "nav_deals": "Deals",
+    "nav_pricing": "Pricing",
+    "hero_title": "Your savings grow with you",
+    "cta_try": "Try the comparator"
+  },
+  "es": {
+    "nav_home": "Inicio",
+    "nav_compare": "Comparador",
+    "nav_coach": "Coach Eco",
+    "nav_deals": "Ofertas",
+    "nav_pricing": "Precios",
+    "hero_title": "Tus ahorros crecen contigo",
+    "cta_try": "Probar el comparador"
+  }
 }
-function applyI18n(all, lang){
-  const dict = all[lang] || all['fr'];
-  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = dict[ el.getAttribute('data-i18n') ] || el.textContent; });
-  if(dict.dir==='rtl'){ document.documentElement.setAttribute('dir','rtl'); } else { document.documentElement.removeAttribute('dir'); }
-}
-function buildLangSel(langs, current, onChange){
-  const sel = document.getElementById('langSel'); if(!sel) return;
-  sel.innerHTML=''; langs.forEach(k=>{ const o=document.createElement('option'); o.value=k; o.textContent=k.toUpperCase(); if(k===current) o.selected=true; sel.appendChild(o); });
-  sel.addEventListener('change', (e)=> onChange(e.target.value));
-}
-document.addEventListener('DOMContentLoaded', loadI18n);
