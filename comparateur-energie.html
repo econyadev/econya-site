@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comparateur énergie – Econya</title>
+  <meta name="description" content="Comparez rapidement le coût annuel de votre profil (kWh/an) selon plusieurs offres énergie. Économies estimées et liens d’affiliation." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/sidebar.css" />
+  <style>
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+    label{display:block;margin:.35rem 0}
+    input,select{width:100%;padding:.55rem .65rem;border:1px solid #ffffff22;border-radius:10px;background:#073522;color:#fff}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{padding:8px 10px;border-bottom:1px solid #ffffff12}
+    .muted{opacity:.85}
+    .badge{display:inline-block;padding:.15rem .5rem;border-radius:999px;background:#2bd97022;border:1px solid #2bd97055;margin-left:6px}
+  </style>
+
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Comment est calculé le coût annuel ?","acceptedAnswer":{"@type":"Answer","text":"Coût annuel = (kWh/an × prix du kWh) + (abonnement annuel). Les taxes locales peuvent varier selon votre lieu et ne sont pas incluses dans ce calcul simplifié."}},
+      {"@type":"Question","name":"Puis-je utiliser ces résultats pour choisir une offre ?","acceptedAnswer":{"@type":"Answer","text":"Oui, ces résultats donnent un ordre de grandeur. Vérifiez les conditions (prix indexé ou fixe, services inclus, durée d’engagement) avant de souscrire."}}
+    ]
+  }
+  </script>
+
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://econya-backend.onrender.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya"><span>Econya</span></a>
+  <div class="hr"></div>
+  <a class="item" href="index.html">Accueil</a>
+  <a class="item" href="comparateur.html">Comparateur</a>
+  <a class="item" href="coach-eco.html">Coach Éco</a>
+  <a class="item" href="deals.html">Bons plans</a>
+  <a class="item" href="gamification.html">Gamification</a>
+  <a class="item" href="profil-eco.html">Profil éco</a>
+  <a class="item" href="banque.html">Banque</a>
+  <a class="item" href="simulateur-epargne.html">Simulateur d’épargne</a>
+  <a class="item active" href="comparateur-energie.html">Comparateur énergie</a>
+  <a class="item" href="tarifs.html">Tarifs</a>
+  <div class="footer">v10.3.2 • <a href="tarifs.html" style="color:#a9ffd0">Premium</a></div>
+</div>
+<button id="sb-toggle" class="sb-toggle">☰ Menu</button>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero">
+  <h1>Comparateur énergie</h1>
+  <p class="muted">Estimez le coût annuel selon votre consommation (kWh/an). Remplacez les liens par vos affiliations.</p>
+</main>
+
+<section class="container grid">
+  <article class="card">
+    <h2>Votre profil</h2>
+    <label>Consommation annuelle (kWh) <input id="kwh" type="number" min="0" step="50" value="3500"></label>
+    <label>Abonnement référence (€/an) <input id="ref-abo" type="number" min="0" step="1" value="150"></label>
+    <label>Prix du kWh référence (€) <input id="ref-kwh" type="number" min="0" step="0.001" value="0.200"></label>
+    <div class="btn-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn" id="btn-run">Comparer</button>
+      <button class="btn ghost" id="btn-save">Mémoriser</button>
+    </div>
+    <p class="muted" style="margin-top:8px">Astuce : essayez aussi un scénario <em>HP/HC</em> (heures pleines / heures creuses) si applicable.</p>
+  </article>
+
+  <article class="card">
+    <h2>Offres (démo)</h2>
+    <div style="overflow:auto">
+      <table class="table" id="tbl">
+        <thead>
+          <tr>
+            <th>Offre</th>
+            <th>Type</th>
+            <th style="text-align:right">kWh (€)</th>
+            <th style="text-align:right">Abonnement (€/an)</th>
+            <th style="text-align:right">Coût annuel</th>
+            <th style="text-align:right">Économie</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <small class="muted">Les valeurs sont indicatives. Vérifiez les conditions avant souscription.</small>
+  </article>
+</section>
+
+<section class="container card" style="margin-top:16px">
+  <h2>Conseil</h2>
+  <p class="muted">Surveillez la part “abonnement” : pour les faibles consos, elle pèse proportionnellement plus. Envisagez un contrat adapté ou des gestes d’efficacité (LED, thermostat, etc.).</p>
+  <a class="btn" href="deals.html?cat=energie">Voir les bons plans énergie</a>
+</section>
+
+<footer class="footer"><span id="year"></span> © Econya</footer>
+
+<script src="assets/env.js"></script>
+<script src="assets/sidebar.js" defer></script>
+<script>
+  const $ = s=>document.querySelector(s);
+  $("#year").textContent = new Date().getFullYear();
+  const euro = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n||0);
+
+  const OFFERS = [
+    { id:"ref", name:"Référence", type:"Indexé",  kwh: +$("#ref-kwh").value, abo:+$("#ref-abo").value, affiliate:"#"},
+    { id:"o1",  name:"EcoFix 12", type:"Fixe 12m",kwh: 0.185, abo: 165, affiliate:"#"},
+    { id:"o2",  name:"Index Zen", type:"Indexé",  kwh: 0.195, abo: 139, affiliate:"#"},
+    { id:"o3",  name:"Green HP/HC", type:"HP/HC", kwh: 0.178, abo: 172, affiliate:"#"}
+  ];
+
+  function costAnnual(kwhYear, pricePerKwh, aboYear){
+    return (kwhYear * pricePerKwh) + aboYear;
+  }
+
+  function run(){
+    const kwhYear = Math.max(0, +$("#kwh").value||0);
+    // sync offre ref depuis inputs
+    OFFERS[0].kwh = Math.max(0, +$("#ref-kwh").value||0);
+    OFFERS[0].abo = Math.max(0, +$("#ref-abo").value||0);
+
+    const refCost = costAnnual(kwhYear, OFFERS[0].kwh, OFFERS[0].abo);
+
+    const rows = OFFERS.map(o=>{
+      const total = costAnnual(kwhYear, o.kwh, o.abo);
+      return {...o, total, saving:(refCost-total)};
+    }).sort((a,b)=> a.total - b.total);
+
+    $("#tbody").innerHTML = rows.map(o=>`
+      <tr${o.id==="ref"?' style="opacity:.9"':''}>
+        <td>${o.name}${o.id==="ref"?'<span class="badge">réf.</span>':''}</td>
+        <td>${o.type}</td>
+        <td style="text-align:right">${o.kwh.toFixed(3)}</td>
+        <td style="text-align:right">${euro(o.abo)}</td>
+        <td style="text-align:right"><strong>${euro(o.total)}</strong></td>
+        <td style="text-align:right" ${o.saving>0?'':'class="muted"'}>${o.saving>0?('+'+euro(o.saving)):euro(o.saving)}</td>
+        <td><a class="btn ghost" href="${o.affiliate}" target="_blank" rel="nofollow">Voir l’offre</a></td>
+      </tr>
+    `).join("");
+  }
+
+  $("#btn-run").addEventListener("click", run);
+  $("#btn-save").addEventListener("click", ()=>{
+    localStorage.setItem("econya:energy:profile", JSON.stringify({
+      kwh:+$("#kwh").value||0, refAbo:+$("#ref-abo").value||0, refKwh:+$("#ref-kwh").value||0
+    }));
+    alert("Profil mémorisé ✅");
+  });
+
+  (function init(){
+    const s = JSON.parse(localStorage.getItem("econya:energy:profile")||"{}");
+    if (s.kwh) $("#kwh").value = s.kwh;
+    if (s.refAbo) $("#ref-abo").value = s.refAbo;
+    if (s.refKwh) $("#ref-kwh").value = s.refKwh;
+    run();
+  })();
+</script>
+</body>
+</html>
