@@ -8,7 +8,6 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Visuels spécifiques gamification (léger, n’altère pas le reste) */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
     .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
     .muted{opacity:.85}
@@ -28,10 +27,7 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="/">
-      <img src="logo.svg" alt="Econya" height="28" />
-      <span>Econya</span>
-    </a>
+    <a class="brand" href="/"><img src="logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
     <nav class="nav">
       <a href="comparateur.html">Comparateur Pro</a>
       <a href="coach-eco.html">Coach Eco</a>
@@ -52,18 +48,13 @@
     </section>
 
     <section class="grid" style="margin-top:16px">
-      <!-- Plante -->
       <article class="card">
         <h3 style="margin-top:0">Ta plante 🌱</h3>
         <div class="plant-wrap">
           <div class="plant" id="plant">
-            <!-- SVG plante minimaliste -->
             <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-              <!-- pot -->
               <rect x="30" y="90" width="40" height="18" rx="4" fill="#2b5644"/>
-              <!-- tige -->
               <rect id="stem" x="49" y="50" width="2" height="40" rx="1" fill="#4fd38a"/>
-              <!-- feuilles -->
               <path id="leafL" d="M50 70 C30 60, 30 45, 48 50 C46 58, 46 65, 50 70" fill="#3ecf7e"/>
               <path id="leafR" d="M50 62 C70 56, 72 42, 52 46 C54 54, 54 60, 50 62" fill="#34be72"/>
             </svg>
@@ -73,7 +64,6 @@
         <small class="muted">La taille de la plante suit ta progression vers l’objectif du mois.</small>
       </article>
 
-      <!-- Objectif + KPIs -->
       <article class="card">
         <h3 style="margin-top:0">Objectif du mois</h3>
         <div class="row">
@@ -99,20 +89,32 @@
       </article>
     </section>
 
+    <!-- Défi hebdo -->
+    <section class="card" style="margin-top:16px">
+      <h3 style="margin-top:0">Défi de la semaine</h3>
+      <p class="muted">Objectif par défaut : <strong id="w-goal">—</strong> • Gagné : <strong id="w-saved">—</strong> • <span id="w-pct">0%</span></p>
+      <div class="progress"><i id="w-bar" style="width:0%"></i></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="w-set">Changer l’objectif</button>
+        <button class="btn ghost" id="w-add5">+5 € (manuel)</button>
+        <button class="btn ghost" id="w-reset">Réinitialiser semaine</button>
+      </div>
+      <small class="muted">Astuce : chaque clic “Voir l’offre” (Bons plans) ajoute automatiquement une fraction des économies estimées à ce défi.</small>
+    </section>
+
     <!-- Badges -->
     <section class="card" style="margin-top:16px">
       <h3 style="margin-top:0">Badges</h3>
       <div class="badges" id="badges"></div>
-      <small class="muted" style="display:block;margin-top:8px">Les badges se débloquent automatiquement quand tu franchis des paliers.</small>
+      <small class="muted" style="display:block;margin-top:8px">Les badges se débloquent automatiquement (progression & optimisations).</small>
     </section>
   </main>
 
-  <footer class="footer">
-    <span id="year"></span> © Econya
-  </footer>
+  <footer class="footer"><span id="year"></span> © Econya</footer>
 
   <script src="assets/env.js"></script>
   <script src="assets/gamification.js" defer></script>
+  <script src="assets/weekly.js" defer></script>
 </body>
 </html>
 
