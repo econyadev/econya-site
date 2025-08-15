@@ -1,199 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coach Éco – Econya</title>
-  <meta name="description" content="Conseils personnalisés pour réduire tes dépenses : énergie, télécom, banque, transports… avec des bons plans vérifiés." />
-
-  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <meta name="description" content="Votre coach pour optimiser vos dépenses : synthèse, indicateurs, et conseils d’économies personnalisés." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Mini styles spécifiques à la page */
-    .pill {display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;font-weight:600;font-size:.85rem}
-    .ok{background:#d7f5dd;color:#115c2d} .ko{background:#ffe4e4;color:#8c1b1b} .ghost{background:transparent;border:1px solid #2a7b4f33}
-    .hero h1{margin:0 0 .25rem 0}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px;backdrop-filter: blur(4px)}
-    .card h3{margin:.2rem 0 .6rem}
-    .kpi{display:flex;justify-content:space-between;opacity:.9}
-    .tip{background:#0f3c2a88;border:1px dashed #2a7b4f52;border-radius:12px;padding:12px;margin:8px 0}
-    .highlight{outline:2px solid #2bd970; box-shadow:0 0 0 6px #2bd97022}
-    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-    .tag{background:#ffffff12;border:1px solid #ffffff18;border-radius:999px;padding:.15rem .5rem;font-size:.75rem}
-  </style>
 </head>
 <body>
+  <!-- topbar -->
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a class="active" href="coach-eco.html">Coach Eco</a>
+      <a href="deals.html">Bons plans</a>
+      <a href="profil-eco.html">Profil éco</a>
+      <a class="badge" href="tarifs.html">Tarifs</a>
+    </nav>
+  </header>
 
-<header class="topbar">
-  <a class="brand" href="/">
-    <img src="assets/logo.svg" alt="Econya" height="28" />
-    <span>Econya</span>
-  </a>
-  <nav class="nav">
-    <a href="comparateur.html" data-route="comparateur">Comparateur</a>
-    <a href="coach-eco.html" data-route="coach" class="active">Coach Éco</a>
-    <a href="deals.html" data-route="deals">Bons plans</a>
-    <a href="gamification.html" data-route="gamification">Gamification</a>
-    <a href="profil-eco.html" data-route="profil-eco">Profil éco</a>
-    <a href="tarifs.html" data-route="tarifs" class="badge">Tarifs</a>
-  </nav>
-</header>
+  <main class="container">
+    <section class="card" style="display:flex;justify-content:space-between;gap:16px;align-items:center">
+      <div>
+        <h1 style="margin:0">Coach Éco</h1>
+        <p style="margin:6px 0 0">Synthèse rapide et <strong>conseils d’optimisation</strong> en 2 minutes.</p>
+      </div>
+      <div class="api-status ghost" id="api-status">Vérification du backend…</div>
+    </section>
 
-<main class="hero">
-  <h1>Coach Éco</h1>
-  <p>Des conseils simples et actionnables pour <strong>réduire tes dépenses</strong> sans te prendre la tête.</p>
+    <!-- Synthèse / KPIs -->
+    <section class="card" style="margin-top:16px">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">Dépenses mensuelles</div>
+          <div class="kpi-value" id="k-expenses">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Revenus mensuels</div>
+          <div class="kpi-value" id="k-income">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Épargne estimée</div>
+          <div class="kpi-value" id="k-savings">—</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <a href="comparateur.html" class="btn">Comparer maintenant</a>
+        <a href="banque.html" class="btn ghost">Analyser mes dépenses</a>
+        <button id="btn-optim" class="btn accent">Optimiser</button>
+      </div>
+    </section>
 
-  <div class="tags" style="margin:10px 0 18px">
-    <span class="pill ghost" id="api-status">Vérification du backend…</span>
-    <span class="pill ghost" id="ob-status">Open-banking (démo)</span>
-  </div>
+    <!-- Catégories détectées -->
+    <section class="card" style="margin-top:16px">
+      <h3 style="margin-top:0">Catégories détectées</h3>
+      <div id="cats" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+    </section>
 
-  <div style="display:flex;gap:10px;flex-wrap:wrap">
-    <a class="btn" href="comparateur.html">Comparer maintenant</a>
-    <a class="btn ghost" href="banque.html">Analyser mes dépenses</a>
-    <a class="btn ghost" id="btn-optimiser" href="deals.html">Optimiser</a>
-  </div>
-</main>
+    <!-- CTA Premium -->
+    <section class="card premium-only" style="margin-top:16px">
+      <h3 style="margin:0">Passez en Premium</h3>
+      <p style="margin:6px 0 0">Optimisations automatiques, alertes prix et surclassements négociés.</p>
+      <a href="tarifs.html" class="btn">Voir les avantages</a>
+    </section>
+  </main>
 
-<section class="container" style="margin-top:24px">
-  <h2>Synthèse rapide</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Énergie</h3>
-      <div class="kpi"><span>Dépense mensuelle estimée</span><strong id="kpi-energy">—</strong></div>
-      <div class="tip">Astuce : passer à l’option la moins chère selon ton profil (HP/HC). <a href="deals.html?cat=energie">Voir offres</a></div>
-      <div class="tags"><span class="tag">Gaz/Élec</span><span class="tag">Index régulé</span></div>
+  <footer class="footer">
+    <span id="year"></span> © Econya
+  </footer>
+
+  <!-- Modal Optimiser -->
+  <dialog id="optim-modal" class="eco-modal">
+    <div class="eco-modal__head">
+      <h3 style="margin:0">3 optimisations rapides</h3>
+      <button class="icon-btn" data-close>&times;</button>
     </div>
-    <div class="card">
-      <h3>Télécom</h3>
-      <div class="kpi"><span>Forfait repéré</span><strong id="kpi-tel">—</strong></div>
-      <div class="tip">Astuce : renégocier à l’anniversaire du contrat. <a href="deals.html?cat=telecom">Bons plans</a></div>
-      <div class="tags"><span class="tag">Fibre</span><span class="tag">Mobile</span></div>
+    <div class="eco-modal__body" id="optim-list">
+      <!-- conseils injectés -->
     </div>
-    <div class="card">
-      <h3>Assurances</h3>
-      <div class="kpi"><span>Économie potentielle</span><strong id="kpi-insu">—</strong></div>
-      <div class="tip">Astuce : mutualiser auto+habitation pour -10 à -20 %. <a href="deals.html?cat=assurance">Comparer</a></div>
-      <div class="tags"><span class="tag">Auto</span><span class="tag">Habitation</span></div>
+    <div class="eco-modal__foot" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <a href="deals.html" class="btn">Voir les offres associées</a>
+      <button data-close class="btn ghost">Fermer</button>
     </div>
-    <div class="card">
-      <h3>Transport</h3>
-      <div class="kpi"><span>Budget carburant</span><strong id="kpi-fuel">—</strong></div>
-      <div class="tip">Astuce : stations les moins chères près de toi. <a href="deals.html?cat=transport">Voir</a></div>
-      <div class="tags"><span class="tag">Essence</span><span class="tag">Train</span></div>
-    </div>
-  </div>
-</section>
+  </dialog>
 
-<section class="container" style="margin-top:28px">
-  <h2>Conseils personnalisés (démo)</h2>
-  <div id="tips" class="grid">
-    <!-- rempli par JS selon les catégories détectées -->
-  </div>
-</section>
-
-<footer class="footer">
-  <span id="year"></span> © Econya
-</footer>
-
-<!-- 1) Variables d’environnement (URL backend + plan/gratuit/premium) -->
-<script src="assets/env.js"></script>
-
-<!-- 2) JS page : badge API, lecture des params, conseils démo -->
-<script>
-  /* Helpers */
-  const $ = (sel) => document.querySelector(sel);
-  const apiBase = (window.ECONYA_API_BASE || "").replace(/\/+$/,"");
-  const PLAN = (window.ECONYA_PLAN || "gratuit").toLowerCase();
-
-  /* Badges */
-  function setBadge(el, ok) {
-    if (!el) return;
-    el.classList.remove("ok","ko","ghost");
-    el.classList.add(ok ? "ok" : "ko");
-    el.textContent = ok ? "Backend connecté ✅" : "Backend indisponible ❌";
-  }
-
-  /* Ping backend */
-  (async () => {
-    $("#year").textContent = new Date().getFullYear();
-    if (!apiBase) { setBadge($("#api-status"), false); return; }
-    try {
-      const r = await fetch(apiBase + "/sante", {mode:"cors"});
-      setBadge($("#api-status"), r.ok);
-    } catch { setBadge($("#api-status"), false); }
-  })();
-
-  /* “Optimiser” → vers deals avec params */
-  $("#btn-optimiser").addEventListener("click", (e) => {
-    // Exemple : démo = on envoie 3 catégories à prioriser
-    const cats = ["energie","telecom","courses"];
-    e.currentTarget.href = "deals.html?recs=" + encodeURIComponent(cats.join(","));
-  });
-
-  /* Conseils démo (sans données bancaires) */
-  const TIP_DB = {
-    energie: {
-      title:"Énergie",
-      body:"Basculer sur un contrat indexé raisonnable et suivre l’alerte <em>prix kWh</em>. Économie visée : 8 à 15 €/mois.",
-      cta:["Voir offres énergie","deals.html?cat=energie"]
-    },
-    telecom: {
-      title:"Télécom",
-      body:"Renégocier ou passer sur une Série spéciale 6–15 € selon la data. Économie visée : 5 à 20 €/mois.",
-      cta:["Voir forfaits","deals.html?cat=telecom"]
-    },
-    assurance: {
-      title:"Assurances",
-      body:"Pack auto+habitation chez un même assureur : -10 % typique. Vérifier les garanties utiles seulement.",
-      cta:["Comparer assurances","deals.html?cat=assurance"]
-    },
-    courses: {
-      title:"Courses",
-      body:"Activer cashback + marque repère + anti-gaspi. Économie visée : 6 à 12 % panier.",
-      cta:["Cashback & cartes","deals.html?cat=courses"]
-    },
-    transport: {
-      title:"Transport",
-      body:"Optimiser trajets (covoiturage/rail) + carte réduction si admissible.",
-      cta:["Bons plans transport","deals.html?cat=transport"]
-    }
-  };
-
-  function byQS(name) {
-    const u = new URL(location.href);
-    return u.searchParams.get(name);
-  }
-
-  function renderTips() {
-    const wrap = $("#tips");
-    wrap.innerHTML = "";
-    const recsParam = byQS("recs");
-    const pick = recsParam ? recsParam.split(",").map(s=>s.trim()) : ["energie","telecom","assurance"];
-    pick.forEach(key=>{
-      const t = TIP_DB[key]; if(!t) return;
-      const el = document.createElement("article");
-      el.className = "card";
-      el.innerHTML = `
-        <h3>${t.title}</h3>
-        <p class="tip" style="margin:0">${t.body}</p>
-        <div style="margin-top:10px"><a class="btn ghost" href="${t.cta[1]}">${t.cta[0]}</a></div>
-      `;
-      wrap.appendChild(el);
-    });
-  }
-
-  // KPIs démo
-  $("#kpi-energy").textContent = "≈ 74 €/mois";
-  $("#kpi-tel").textContent = "Série spéciale 80 Go – 9,99 €";
-  $("#kpi-insu").textContent = "10–20 % vs contrat actuel";
-  $("#kpi-fuel").textContent = "≈ 96 €/mois (carburant)";
-
-  renderTips();
-</script>
+  <!-- ENV puis JS page -->
+  <script src="assets/env.js"></script>
+  <script src="assets/coach-eco.js" defer></script>
 </body>
 </html>
+
 
 
 
