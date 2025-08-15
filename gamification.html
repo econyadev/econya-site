@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gamification – Econya</title>
+  <meta name="description" content="Badges, défis, progression et export de vos données locales pour rester motivé à économiser." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .kpi{background:#0f3c2a88;border:1px solid #ffffff12;border-radius:12px;padding:12px;text-align:center}
+    .score{font-weight:900;font-size:1.4rem;color:#9EF01A}
+    .plant{height:12px;background:#0f1a16;border:1px solid #234;border-radius:999px;overflow:hidden}
+    .plant > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#2fd36a,#8cf1b2);transition:width .5s}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px 10px;border-bottom:1px solid #ffffff12}
+    th{text-align:left;opacity:.85}
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">
+    <img src="assets/logo.svg" alt="Econya" height="28" />
+    <span>Econya</span>
+  </a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html" class="active">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero">
+  <h1>Gamification</h1>
+  <p class="muted">Suivez votre progression, débloquez des badges, relevez un défi hebdo et exportez vos données locales.</p>
+</main>
+
+<section class="container">
+  <div class="grid-2">
+    <article class="card">
+      <h2>Progression & objectif</h2>
+      <div class="kpis">
+        <div class="kpi"><div id="g-pct" class="score">0%</div><small>Objectif annuel</small></div>
+        <div class="kpi"><div id="g-saved" class="score">0 €</div><small>Épargne cumulée</small></div>
+        <div class="kpi"><div id="g-goal" class="score">0 €</div><small>Objectif</small></div>
+      </div>
+      <div style="margin:12px 0">
+        <div class="plant"><i id="plant-bar"></i></div>
+        <small id="plant-txt" class="muted">0% de votre objectif annuel atteint</small>
+      </div>
+      <div class="cta" style="margin-top:10px">
+        <label>Objectif (€) <input id="g-input-goal" type="number" min="100" step="50" style="width:140px"></label>
+        <button class="btn" id="g-btn-save-goal">Enregistrer</button>
+        <button class="btn ghost" id="g-btn-reset">Réinitialiser</button>
+      </div>
+      <div id="badges-wrap" class="badges" style="margin-top:12px"></div>
+      <div id="challenge-box" class="card" style="margin-top:12px"></div>
+    </article>
+
+    <article class="card">
+      <h2>Classement (anonyme)</h2>
+      <p class="muted">Comparé à des profils similaires (démo locale).</p>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Rang</th><th>Pseudo</th><th style="text-align:right">Épargne (€/an)</th></tr></thead>
+          <tbody id="g-rank-body"></tbody>
+        </table>
+      </div>
+    </article>
+  </div>
+
+  <article class="card" style="margin-top:12px">
+    <h2>Export</h2>
+    <p class="muted">Export de vos données Econya stockées dans ce navigateur.</p>
+    <div class="cta">
+      <button class="btn" id="g-export-json">Exporter JSON</button>
+    </div>
+    <pre id="g-export-out" style="white-space:pre-wrap; overflow:auto; max-height:240px; margin-top:10px"></pre>
+  </article>
+</section>
+
+<footer class="footer">
+  <span id="year"></span> © Econya
+</footer>
+
+<script src="assets/env.js"></script>
+<!-- scripts déjà fournis précédemment -->
+<script type="module" src="assets/gamify.js"></script>
+<script type="module" src="assets/gamification.page.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
