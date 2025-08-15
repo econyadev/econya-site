@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Connexion – Econya</title>
+  <meta name="description" content="Connexion par e-mail avec un code sécurisé.">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    connect-src 'self' https://econya-backend.onrender.com;
+    object-src 'none'; base-uri 'self'; frame-ancestors 'self';
+  ">
+  <link rel="icon" href="favicon.svg"/>
+  <link rel="stylesheet" href="style.css?v=1012"/>
+  <style>
+    :root{ --bg:#0b1914; --fg:#e8f7ef; --panel:rgba(255,255,255,.04); --border:rgba(255,255,255,.12); --accent:#18c65c; }
+    body{background:
+      radial-gradient(1200px 700px at 10% -10%, rgba(24,198,92,.18), transparent),
+      radial-gradient(900px 500px at 100% 10%, rgba(255,209,102,.10), transparent),
+      var(--bg); color:var(--fg)}
+    .container{max-width:1100px;margin:0 auto;padding:24px 16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid var(--border);border-radius:18px;padding:18px}
+    .input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--fg)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;font-weight:800;text-decoration:none;border:1px solid var(--border)}
+    .btn.primary{background:var(--accent);color:#073a1f;border-color:var(--accent)}
+    .muted{opacity:.85}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header style="background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.12);padding:12px 0;position:sticky;top:0;z-index:1000;backdrop-filter:blur(8px)">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <img src="assets/logo-leaf.svg" alt="Econya" height="32">
+      <strong style="font-size:18px">Econya</strong>
+    </a>
+    <nav style="display:flex;gap:18px;flex-wrap:wrap;font-size:15px">
+      <a href="index.html">Accueil</a>
+      <a href="comparateur.html">Comparateur</a>
+      <a href="coach-eco.html">Coach Éco</a>
+      <a href="bons-plans.html">Bons Plans</a>
+      <a href="tarifs.html" style="color:#ffd166;font-weight:700">Premium</a>
+    </nav>
+    <div id="header-auth">
+      <a href="login.html" class="btn primary" style="padding:8px 16px">Connexion</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <h1 style="margin:4px 0 8px">Connexion</h1>
+  <p class="muted">Entrez votre e-mail, nous vous envoyons un code à usage unique.</p>
+
+  <!-- ÉTAPE 1 : demander le code -->
+  <section id="step1" class="card" style="max-width:480px;margin-top:12px">
+    <label for="email">E-mail</label>
+    <input id="email" class="input" type="email" placeholder="vous@exemple.com" autocomplete="email" required style="margin-top:6px"/>
+    <div class="row" style="margin-top:12px">
+      <button id="btn-send" class="btn primary">Recevoir mon code</button>
+      <span id="msg1" class="muted"></span>
+    </div>
+  </section>
+
+  <!-- ÉTAPE 2 : valider le code -->
+  <section id="step2" class="card" style="max-width:480px;margin-top:12px;display:none">
+    <p class="muted">Nous avons envoyé un code à <strong id="email-view"></strong>.</p>
+    <label for="code">Code à 6 chiffres</label>
+    <input id="code" class="input" type="text" inputmode="numeric" maxlength="6" placeholder="123456" style="margin-top:6px"/>
+    <div class="row" style="margin-top:12px">
+      <button id="btn-verify" class="btn primary">Me connecter</button>
+      <button id="btn-back" class="btn">Retour</button>
+      <span id="msg2" class="muted"></span>
+    </div>
+    <p class="muted" id="dev-tip" style="margin-top:8px;display:none"></p>
+  </section>
+
+  <!-- Session -->
+  <section id="session" class="card" style="max-width:480px;margin-top:12px;display:none">
+    <p>Connecté en tant que <strong id="who"></strong>.</p>
+    <p>Statut : <span id="plan" class="btn" style="pointer-events:none"></span></p>
+    <div class="row" style="margin-top:8px">
+      <a class="btn" href="bons-plans.html">Voir les Bons Plans</a>
+      <a class="btn primary" href="tarifs.html">Passer Premium</a>
+      <button id="logout" class="btn">Se déconnecter</button>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer style="background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.12);margin-top:40px;padding:24px 0">
+  <div class="container" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="assets/logo-leaf.svg" alt="Econya" height="28">
+      <strong>Econya</strong>
+    </div>
+    <nav style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px">
+      <a href="privacy.html">Confidentialité</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="securite.html">Sécurité</a>
+    </nav>
+    <div style="font-size:13px;opacity:.65">
+      <span id="year"></span> © Econya – Tous droits réservés
+    </div>
+  </div>
+</footer>
+
+<script src="assets/env.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const api = (window.ECONYA_API_BASE||"").replace(/\/+$/,"");
+  const qs = s => document.querySelector(s);
+
+  // Si déjà connecté, afficher la section session
+  function showSession(email, plan){
+    qs("#step1").style.display="none";
+    qs("#step2").style.display="none";
+    qs("#session").style.display="block";
+    qs("#who").textContent = email;
+    qs("#plan").textContent = "Plan : " + (plan?.toUpperCase() || (window.ECONYA_PLAN||"GRATUIT").toUpperCase());
+
+    // header : remplace bouton Connexion par "Bonjour + Déconnexion"
+    qs("#header-auth").innerHTML = `
+      <div class="row">
+        <span class="muted">Bonjour, ${email}</span>
+        <button id="logout-top" class="btn">Déconnexion</button>
+      </div>`;
+    qs("#logout-top").onclick = doLogout;
+  }
+
+  // Déconnexion
+  function doLogout(){
+    localStorage.removeItem("econya_token");
+    localStorage.removeItem("econya_email");
+    localStorage.setItem("econya_plan","gratuit");
+    window.location.href = "index.html";
+  }
+
+  // Si token existant → récupérer /me
+  (async function init(){
+    const token = localStorage.getItem("econya_token");
+    const email = localStorage.getItem("econya_email");
+    if (token && email) {
+      try{
+        const r = await fetch(api + "/me", { headers: { "Authorization": "Bearer " + token }});
+        const js = await r.json();
+        if (js.ok){
+          if (js.premium) window.econyaSetPlan("premium"); else window.econyaSetPlan("gratuit");
+          showSession(js.email, js.premium ? "premium" : "gratuit");
+          return;
+        }
+      }catch{}
+    }
+    // sinon : afficher étape 1
+    qs("#step1").style.display="block";
+  })();
+
+  // Étape 1 : envoyer code
+  qs("#btn-send").addEventListener("click", async ()=>{
+    const email = qs("#email").value.trim();
+    qs("#msg1").textContent = "Envoi...";
+    try{
+      const r = await fetch(api + "/auth/request-code", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ email }) });
+      const js = await r.json();
+      if (js.ok){
+        qs("#email-view").textContent = email;
+        qs("#step1").style.display="none";
+        qs("#step2").style.display="block";
+        // DEV TIP: Render sans e-mail → on affiche le code pour test
+        if (js.dev_code) {
+          const tip = qs("#dev-tip");
+          tip.style.display="block";
+          tip.textContent = "Code de test : " + js.dev_code;
+        }
+      } else {
+        qs("#msg1").textContent = js.error || "Impossible d'envoyer le code";
+      }
+    }catch{
+      qs("#msg1").textContent = "Erreur réseau.";
+    }
+  });
+
+  // Retour
+  qs("#btn-back").addEventListener("click", ()=>{
+    qs("#step2").style.display="none";
+    qs("#step1").style.display="block";
+  });
+
+  // Étape 2 : vérifier code
+  qs("#btn-verify").addEventListener("click", async ()=>{
+    const email = qs("#email-view").textContent.trim();
+    const code  = qs("#code").value.trim();
+    qs("#msg2").textContent = "Vérification...";
+    try{
+      const r = await fetch(api + "/auth/verify-code", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ email, code }) });
+      const js = await r.json();
+      if (js.ok && js.token){
+        localStorage.setItem("econya_token", js.token);
+        localStorage.setItem("econya_email", email);
+        // récupérer /me pour savoir si premium
+        const me = await fetch(api + "/me", { headers: { "Authorization": "Bearer " + js.token } }).then(r=>r.json()).catch(()=>({}));
+        if (me.ok && me.premium) window.econyaSetPlan("premium"); else window.econyaSetPlan("gratuit");
+        showSession(email, me.premium ? "premium" : "gratuit");
+      } else {
+        qs("#msg2").textContent = js.error || "Code invalide";
+      }
+    }catch{
+      qs("#msg2").textContent = "Erreur réseau.";
+    }
+  });
+
+  // Déconnexion (section session)
+  qs("#logout").addEventListener("click", doLogout);
+</script>
+</body>
+</html>
