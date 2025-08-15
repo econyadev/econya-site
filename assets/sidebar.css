@@ -1,0 +1,48 @@
+/* Sidebar Econya (dark + glass) */
+:root{
+  --sb-bg: rgba(255,255,255,.06);
+  --sb-border: rgba(255,255,255,.12);
+  --sb-text: #e7f4ee;
+  --sb-accent: #4ee17f;
+}
+.sidebar{
+  position: fixed; top:0; left:0; height:100dvh; width:260px;
+  background: var(--sb-bg); border-right:1px solid var(--sb-border);
+  backdrop-filter: blur(8px); color: var(--sb-text);
+  transform: translateX(-100%); transition: transform .2s ease;
+  z-index: 80; padding:14px 12px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.sidebar.open{ transform: translateX(0); }
+.sidebar .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; font-weight:800}
+.sidebar .brand img{height:28px}
+.sidebar .hr{height:1px; background:var(--sb-border); margin:10px 0}
+.sidebar .item{
+  display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px;
+  text-decoration:none; color:inherit; border:1px solid transparent;
+}
+.sidebar .item:hover{ background: rgba(255,255,255,.07); border-color: var(--sb-border); }
+.sidebar .item.active{ outline:2px solid rgba(78,225,127,.35); }
+.sidebar .item svg{width:18px; height:18px; opacity:.9}
+.sidebar .footer{margin-top:auto; font-size:12px; opacity:.8}
+
+.sb-toggle{
+  position: fixed; left:12px; bottom:14px; z-index:85;
+  background:#13382c; border:1px solid var(--sb-border); color:var(--sb-text);
+  border-radius:999px; padding:10px 12px; font-weight:800; cursor:pointer;
+}
+.sb-backdrop{
+  position: fixed; inset:0; background: rgba(0,0,0,.25);
+  z-index:70; opacity:0; pointer-events:none; transition:opacity .15s ease;
+}
+.sb-backdrop.show{ opacity:1; pointer-events:auto; }
+
+/* quand la sidebar est ouverte, évite le défilement derrière sur mobile */
+body.sb-open{ overflow:hidden; }
+
+@media (min-width: 1024px){
+  .sb-toggle{ top:14px; bottom:auto; }
+  .sidebar{ transform: translateX(0); }
+  body{ margin-left: 260px; } /* pousse le contenu sur desktop */
+  .sb-backdrop{ display:none; }
+}
