@@ -1,0 +1,13 @@
+<!-- assets/logo-leaf.svg -->
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Econya">
+  <defs>
+    <linearGradient id="g" x1="0" y1="64" x2="64" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0EA360"/>
+      <stop offset="1" stop-color="#39E27B"/>
+    </linearGradient>
+  </defs>
+  <!-- feuille stylisée -->
+  <path d="M50 12C30 10 16 20 12 34c-3 12 5 18 12 18 12 0 26-12 26-30 0-4 0-8 0-10z" fill="url(#g)"/>
+  <!-- nervure -->
+  <path d="M24 50c10-10 16-22 16-38" stroke="#073A1F" stroke-width="3" stroke-linecap="round"/>
+</svg>
