@@ -265,3 +265,11 @@ body{background: radial-gradient(1200px 600px at 30% 10%, var(--bg-2), transpare
 .pricing .features { margin:10px 0 14px; padding-left:18px }
 .pricing.highlighted { border-color: rgba(46, 255, 157, .45); box-shadow: 0 0 0 2px rgba(46, 255, 157, .15) inset }
 .ribbon { position:relative; top:-8px; display:inline-block; padding:4px 10px; border-radius:999px; background:rgba(46,255,157,.12); border:1px solid rgba(46,255,157,.35); font-weight:700; }
+/* Harmonisation kpis/cards (si pas déjà présent) */
+.kpis { display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.kpi { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:12px; padding:12px; }
+.btn.accent { box-shadow: 0 0 0 2px rgba(46,255,157,.15) inset; }
+.api-status { margin-top:10px; display:inline-block; padding:6px 10px; border-radius:8px; font-weight:700; }
+.api-status.ok { background:#d7f5dd; color:#115c2d; }
+.api-status.ko { background:#ffd9d9; color:#a00; }
+.api-status.ghost { background:rgba(255,255,255,.08); color:#eee; }
