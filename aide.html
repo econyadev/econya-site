@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aide & FAQ – Econya</title>
+<meta name="description" content="Centre d’aide Econya : banque, sécurité, tarifs, coach éco, gamification, exports, dépannages rapides." />
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="assets/sidebar.css" />
+<style>
+  .container.narrow{max-width:900px}
+  .search{display:flex;gap:8px;align-items:center;background:#0f3c2a66;border:1px solid #ffffff22;border-radius:12px;padding:10px 12px}
+  .search input{flex:1;background:transparent;border:none;color:#eaf7ef;outline:none}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .toc a{display:inline-block;padding:.35rem .6rem;border-radius:999px;background:#ffffff12;border:1px solid #ffffff22;text-decoration:none;color:inherit}
+  .faq-group{margin:18px 0;border:1px solid #ffffff12;border-radius:14px;overflow:hidden}
+  .faq-head{margin:0;padding:12px 14px;background:#0f3c2a88;border-bottom:1px solid #ffffff12;font-weight:800}
+  details{border-bottom:1px solid #ffffff12}
+  details:last-child{border-bottom:none}
+  summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:700}
+  summary::-webkit-details-marker{display:none}
+  .faq-body{padding:0 14px 14px 14px;color:#eaf7efcc}
+  mark{background:#fff85a;color:#1b1b1b;padding:0 .15em;border-radius:3px}
+  .muted{opacity:.85}
+</style>
+
+<!-- FAQ JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Comment connecter ma banque ?","acceptedAnswer":{"@type":"Answer","text":"Depuis la page Banque, cliquez « Connecter ma banque ». En démo, un agrégateur simulé s’ouvre. En production, nous utiliserons un fournisseur open-banking (Budget Insight, Tink, etc.)."}},
+    {"@type":"Question","name":"Mes données bancaires sont-elles sécurisées ?","acceptedAnswer":{"@type":"Answer","text":"Oui. L’authentification se fait chez l’agrégateur agréé (PSP/ACPR). Econya ne stocke pas vos identifiants. En démo, seules des données fictives sont utilisées."}},
+    {"@type":"Question","name":"Que contient l’offre Premium (5,99 €/mois) ?","acceptedAnswer":{"@type":"Answer","text":"Graphiques avancés, alertes et renégociations intelligentes, recommandations renforcées, exports et historiques étendus, support prioritaire."}},
+    {"@type":"Question","name":"Puis-je utiliser Econya sans compte ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Comparateur, simulateurs et bons plans fonctionnent sans compte. La connexion bancaire et certaines fonctions Premium nécessiteront un compte."}},
+    {"@type":"Question","name":"Comment exporter en PDF ou CSV ?","acceptedAnswer":{"@type":"Answer","text":"Les exports CSV sont générés côté navigateur. Les exports PDF passent par le backend (vérifiez le badge « Backend connecté »)."}},
+    {"@type":"Question","name":"Comment supprimer mes données ?","acceptedAnswer":{"@type":"Answer","text":"Utilisez les boutons Réinitialiser (profil, banque, gamification) ou effacez le stockage local du navigateur. En production, un bouton « supprimer mon compte » sera proposé."}}
+  ]
+}
+</script>
+
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://econya-backend.onrender.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya"><span>Econya</span></a>
+  <div class="hr"></div>
+  <a class="item" href="index.html">Accueil</a>
+  <a class="item" href="comparateur.html">Comparateur</a>
+  <a class="item" href="coach-eco.html">Coach Éco</a>
+  <a class="item" href="deals.html">Bons plans</a>
+  <a class="item" href="gamification.html">Gamification</a>
+  <a class="item" href="profil-eco.html">Profil éco</a>
+  <a class="item" href="banque.html">Banque</a>
+  <a class="item" href="simulateur-epargne.html">Simulateur d’épargne</a>
+  <a class="item" href="simulateur-telecom.html">Simulateur télécom</a>
+  <a class="item" href="comparateur-energie.html">Comparateur énergie</a>
+  <a class="item active" href="aide.html">Aide & FAQ</a>
+  <a class="item" href="confidentialite.html">Confidentialité</a>
+  <a class="item" href="mentions-legales.html">Mentions légales</a>
+  <a class="item" href="tarifs.html">Tarifs</a>
+  <div class="footer">v10.3.2 • <a href="tarifs.html" style="color:#a9ffd0">Premium</a></div>
+</div>
+<button id="sb-toggle" class="sb-toggle">☰ Menu</button>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo.svg" alt="Econya" height="28" /><span>Econya</span></a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="banque.html">Banque</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero container narrow">
+  <h1>Aide & FAQ</h1>
+  <p class="muted">Questions fréquentes, guides rapides et solutions aux problèmes courants.</p>
+
+  <div class="search" style="margin-top:12px">🔎
+    <input id="q" type="search" placeholder="Rechercher : banque, premium, export, sécurité…" />
+  </div>
+
+  <div class="toc">
+    <a href="#compte">Compte & Profil</a>
+    <a href="#securite">Sécurité & Banque</a>
+    <a href="#tarifs">Tarifs & Paiement</a>
+    <a href="#coach">Coach & Gamification</a>
+    <a href="#outils">Outils & Exports</a>
+    <a href="#depannage">Dépannage</a>
+  </div>
+
+  <section id="compte" class="faq-group">
+    <h2 class="faq-head">Compte & Profil</h2>
+    <details data-faq><summary>Puis-je utiliser Econya sans compte ?</summary>
+      <div class="faq-body">Oui, la plupart des fonctions marchent sans compte. La banque réelle & certaines options Premium demanderont un compte.</div>
+    </details>
+    <details data-faq><summary>Comment définir mes préférences ?</summary>
+      <div class="faq-body">Va sur <a href="profil-eco.html">Profil éco</a>, choisis pays, thèmes et objectif d’épargne.</div>
+    </details>
+  </section>
+
+  <section id="securite" class="faq-group">
+    <h2 class="faq-head">Sécurité & Banque</h2>
+    <details data-faq><summary>Comment connecter ma banque ?</summary>
+      <div class="faq-body">Sur <a href="banque.html">Banque</a> → <strong>Connecter ma banque</strong>. En démo : simulation. En prod : agrégateur agréé.</div>
+    </details>
+    <details data-faq><summary>Mes identifiants sont-ils stockés ?</summary>
+      <div class="faq-body">Non. L’authentification se fera chez l’agrégateur. Econya ne voit ni ne stocke tes identifiants.</div>
+    </details>
+  </section>
+
+  <section id="tarifs" class="faq-group">
+    <h2 class="faq-head">Tarifs & Paiement</h2>
+    <details data-faq><summary>Que contient l’offre Premium ?</summary>
+      <div class="faq-body">Graphiques avancés, alertes intelligentes, recommandations renforcées, exports & historiques, support prioritaire.</div>
+    </details>
+    <details data-faq><summary>Comment passer en Premium ?</summary>
+      <div class="faq-body">Depuis <a href="tarifs.html">Tarifs</a> ou <a href="profil-eco.html?upgrade=1">Profil éco</a>.</div>
+    </details>
+  </section>
+
+  <section id="coach" class="faq-group">
+    <h2 class="faq-head">Coach & Gamification</h2>
+    <details data-faq><summary>Comment obtenir des conseils personnalisés ?</summary>
+      <div class="faq-body">Sur <a href="coach-eco.html">Coach Éco</a>, tu obtiens 3 actions rapides, encore plus précises avec la banque connectée.</div>
+    </details>
+    <details data-faq><summary>La plante & les badges ?</summary>
+      <div class="faq-body">Sur <a href="gamification.html">Gamification</a> : la plante grandit avec l’épargne, badges & défi hebdo aident à tenir le cap.</div>
+    </details>
+  </section>
+
+  <section id="outils" class="faq-group">
+    <h2 class="faq-head">Outils & Exports</h2>
+    <details data-faq><summary>Où trouver les outils ?</summary>
+      <div class="faq-body">
+        <ul>
+          <li><a href="simulateur-epargne.html">Simulateur d’épargne</a></li>
+          <li><a href="simulateur-telecom.html">Simulateur télécom</a></li>
+          <li><a href="comparateur-energie.html">Comparateur énergie</a></li>
+          <li><a href="comparateur.html">Comparateur multi-offres</a></li>
+        </ul>
+      </div>
+    </details>
+    <details data-faq><summary>Comment exporter ?</summary>
+      <div class="faq-body">CSV : local. PDF : via backend (vérifie le badge vert).</div>
+    </details>
+  </section>
+
+  <section id="depannage" class="faq-group">
+    <h2 class="faq-head">Dépannage</h2>
+    <details data-faq><summary>Backend “indisponible”</summary>
+      <div class="faq-body">Vérifie l’URL dans <code>assets/env.js</code> → <code>window.ECONYA_API_BASE</code>, recharge & réessaie.</div>
+    </details>
+    <details data-faq><summary>PDF bloqué</summary>
+      <div class="faq-body">Autorise les popups pour Econya, assure-toi que le backend répond.</div>
+    </details>
+  </section>
+
+  <p class="muted" style="margin:16px 0">Besoin d’aide ? <a href="mailto:contact@econya.example">contact@econya.example</a></p>
+</main>
+
+<footer class="footer"><span id="year"></span> © Econya</footer>
+
+<script src="assets/env.js"></script>
+<script src="assets/sidebar.js" defer></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Recherche instantanée + surlignage
+  const $ = s=>document.querySelector(s);
+  const input = $("#q");
+  const items = Array.from(document.querySelectorAll("details[data-faq]"));
+
+  function normalize(t){ return (t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  function clearMarks(node){ node.querySelectorAll("mark").forEach(m=>m.replaceWith(document.createTextNode(m.textContent))); }
+  function highlight(el, q){
+    clearMarks(el);
+    if(!q) return;
+    const rx = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")", "gi");
+    el.querySelectorAll("summary, .faq-body").forEach(n=>{ n.innerHTML = n.innerHTML.replace(rx, "<mark>$1</mark>"); });
+  }
+  function filter(){
+    const q = normalize(input.value.trim());
+    items.forEach(d=>{
+      const txt = normalize(d.textContent);
+      const match = !q || txt.includes(q);
+      d.style.display = match ? "" : "none";
+      if (match && q) { d.open = true; highlight(d, q); } else { clearMarks(d); if(!q) d.open = false; }
+    });
+  }
+  input.addEventListener("input", filter);
+</script>
+</body>
+</html>
