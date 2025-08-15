@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Econya – Sécurité & confidentialité</title>
+  <meta name="description" content="Comment Econya protège vos données : lecture seule, chiffrement TLS, contrôle utilisateur, conformité RGPD.">
+  <!-- CSP : autorise ton backend si besoin -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    connect-src 'self' https://econya-backend.onrender.com;
+    object-src 'none'; base-uri 'self'; frame-ancestors 'self';
+  ">
+  <link rel="icon" href="favicon.svg"/>
+  <link rel="stylesheet" href="style.css?v=1009"/>
+  <link rel="stylesheet" href="assets/theme-premium.css"/>
+
+  <style>
+    :root{
+      --bg:#0b1914; --fg:#e8f7ef; --muted:#bfe7d4; --accent:#18c65c; --gold:#ffd166;
+      --panel:rgba(255,255,255,.04); --border:rgba(255,255,255,.12);
+    }
+    body{
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(24,198,92,.18), transparent),
+        radial-gradient(900px 500px at 100% 10%, rgba(255,209,102,.10), transparent),
+        var(--bg); color:var(--fg)
+    }
+    .container{max-width:1100px;margin:0 auto;padding:24px 16px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit}
+    .nav a{margin:0 8px;text-decoration:none;color:var(--fg);opacity:.9}
+    .nav a[aria-current="page"]{font-weight:800}
+    .hero{margin:12px 0 16px}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#fef3c7;color:#92400e;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border); border-radius:18px; padding:16px; backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25); transition: transform .2s ease, border-color .2s ease;
+    }
+    .card:hover{ transform: translateY(-2px); border-color: rgba(24,198,92,.45); }
+    .list{margin:0; padding-left:18px; line-height:1.7}
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;font-weight:800;text-decoration:none;border:1px solid var(--border)}
+    .btn.primary{background:var(--accent);color:#073a1f;border-color:var(--accent)}
+    .btn.ghost{background:transparent;color:var(--fg)}
+    details{border:1px solid var(--border);border-radius:14px;padding:10px 12px;background:var(--panel)}
+    details+details{margin-top:8px}
+    details summary{cursor:pointer;font-weight:800}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(24,198,92,.12);border:1px solid rgba(24,198,92,.35)}
+    .muted{opacity:.8}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; background:#0e241c; border:1px solid #17493b; padding:2px 6px; border-radius:6px}
+  </style>
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="assets/logo-leaf.svg" alt="Econya" height="28"/><strong>Econya</strong>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach-eco.html">Coach Éco</a>
+      <a href="banque.html">Banque</a>
+      <a href="bons-plans.html">Bons Plans</a>
+      <a href="tarifs.html">Tarifs</a>
+      <a href="securite.html" aria-current="page">Sécurité</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 style="margin:4px 0 8px">Sécurité & confidentialité</h1>
+      <p class="muted">Dernière mise à jour : <strong>14 août 2025</strong></p>
+      <p class="sub">Votre argent et vos données méritent le meilleur niveau de protection. Econya a été conçu avec une <strong>approche sécurité par défaut</strong> : <em>lecture seule</em>, <em>chiffrement TLS</em>, <em>contrôle utilisateur</em>, et <em>données jamais revendues</em>.</p>
+    </section>
+
+    <!-- Points clés -->
+    <section class="grid" style="margin-top:10px">
+      <article class="card">
+        <h2>Lecture seule (Open Banking)</h2>
+        <ul class="list">
+          <li>Accès aux comptes strictement en <strong>lecture seule</strong>.</li>
+          <li>Aucune possibilité d’initier des virements.</li>
+          <li>Révocation à tout moment depuis l’app ou votre banque.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Chiffrement & transport</h2>
+        <ul class="list">
+          <li>Toutes les communications passent en <strong>TLS</strong> (HTTPS) de bout en bout.</li>
+          <li>Clés et secrets stockés côté serveur, jamais dans le navigateur.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Minimisation des données</h2>
+        <ul class="list">
+          <li>Nous collectons le <strong>minimum</strong> nécessaire à l’analyse.</li>
+          <li>Pas de revente, pas de partage non autorisé.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Contrôle utilisateur</h2>
+        <ul class="list">
+          <li>Export <strong>CSV/PDF</strong> à la demande.</li>
+          <li>Suppression de compte (droit à l’effacement RGPD).</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Engagements -->
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:0 0 8px">Nos engagements</h2>
+      <div class="grid">
+        <div>
+          <p><span class="pill">Données jamais revendues</span> · <span class="pill">Lecture seule</span> · <span class="pill">Transparence</span></p>
+          <ul class="list">
+            <li><strong>Transparence :</strong> vous savez quelles données sont utilisées et pourquoi.</li>
+            <li><strong>Réversibilité :</strong> vous pouvez tout <em>exporter</em> ou <em>supprimer</em> facilement.</li>
+            <li><strong>Séparation :</strong> analytics et paiements sont gérés par des prestataires dédiés.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="sub"><strong>Route de conformité</strong> (évolutive) :</p>
+          <ul class="list">
+            <li>RGPD : droits d’accès, rectification, effacement, portabilité.</li>
+            <li>Journaux d’accès techniques limités (diagnostic uniquement).</li>
+            <li>Revue de sécurité régulière (dépendances & CSP).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Données traitées -->
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:0 0 8px">Quelles données traitons-nous ?</h2>
+      <div class="grid">
+        <div>
+          <h3 style="margin:0 0 6px">Compte & abonnement</h3>
+          <ul class="list">
+            <li>E-mail pour l’accès Premium / reçus de paiement.</li>
+            <li>Identifiants de transaction (retours de prestataire de paiement).</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin:0 0 6px">Banque (si connecté)</h3>
+          <ul class="list">
+            <li>Soldes et <em>transactions</em> en lecture seule.</li>
+            <li>Catégorisation locale pour vos tableaux de bord.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin:0 0 6px">Bons plans & affiliation</h3>
+          <ul class="list">
+            <li>Clicks sur les liens (via redirection <span class="kbd">/go</span>).</li>
+            <li>Statistiques agrégées d’économies estimées.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin:0 0 6px">Diagnostics</h3>
+          <ul class="list">
+            <li>Erreurs techniques anonymisées pour améliorer le service.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vos droits -->
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:0 0 8px">Vos droits (RGPD)</h2>
+      <ul class="list">
+        <li><strong>Accès</strong> à vos données</li>
+        <li><strong>Rectification</strong> des informations inexactes</li>
+        <li><strong>Suppression</strong> (droit à l’oubli)</li>
+        <li><strong>Portabilité</strong> (export CSV/PDF)</li>
+        <li><strong>Opposition</strong> à certains traitements (ex : analytics)</li>
+      </ul>
+      <p class="sub" style="margin-top:8px">Contact : <a href="mailto:contact@econya.fr">contact@econya.fr</a></p>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn ghost" href="mailto:contact@econya.fr?subject=Demande%20d%27acc%C3%A8s%20mes%20donn%C3%A9es">Demander mes données</a>
+        <button id="btn-delete" class="btn">Demander suppression</button>
+      </div>
+      <p id="delete-msg" class="sub" style="margin-top:8px"></p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="card" style="margin-top:16px">
+      <h2 style="margin:0 0 8px">FAQ Sécurité</h2>
+      <details>
+        <summary>Est-ce que vous pouvez faire des virements depuis mes comptes ?</summary>
+        <p>Non. L’accès bancaire est <strong>strictement en lecture seule</strong>. Nous ne pouvons pas initier d’opérations.</p>
+      </details>
+      <details>
+        <summary>Comment puis-je révoquer l’accès à mes comptes ?</summary>
+        <p>Depuis l’app Econya (menu Banque → Révoquer) et depuis votre espace bancaire. En cas de doute, contactez-nous : <a href="mailto:contact@econya.fr">contact@econya.fr</a>.</p>
+      </details>
+      <details>
+        <summary>Vendez-vous mes données ?</summary>
+        <p><strong>Jamais.</strong> Les données servent uniquement à vous fournir le service (analyses, tableaux, recommandations).</p>
+      </details>
+      <details>
+        <summary>Pouvez-vous supprimer toutes mes données ?</summary>
+        <p>Oui. Utilisez le bouton “Demander suppression” ou écrivez-nous. Nous procédons à la suppression et vous confirmons par e-mail.</p>
+      </details>
+    </section>
+
+    <!-- Confiance & transparence -->
+    <section class="grid" style="margin-top:16px">
+      <article class="card">
+        <h2>Bonnes pratiques techniques</h2>
+        <ul class="list">
+          <li>En-tête <span class="kbd">Content-Security-Policy</span> restrictif</li>
+          <li>Mises à jour régulières des dépendances</li>
+          <li>Clés API côté serveur uniquement</li>
+          <li>Principe du moindre privilège (scopes limités)</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Signaler un problème</h2>
+        <p class="sub">Vous pensez avoir trouvé une faille ou une anomalie ?</p>
+        <a class="btn primary" href="mailto:security@econya.fr?subject=Signalement%20de%20vuln%C3%A9rabilit%C3%A9">security@econya.fr</a>
+        <p class="sub" style="margin-top:8px">Merci d’utiliser une divulgation responsable.</p>
+      </article>
+    </section>
+
+  </main>
+
+  <footer class="container" style="text-align:center;padding:24px 0;opacity:.85">
+    <span id="year"></span> © Econya
+  </footer>
+
+  <!-- JSON-LD FAQ pour SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "Est-ce que vous pouvez faire des virements depuis mes comptes ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Non, l’accès est strictement en lecture seule via les connexions bancaires. Aucune initiation de virement n’est possible par Econya." }
+    },{
+      "@type": "Question",
+      "name": "Comment puis-je révoquer l’accès à mes comptes ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Depuis l’app Econya (Banque → Révoquer) et depuis votre espace bancaire. Vous pouvez aussi nous contacter pour être guidé." }
+    },{
+      "@type": "Question",
+      "name": "Vendez-vous mes données ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Jamais. Les données sont utilisées uniquement pour fournir le service et ne sont pas revendues." }
+    },{
+      "@type": "Question",
+      "name": "Pouvons-nous supprimer toutes vos données ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Oui. Utilisez le bouton “Demander suppression” ou contactez-nous par e-mail pour une suppression complète." }
+    }]
+  }
+  </script>
+
+  <!-- Scripts -->
+  <script src="assets/env.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Bouton "Demander suppression" (appelle ton backend si l’endpoint existe)
+    // Exemple : POST /privacy/delete { email }
+    const apiBase = (window.ECONYA_API_BASE || "").replace(/\/+$/,"");
+    const btn = document.getElementById('btn-delete');
+    const msg = document.getElementById('delete-msg');
+
+    btn?.addEventListener('click', async ()=>{
+      const email = prompt("Entrez l’e-mail associé à votre compte Premium (ou à vos demandes) :");
+      if (!email) return;
+      msg.textContent = "Demande envoyée…";
+      try {
+        // Si tu ajoutes l’endpoint côté backend :
+        // await fetch(apiBase + "/privacy/delete", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ email }) });
+        // Pour l’instant, on envoie un mail (fallback) :
+        window.location.href = `mailto:contact@econya.fr?subject=Demande%20de%20suppression&body=Je%20souhaite%20supprimer%20mes%20donn%C3%A9es.%20Email%20:%20${encodeURIComponent(email)}`;
+        msg.textContent = "Ouvrir votre messagerie pour finaliser la demande.";
+      } catch {
+        msg.textContent = "Impossible d’envoyer la demande pour le moment.";
+      }
+    });
+  </script>
+</body>
+</html>
