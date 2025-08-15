@@ -1,101 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gamification – Econya</title>
-  <meta name="description" content="Badges, défis, progression et export de vos données locales pour rester motivé à économiser." />
-  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <meta name="description" content="Suivez votre progression d’épargne : la plante grandit, débloquez des badges et relevez des défis !" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
-    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
-    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    .kpi{background:#0f3c2a88;border:1px solid #ffffff12;border-radius:12px;padding:12px;text-align:center}
-    .score{font-weight:900;font-size:1.4rem;color:#9EF01A}
-    .plant{height:12px;background:#0f1a16;border:1px solid #234;border-radius:999px;overflow:hidden}
-    .plant > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#2fd36a,#8cf1b2);transition:width .5s}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:8px 10px;border-bottom:1px solid #ffffff12}
-    th{text-align:left;opacity:.85}
+    /* Visuels spécifiques gamification (léger, n’altère pas le reste) */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+    .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
+    .muted{opacity:.85}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+    .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;text-align:center}
+    .kpi .v{font-size:1.3rem;font-weight:900}
+    .progress{height:12px;background:#0f1a16;border:1px solid #234;border-radius:999px;overflow:hidden}
+    .progress>i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#2fd36a,#8cf1b2);transition:width .4s}
+    .plant-wrap{display:grid;place-items:center;height:320px;background:#0b241b;border:1px solid rgba(255,255,255,.08);border-radius:16px}
+    .plant{width:200px;height:200px}
+    .plant svg{width:100%;height:100%;transform-origin:50% 100%}
+    .badges{display:flex;gap:10px;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+    .badge.lock{opacity:.5;filter:grayscale(.8)}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   </style>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/">
-    <img src="assets/logo.svg" alt="Econya" height="28" />
-    <span>Econya</span>
-  </a>
-  <nav class="nav">
-    <a href="comparateur.html">Comparateur</a>
-    <a href="coach-eco.html">Coach Éco</a>
-    <a href="deals.html">Bons plans</a>
-    <a href="gamification.html" class="active">Gamification</a>
-    <a href="profil-eco.html">Profil éco</a>
-    <a href="banque.html">Banque</a>
-    <a href="tarifs.html" class="badge">Tarifs</a>
-  </nav>
-</header>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img src="logo.svg" alt="Econya" height="28" />
+      <span>Econya</span>
+    </a>
+    <nav class="nav">
+      <a href="comparateur.html">Comparateur Pro</a>
+      <a href="coach-eco.html">Coach Eco</a>
+      <a href="deals.html">Bons plans</a>
+      <a class="active" href="gamification.html">Gamification</a>
+      <a href="profil-eco.html">Profil éco</a>
+      <a class="badge" href="tarifs.html">Tarifs</a>
+    </nav>
+  </header>
 
-<main class="hero">
-  <h1>Gamification</h1>
-  <p class="muted">Suivez votre progression, débloquez des badges, relevez un défi hebdo et exportez vos données locales.</p>
-</main>
-
-<section class="container">
-  <div class="grid-2">
-    <article class="card">
-      <h2>Progression & objectif</h2>
-      <div class="kpis">
-        <div class="kpi"><div id="g-pct" class="score">0%</div><small>Objectif annuel</small></div>
-        <div class="kpi"><div id="g-saved" class="score">0 €</div><small>Épargne cumulée</small></div>
-        <div class="kpi"><div id="g-goal" class="score">0 €</div><small>Objectif</small></div>
+  <main class="container">
+    <section class="card" style="display:flex;justify-content:space-between;gap:16px;align-items:center">
+      <div>
+        <h1 style="margin:0">Gamification</h1>
+        <p class="muted" style="margin:6px 0 0">Fixe un objectif, vois ta <strong>progression d’épargne</strong> et débloque des <strong>badges</strong>. Ta plante grandit !</p>
       </div>
-      <div style="margin:12px 0">
-        <div class="plant"><i id="plant-bar"></i></div>
-        <small id="plant-txt" class="muted">0% de votre objectif annuel atteint</small>
-      </div>
-      <div class="cta" style="margin-top:10px">
-        <label>Objectif (€) <input id="g-input-goal" type="number" min="100" step="50" style="width:140px"></label>
-        <button class="btn" id="g-btn-save-goal">Enregistrer</button>
-        <button class="btn ghost" id="g-btn-reset">Réinitialiser</button>
-      </div>
-      <div id="badges-wrap" class="badges" style="margin-top:12px"></div>
-      <div id="challenge-box" class="card" style="margin-top:12px"></div>
-    </article>
+      <div class="api-status ghost" id="api-status">Vérification du backend…</div>
+    </section>
 
-    <article class="card">
-      <h2>Classement (anonyme)</h2>
-      <p class="muted">Comparé à des profils similaires (démo locale).</p>
-      <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th>Rang</th><th>Pseudo</th><th style="text-align:right">Épargne (€/an)</th></tr></thead>
-          <tbody id="g-rank-body"></tbody>
-        </table>
-      </div>
-    </article>
-  </div>
+    <section class="grid" style="margin-top:16px">
+      <!-- Plante -->
+      <article class="card">
+        <h3 style="margin-top:0">Ta plante 🌱</h3>
+        <div class="plant-wrap">
+          <div class="plant" id="plant">
+            <!-- SVG plante minimaliste -->
+            <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+              <!-- pot -->
+              <rect x="30" y="90" width="40" height="18" rx="4" fill="#2b5644"/>
+              <!-- tige -->
+              <rect id="stem" x="49" y="50" width="2" height="40" rx="1" fill="#4fd38a"/>
+              <!-- feuilles -->
+              <path id="leafL" d="M50 70 C30 60, 30 45, 48 50 C46 58, 46 65, 50 70" fill="#3ecf7e"/>
+              <path id="leafR" d="M50 62 C70 56, 72 42, 52 46 C54 54, 54 60, 50 62" fill="#34be72"/>
+            </svg>
+          </div>
+        </div>
+        <div class="progress" style="margin-top:10px"><i id="bar"></i></div>
+        <small class="muted">La taille de la plante suit ta progression vers l’objectif du mois.</small>
+      </article>
 
-  <article class="card" style="margin-top:12px">
-    <h2>Export</h2>
-    <p class="muted">Export de vos données Econya stockées dans ce navigateur.</p>
-    <div class="cta">
-      <button class="btn" id="g-export-json">Exporter JSON</button>
-    </div>
-    <pre id="g-export-out" style="white-space:pre-wrap; overflow:auto; max-height:240px; margin-top:10px"></pre>
-  </article>
-</section>
+      <!-- Objectif + KPIs -->
+      <article class="card">
+        <h3 style="margin-top:0">Objectif du mois</h3>
+        <div class="row">
+          <label>Objectif d’épargne (€ / mois)
+            <input id="goal" type="number" step="10" min="0" value="200"
+              style="display:block;margin-top:6px;background:#0e2a1f;color:#e8ffe8;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 10px;max-width:200px">
+          </label>
+          <button class="btn" id="save-goal">Enregistrer</button>
+          <button class="btn ghost" id="reset">Réinitialiser</button>
+        </div>
 
-<footer class="footer">
-  <span id="year"></span> © Econya
-</footer>
+        <div class="kpis" style="margin-top:12px">
+          <div class="kpi"><div class="v" id="k-income">—</div><small>Revenus (mois)</small></div>
+          <div class="kpi"><div class="v" id="k-expenses">—</div><small>Dépenses (mois)</small></div>
+          <div class="kpi"><div class="v" id="k-saved">—</div><small>Épargne estimée</small></div>
+          <div class="kpi"><div class="v" id="k-progress">0%</div><small>Progression objectif</small></div>
+        </div>
 
-<script src="assets/env.js"></script>
-<!-- scripts déjà fournis précédemment -->
-<script type="module" src="assets/gamify.js"></script>
-<script type="module" src="assets/gamification.page.js"></script>
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+        <div class="row" style="margin-top:10px">
+          <a class="btn" href="deals.html">Booster avec un bon plan</a>
+          <a class="btn ghost" href="coach-eco.html">Conseils “Optimiser”</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- Badges -->
+    <section class="card" style="margin-top:16px">
+      <h3 style="margin-top:0">Badges</h3>
+      <div class="badges" id="badges"></div>
+      <small class="muted" style="display:block;margin-top:8px">Les badges se débloquent automatiquement quand tu franchis des paliers.</small>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="year"></span> © Econya
+  </footer>
+
+  <script src="assets/env.js"></script>
+  <script src="assets/gamification.js" defer></script>
 </body>
 </html>
+
