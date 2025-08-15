@@ -1,204 +1,273 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Econya – Connexion bancaire</title>
-  <meta name="description" content="Connectez vos comptes et obtenez une synthèse claire de vos dépenses avec Coach Éco – Econya.">
-
-  <!-- Favicons / logo -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="preload" as="image" href="assets/logo.svg">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Variables d’environnement (définit window.ECONYA_API_BASE) -->
-  <script defer src="assets/env.js"></script>
-
-  <!-- Chart.js (pour les graphes Premium) -->
-  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-  <!-- Logiques page banque : KPI + transactions + OB mock -->
-  <script defer src="assets/bank.js"></script>
-
-  <!-- Graphiques Premium (n’affiche que si présent) -->
-  <script defer src="assets/bank-charts.js"></script>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion bancaire (démo) – Econya</title>
+  <meta name="description" content="Connecte ta banque (démo) pour analyser tes dépenses par catégories et suivre des indicateurs utiles." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    /* Petits utilitaires pour cette page */
-    .container{max-width:1040px;margin:0 auto;padding:24px}
-    .topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
-    .brand{display:flex;gap:10px;align-items:center;text-decoration:none}
-    .brand img{height:28px}
-    .nav a{margin-left:16px;text-decoration:none;opacity:.9}
-    .badge{display:inline-block;padding:6px 10px;border-radius:8px;font-weight:600}
-    .badge.ghost{background:#eee;color:#333}
-    .badge.ok{background:#d7f5dd;color:#115c2d}
-    .badge.ko{background:#ffd9d9;color:#a00}
-    .section{margin-top:24px}
-    .card{background:rgba(255,255,255,.06);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:16px}
-    .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-    .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:12px}
-    .kpi-label{opacity:.8;font-size:.9rem}
-    .kpi-value{font-size:1.25rem;font-weight:700}
+    .pill{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;font-weight:600;font-size:.85rem}
+    .ok{background:#d7f5dd;color:#115c2d}.ko{background:#ffe4e4;color:#8c1b1b}.ghost{background:transparent;border:1px solid #2a7b4f33}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
     table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,.08)}
-    th{text-align:left;opacity:.8}
-    td.amount{text-align:right}
-    .controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none}
-    .btn.primary{background:#1dd661;color:#063}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.25);opacity:.9}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media (max-width:900px){.kpis{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
-    footer{opacity:.8;text-align:center;padding:40px 12px}
-    /* Badges premium */
-    .plan-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-weight:700;background:#141; color:#9f9}
-    .premium-only{opacity:.9}
+    th,td{padding:8px 10px;border-bottom:1px solid #ffffff12}
+    th{opacity:.85;text-align:left}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .kpi{background:#0f3c2a88;border:1px solid #ffffff12;border-radius:12px;padding:12px;display:flex;justify-content:space-between}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .muted{opacity:.85}
+    .premium-only{display:none}
+    body.is-premium .premium-only{display:block}
   </style>
+  <!-- Chart.js uniquement si premium (chargé dynamiquement en bas) -->
 </head>
 <body>
 
-  <!-- Topbar -->
-  <header class="topbar container">
-    <a class="brand" href="index.html">
-      <img src="assets/logo.svg" alt="Econya">
-      <strong>Econya</strong>
-    </a>
-    <nav class="nav">
-      <a href="comparateur.html">Comparateur Pro</a>
-      <a href="coach-eco.html">Coach Éco</a>
-      <a href="partenaires.html">Partenaires</a>
-      <a href="playbooks.html">Playbooks</a>
-    </nav>
-  </header>
+<header class="topbar">
+  <a class="brand" href="/">
+    <img src="assets/logo.svg" alt="Econya" height="28" />
+    <span>Econya</span>
+  </a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html">Profil éco</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
 
-  <main class="container">
-    <h1>Connexion bancaire</h1>
-    <p>Reliez vos comptes (démo), analysez vos dépenses et suivez vos progrès.</p>
+<main class="hero">
+  <h1>Connexion bancaire (démo)</h1>
+  <p class="muted">Simule une connexion bancaire pour analyser tes dépenses. En production, on utilisera un agrégateur (Budget Insight / Tink / Salt Edge…).</p>
+  <div class="controls" style="margin-top:10px">
+    <span class="pill ghost" id="api-status">Vérification du backend…</span>
+    <span class="pill ghost" id="ob-status">Open-banking (démo)</span>
+    <a class="btn" id="btn-link" href="#">Connecter ma banque (démo)</a>
+    <label for="tx-month" class="pill ghost">Mois
+      <input id="tx-month" type="month" style="background:transparent;border:none;color:inherit;margin-left:6px" />
+    </label>
+    <button class="btn ghost" id="tx-load">Charger</button>
+  </div>
+</main>
 
-    <!-- Badges de statut -->
-    <div class="section">
-      <span id="api-status" class="badge ghost">Vérification du backend…</span>
-      <span id="ob-status" class="badge ghost">Open-Banking prêt…</span>
-    </div>
+<section class="container">
+  <div class="kpis" style="margin-bottom:14px">
+    <div class="kpi"><span>Dépenses du mois</span><strong id="kpi-spend">0,00 €</strong></div>
+    <div class="kpi"><span>Revenus du mois</span><strong id="kpi-income">0,00 €</strong></div>
+    <div class="kpi"><span>Épargne potentielle</span><strong id="kpi-savings">0,00 €</strong></div>
+  </div>
 
-    <!-- CTA Open Banking (mock) -->
-    <div class="section card">
-      <h2>Relier ma banque</h2>
-      <p>Simulation d’agrégation bancaire (parcours démo).</p>
-      <div class="controls">
-        <a id="btn-ob" class="btn primary" href="#">Se connecter à ma banque</a>
-        <a id="btn-ob-reset" class="btn ghost" href="#">Réinitialiser la liaison</a>
+  <div class="grid">
+    <article class="card">
+      <h2 style="margin:0 0 10px">Transactions</h2>
+      <div style="overflow:auto; max-height:420px">
+        <table class="table" id="tx-table">
+          <thead>
+            <tr>
+              <th style="min-width:120px">Date</th>
+              <th>Libellé</th>
+              <th style="min-width:120px">Catégorie</th>
+              <th style="text-align:right;min-width:120px">Montant</th>
+            </tr>
+          </thead>
+          <tbody id="tx-tbody"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align:right">Total</td>
+              <td id="tx-total" style="text-align:right">0,00 €</td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
-    </div>
+    </article>
 
-    <!-- Synthèse / KPIs -->
-    <section class="section">
-      <h2>Synthèse</h2>
-      <div class="kpis">
-        <div class="kpi">
-          <div class="kpi-label">Dépenses du mois</div>
-          <div id="kpi-spend" class="kpi-value">0,00 €</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Revenus du mois</div>
-          <div id="kpi-income" class="kpi-value">0,00 €</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Solde estimé</div>
-          <div id="kpi-balance" class="kpi-value">0,00 €</div>
-        </div>
-      </div>
-    </section>
+    <article class="card premium-only">
+      <h2 style="margin:0 0 10px">Graphiques (Premium)</h2>
+      <canvas id="chartByCat" height="200"></canvas>
+      <canvas id="chartCumul" height="200" style="margin-top:12px"></canvas>
+      <p class="muted" style="margin-top:8px">
+        Passe en <a href="tarifs.html">Premium</a> pour débloquer des graphiques détaillés et des alertes intelligentes.
+      </p>
+    </article>
+  </div>
+</section>
 
-    <!-- Transactions (démo) -->
-    <section class="section">
-      <div class="grid-2">
-        <div>
-          <h2 style="margin-bottom:6px">Transactions (démo)</h2>
-          <div class="controls" style="margin-bottom:12px">
-            <label for="tx-month">Mois :</label>
-            <input id="tx-month" type="month" />
-            <button id="tx-load" class="btn ghost">Charger</button>
-          </div>
+<section class="container" style="margin-top:20px">
+  <h2>3 conseils rapides</h2>
+  <div id="tips" class="grid"></div>
+</section>
 
-          <div class="card" style="overflow:auto">
-            <table class="table" id="tx-table">
-              <thead>
-                <tr>
-                  <th style="min-width:120px">Date</th>
-                  <th style="min-width:260px">Libellé</th>
-                  <th>Catégorie</th>
-                  <th class="amount" style="min-width:120px">Montant</th>
-                </tr>
-              </thead>
-              <tbody id="tx-tbody">
-                <!-- Rempli par assets/bank.js -->
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="3" style="text-align:right"><strong>Total</strong></td>
-                  <td class="amount"><strong id="tx-total">0,00 €</strong></td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
+<footer class="footer">
+  <span id="year"></span> © Econya
+</footer>
 
-        <!-- Cartes Premium -->
-        <div>
-          <h2 style="margin-bottom:6px">Cartes <span class="premium-only">Premium</span></h2>
-          <div class="card" style="margin-bottom:12px">
-            <div class="plan-badge" title="Disponible avec le plan Premium">
-              Premium
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.2L18 21l-6-4-6 4 1.5-7.8L2 9h7l3-7z"/></svg>
-            </div>
-            <canvas id="chart-cat" height="180" style="margin-top:12px"></canvas>
-          </div>
+<script src="assets/env.js"></script>
+<script>
+  /* Boot premium body class */
+  (function(){
+    const plan = (window.ECONYA_PLAN || "gratuit").toLowerCase();
+    if (plan === "premium") document.body.classList.add("is-premium");
+  })();
 
-          <div class="card">
-            <div class="plan-badge">
-              Premium
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.2L18 21l-6-4-6 4 1.5-7.8L2 9h7l3-7z"/></svg>
-            </div>
-            <canvas id="chart-cashflow" height="180" style="margin-top:12px"></canvas>
-          </div>
-        </div>
-      </div>
+  const $ = s=>document.querySelector(s);
+  const apiBase = (window.ECONYA_API_BASE || "").replace(/\/+$/,"");
+  $("#year").textContent = new Date().getFullYear();
 
-      <!-- Upsell Premium (mobile/si charts absents) -->
-      <div id="premium-upsell" class="card" style="margin-top:12px; display:none">
-        <h3>Débloquez les graphiques avancés</h3>
-        <p>Passez en Premium pour activer l’analyse par catégories et le cash-flow mensuel.</p>
-        <a class="btn primary" href="tarifs.html">Voir les tarifs</a>
-      </div>
-    </section>
+  function euro(v){return (v<0?'-':'') + Math.abs(v).toFixed(2).replace('.',',') + ' €';}
+  function setBadge(el, ok, textOk="OK", textKo="KO"){
+    if(!el) return; el.classList.remove("ok","ko","ghost"); el.classList.add(ok?"ok":"ko"); el.textContent = (ok?textOk:textKo);
+  }
 
-  </main>
+  /* Ping API + OB (mock) */
+  (async () => {
+    try{
+      const r = await fetch(apiBase + "/sante",{mode:"cors"});
+      setBadge($("#api-status"), r.ok, "Backend connecté ✅", "Backend indisponible ❌");
+    }catch{ setBadge($("#api-status"), false, "", "Backend indisponible ❌"); }
+    try{
+      // si ton backend a /ob/provider (mock)
+      const r = await fetch(apiBase + "/ob/provider",{mode:"cors"});
+      setBadge($("#ob-status"), r.ok, "Open-banking prêt ✅", "Open-banking indisponible ❌");
+    }catch{ setBadge($("#ob-status"), false, "", "Open-banking indisponible ❌"); }
+  })();
 
-  <footer>
-    <div><span id="year"></span> © Econya</div>
-    <div style="margin-top:8px;opacity:.8">
-      <a href="mentions.html">Mentions légales</a> ·
-      <a href="vie-privee.html">Vie privée</a> ·
-      <a href="partenaires.html">Partenaires</a> ·
-      <a href="contact.html">Contact</a>
-    </div>
-  </footer>
+  /* Démarrer “connexion” mock */
+  $("#btn-link").addEventListener("click", async (e)=>{
+    e.preventDefault();
+    try{
+      const r = await fetch(apiBase + "/ob/start",{mode:"cors"});
+      const j = await r.json();
+      // en vrai : window.location = j.url (redirection vers l’agrégateur)
+      alert("Démo : redirection simulée.\nURL fournisseur mock : " + (j.url||"(aucune)"));
+      setBadge($("#ob-status"), true, "Compte lié (démo) ✅", "Non lié ❌");
+    }catch{
+      setBadge($("#ob-status"), false, "", "Erreur de liaison ❌");
+    }
+  });
 
-  <script>
-    // Petite sécurité : si Chart.js ou bank-charts.js ne sont pas chargés,
-    // on affiche un encart pour promouvoir le plan Premium.
-    window.addEventListener('DOMContentLoaded', () => {
-      const upsell = document.getElementById('premium-upsell');
-      const hasCharts = !!window.Chart && typeof window.renderBankCharts === 'function';
-      if (!hasCharts && upsell) upsell.style.display = 'block';
+  /* Transactions démo depuis ton backend (déjà en place) */
+  function ymFromInput(){
+    const v = $("#tx-month").value; // "2025-08"
+    if(!v) return null; return v;
+  }
+
+  async function loadTx(reset=false){
+    const ym = ymFromInput();
+    try{
+      const url = ym ? `${apiBase}/transactions?month=${encodeURIComponent(ym)}` : `${apiBase}/transactions`;
+      const r = await fetch(url,{mode:"cors"});
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const data = await r.json(); // [{date, label, category, amount}, ...]
+      renderTx(data);
+      renderKPIs(data);
+      renderTips(data);
+      if (document.body.classList.contains("is-premium")) {
+        await ensureChartJS();
+        renderCharts(data);
+      }
+    }catch(e){
+      console.error(e);
+      $("#tx-tbody").innerHTML = `<tr><td colspan="4">Impossible de charger les transactions.</td></tr>`;
+      $("#tx-total").textContent = "0,00 €";
+    }
+  }
+
+  function renderTx(list){
+    const tbody = $("#tx-tbody");
+    if(!list || !list.length){ tbody.innerHTML = `<tr><td colspan="4">Aucune transaction.</td></tr>`; $("#tx-total").textContent = "0,00 €"; return; }
+    tbody.innerHTML = list.map(tx => `
+      <tr>
+        <td>${tx.date}</td>
+        <td>${tx.label}</td>
+        <td>${tx.category||"—"}</td>
+        <td style="text-align:right;${tx.amount<0?'color:#c0392b':'color:#115c2d'}">${euro(Math.abs(tx.amount))}</td>
+      </tr>
+    `).join("");
+    const total = list.reduce((a,t)=>a+t.amount,0);
+    $("#tx-total").textContent = euro(total);
+  }
+
+  function renderKPIs(list){
+    const out = {spend:0,income:0};
+    list.forEach(t => { if(t.amount<0) out.spend += -t.amount; else out.income += t.amount; });
+    const savings = Math.max(0, out.income - out.spend)*0.2; // projection prudente
+    $("#kpi-spend").textContent = euro(out.spend);
+    $("#kpi-income").textContent = euro(out.income);
+    $("#kpi-savings").textContent = euro(savings);
+  }
+
+  /* Tips rapides basés sur catégories vues */
+  function renderTips(list){
+    const cats = new Set(list.map(t=>t.category).filter(Boolean));
+    const tips = [];
+    if (cats.has("Énergie") || cats.has("Energie")) tips.push(["Énergie","Comparer un contrat indexé raisonnable selon ton profil (HP/HC).","deals.html?cat=energie","Voir offres énergie"]);
+    if (cats.has("Télécom")) tips.push(["Télécom","Basculer vers une série spéciale 6–12 € (renégoc à l’anniv).","deals.html?cat=telecom","Voir forfaits"]);
+    if (cats.has("Assurance")) tips.push(["Assurances","Pack auto + habitation : souvent -10 à -20 %.","deals.html?cat=assurance","Comparer"]);
+    if (cats.has("Courses")) tips.push(["Courses","Activer cashback et anti-gaspi pour 6–12 % d’économies.","deals.html?cat=courses","Cashback"]);
+    if (cats.has("Transport")) tips.push(["Transport","Trouver les stations carburant moins chères + éco-conduite.","deals.html?cat=transport","Voir plans"]);
+    if (!tips.length) tips.push(["Général","Active les bons plans adaptés à ton profil pour commencer.","deals.html","Parcourir les bons plans"]);
+
+    $("#tips").innerHTML = tips.slice(0,3).map(t=>`
+      <article class="card">
+        <h3>${t[0]}</h3>
+        <p class="muted">${t[1]}</p>
+        <a class="btn ghost" href="${t[2]}">${t[3]}</a>
+      </article>
+    `).join("");
+  }
+
+  /* Charts (premium) */
+  function byCat(list){
+    const map = {};
+    list.forEach(t=>{
+      const c = t.category || "Autre";
+      map[c] = map[c] || 0;
+      if(t.amount<0) map[c] += -t.amount;
     });
-  </script>
+    return map;
+  }
+  function cumulMensuel(list){
+    // tri par date puis cumul dépenses négatives
+    const sorted = [...list].sort((a,b)=> a.date.localeCompare(b.date));
+    let c=0; const pts=[];
+    sorted.forEach(t=>{
+      c += t.amount;
+      pts.push({x:t.date,y:c});
+    });
+    return pts;
+  }
+  async function ensureChartJS(){
+    if (window.Chart) return;
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js";
+      s.defer=true; s.onload=res; s.onerror=rej; document.body.appendChild(s);
+    });
+  }
+  let chart1, chart2;
+  function renderCharts(list){
+    const cats = byCat(list);
+    const ctx1 = document.getElementById('chartByCat');
+    const ctx2 = document.getElementById('chartCumul');
+    chart1 && chart1.destroy(); chart2 && chart2.destroy();
+    chart1 = new Chart(ctx1, { type:'doughnut', data:{ labels:Object.keys(cats), datasets:[{data:Object.values(cats)}] } });
+    chart2 = new Chart(ctx2, { type:'line', data:{ datasets:[{label:'Cumul', parsing:false, data:cumulMensuel(list)}] }, options:{ scales:{ x:{type:'timeseries', time:{unit:'day'}}}}});
+  }
+
+  // Init valeurs + actions
+  const now = new Date();
+  $("#tx-month").value = now.toISOString().slice(0,7);
+  $("#tx-load").addEventListener("click", ()=> loadTx());
+  loadTx();
+</script>
 </body>
 </html>
+
 
 
 
