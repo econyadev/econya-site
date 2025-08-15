@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profil Éco – Econya</title>
+  <meta name="description" content="Gère ton profil, ton plan et tes préférences éco. Export possible." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .card{background:#0f3c2a66;border:1px solid #ffffff12;border-radius:16px;padding:16px}
+    label{display:block;margin:.4rem 0 .2rem}
+    input,select,textarea{width:100%;padding:.55rem .65rem;border:1px solid #ffffff22;border-radius:10px;background:#073522;color:#fff}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .muted{opacity:.85}
+    .pill{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;font-weight:600;font-size:.85rem}
+    .ok{background:#d7f5dd;color:#115c2d}.ghost{background:transparent;border:1px solid #2a7b4f33}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <img src="assets/logo.svg" alt="Econya" height="28" />
+    <span>Econya</span>
+  </a>
+  <nav class="nav">
+    <a href="comparateur.html">Comparateur</a>
+    <a href="coach-eco.html">Coach Éco</a>
+    <a href="deals.html">Bons plans</a>
+    <a href="gamification.html">Gamification</a>
+    <a href="profil-eco.html" class="active">Profil éco</a>
+    <a href="tarifs.html" class="badge">Tarifs</a>
+  </nav>
+</header>
+
+<main class="hero">
+  <h1>Mon profil</h1>
+  <p class="muted">Ces infos restent en local (navigateur) tant qu’on n’a pas connecté un compte.</p>
+</main>
+
+<section class="container grid">
+  <article class="card">
+    <h2>Identité</h2>
+    <label>Nom</label><input id="name" placeholder="Prénom Nom" />
+    <label>Email</label><input id="email" type="email" placeholder="moi@exemple.com" />
+    <label>Pays</label>
+    <select id="country">
+      <option value="">—</option>
+      <option>France</option>
+      <option>Belgique</option>
+      <option>Suisse</option>
+      <option>Canada</option>
+      <option>Autre</option>
+    </select>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="btn-save">Enregistrer</button>
+      <button class="btn ghost" id="btn-export">Exporter (JSON)</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2>Plan & préférences</h2>
+    <div class="row" style="align-items:center">
+      <span id="plan-badge" class="pill ghost">Plan : —</span>
+      <a class="btn" id="btn-upgrade" href="tarifs.html">Passer en Premium</a>
+    </div>
+    <label style="margin-top:10px">Thèmes de conseils</label>
+    <div class="row">
+      <label class="pill ghost"><input type="checkbox" id="pref-energy" /> Énergie</label>
+      <label class="pill ghost"><input type="checkbox" id="pref-telecom" /> Télécom</label>
+      <label class="pill ghost"><input type="checkbox" id="pref-courses" /> Courses</label>
+      <label class="pill ghost"><input type="checkbox" id="pref-assu" /> Assurances</label>
+    </div>
+    <label style="margin-top:10px">Objectif mensuel d’économies (€)</label>
+    <input id="goal" type="number" min="0" step="5" placeholder="ex: 50" />
+  </article>
+
+  <article class="card">
+    <h2>Parrainage</h2>
+    <p class="muted">Partage ton code à tes amis : chaque parrainage validé = 1 mois Premium offert (idée).</p>
+    <div class="row">
+      <input id="ref-code" readonly />
+      <button class="btn ghost" id="btn-copy">Copier</button>
+    </div>
+    <p class="muted" style="margin-top:8px">Lien : <a id="ref-link" href="#" target="_blank" rel="noopener">—</a></p>
+  </article>
+</section>
+
+<footer class="footer">
+  <span id="year"></span> © Econya
+</footer>
+
+<script src="assets/env.js"></script>
+<script>
+  const $=s=>document.querySelector(s);
+  $("#year").textContent = new Date().getFullYear();
+
+  // Local storage profil
+  const KEY="econya_profile";
+  function load(){
+    try{ return JSON.parse(localStorage.getItem(KEY)||"{}"); }catch{return {}}
+  }
+  function save(obj){
+    localStorage.setItem(KEY, JSON.stringify(obj));
+  }
+
+  // Init
+  const profile = load();
+  const plan = (new URL(location.href)).searchParams.get("upgrade")==="1" ? "premium" : (window.ECONYA_PLAN||"gratuit").toLowerCase();
+  $("#name").value = profile.name||"";
+  $("#email").value = profile.email||"";
+  $("#country").value = profile.country||"";
+  $("#pref-energy").checked = !!profile.prefEnergy;
+  $("#pref-telecom").checked = !!profile.prefTelecom;
+  $("#pref-courses").checked = !!profile.prefCourses;
+  $("#pref-assu").checked = !!profile.prefAssu;
+  $("#goal").value = profile.goal||"";
+  $("#plan-badge").textContent = "Plan : " + (plan==="premium" ? "Premium" : "Gratuit");
+  $("#plan-badge").classList.toggle("ok", plan==="premium");
+
+  // Code parrainage basique basé sur email (hash simple)
+  const ref = (profile.ref || ("ECO" + Math.random().toString(36).slice(2,8).toUpperCase()));
+  $("#ref-code").value = ref;
+  const link = location.origin + "/?ref=" + encodeURIComponent(ref);
+  $("#ref-link").textContent = link; $("#ref-link").href = link;
+
+  // Actions
+  $("#btn-save").addEventListener("click", ()=>{
+    const obj = {
+      ...load(),
+      name:$("#name").value.trim(),
+      email:$("#email").value.trim(),
+      country:$("#country").value,
+      prefEnergy:$("#pref-energy").checked,
+      prefTelecom:$("#pref-telecom").checked,
+      prefCourses:$("#pref-courses").checked,
+      prefAssu:$("#pref-assu").checked,
+      goal:$("#goal").value? Number($("#goal").value): 0,
+      ref
+    };
+    save(obj);
+    alert("Profil enregistré ✅");
+  });
+
+  $("#btn-export").addEventListener("click", ()=>{
+    const blob = new Blob([JSON.stringify(load(),null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "profil-econya.json";
+    a.click();
+  });
+
+  $("#btn-copy").addEventListener("click", async ()=>{
+    try{ await navigator.clipboard.writeText($("#ref-link").href); alert("Lien copié ✅"); }catch{}
+  });
+
+  // “Passer en premium” (démo) — on stocke le souhait localement
+  $("#btn-upgrade").addEventListener("click",(e)=>{
+    // Ici tu mettras plus tard ton lien Stripe/Payment Link.
+    // En attendant, on mémorise l'intention.
+    const p = load(); p.wantPremium = true; save(p);
+  });
+</script>
+</body>
+</html>
