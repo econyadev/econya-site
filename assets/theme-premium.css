@@ -1,0 +1,11 @@
+/* Hover & focus premium */
+a.btn:hover, button.btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,255,136,.15); }
+a.btn:active, button.btn:active { transform: translateY(0); box-shadow:none; }
+a.btn:focus-visible, button:focus-visible { outline: 3px solid #39e27b; outline-offset: 2px; }
+
+/* Cards subtle animation */
+.card { transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+.card:hover { transform: translateY(-1px); }
+
+/* Tables zebra */
+.table tbody tr:nth-child(even){ background: rgba(255,255,255,.03); }
